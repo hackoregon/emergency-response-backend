@@ -3,7 +3,7 @@ Simulations, Models, and Visualizations of Portland Fire and Rescue data
 
 ## _IMPORTANT_
 
-Before running, you must download the [fire_db_2010]([fire_db_2010](https://drive.google.com/file/d/0B7k-dMOX1R5WOWpTZDdhMFBMUW8/view?usp=sharing) database file from the Hack Oregon Emergency Response shared drive.  
+Before running, you must download the [fire_db_2010](https://drive.google.com/file/d/0B7k-dMOX1R5WOWpTZDdhMFBMUW8/view?usp=sharing) database file from the Hack Oregon Emergency Response shared drive.  
 
 Save it to postgresql/data/ (will need to create folder) within this repo.
 
