@@ -25,7 +25,7 @@ _BUT_ I set it up so you don't have to enter the password, just hit 'ok' if you 
 To run the API for the first time:
 
   1. Save the database file as discussed above.
-  2. cd into the root folder of this repo and run:
+  2. cd into the root folder of this repo and run:  
       $ docker-compose up
   3. Allow process to run, will take a few minutes the first time as it needs to build the fresh image.
   4. When completed you most likely will be confronted with an error about unable to find or connect to database.
@@ -45,9 +45,9 @@ To run the API for the first time:
 
       $ docker exec -i erapiv2_db_1 psql --username=postgres fire < postgresql/data/fire_db_2010  
 
-    7. Run docker-compose up again to start api.
+  7. Run docker-compose up again to start api.
 
-    8. Access the api at:
+  8. Access the api at:
 
         $ http://localhost:8000/<endpoint>
 
