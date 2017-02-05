@@ -32,18 +32,18 @@ To run the API for the first time:
   5. CTRL-C to stop the docker container.
   6. To configure postgres user and database and load data run the following commands in order:  
 
-      ## this command will create the eruser  
+        ## this command will create the eruser  
 
-      $ docker exec -i erapiv2_db_1 createuser eruser --username=postgres  
+        $ docker exec -i erapiv2_db_1 createuser eruser --username=postgres  
 
-      ## this will create the fire database
+        ## this will create the fire database
 
-      $ docker exec -i erapiv2_db_1 createdb fire --username=postgres
+        $ docker exec -i erapiv2_db_1 createdb fire --username=postgres
 
 
-      ## this will load the data from the dumpfile  
+        ## this will load the data from the dumpfile  
 
-      $ docker exec -i erapiv2_db_1 psql --username=postgres fire < postgresql/data/fire_db_2010  
+        $ docker exec -i erapiv2_db_1 psql --username=postgres fire < postgresql/data/fire_db_2010  
 
   7. Run docker-compose up again to start api.
 
