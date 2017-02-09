@@ -1,4 +1,4 @@
-/postgresql
+/postgresql/data
 
 *.pyc
 *.pyo

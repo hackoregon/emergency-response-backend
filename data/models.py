@@ -151,7 +151,7 @@ class IncsitFoundClass(models.Model):
 
 class IncsitFoundSub(models.Model):
     incsitfoundsub_id = models.IntegerField(primary_key=True)
-    incsitfoundclass = models.IntegerField()
+    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, blank=True, null=True)
     description = models.CharField(max_length=50, blank=True, null=True)
     sortorder = models.IntegerField(blank=True, null=True)
 
@@ -174,18 +174,18 @@ class IncsitFound(models.Model):
 
 class Incident(models.Model):
     incident_id = models.IntegerField(primary_key=True)
-    responderunit_id = models.ForeignKey(ResponderUnit, on_delete=models.CASCADE, blank=True, null=True)
+    responderunit = models.ForeignKey(ResponderUnit, on_delete=models.CASCADE, blank=True, null=True)
     deptrespond_id = models.IntegerField(blank=True, null=True)
     runnumber = models.CharField(max_length=20, blank=True, null=True)
     incdate = models.DateField(blank=True, null=True)
-    typenaturecode = models.ForeignKey(TypeNatureCode, on_delete=models.CASCADE, blank=True, null=True)
+    typenaturecode = models.ForeignKey('Typenaturecode', models.DO_NOTHING, blank=True, null=True)
     foundsituation = models.IntegerField(blank=True, null=True)
-    incsitfoundprm = models.ForeignKey(IncsitFound, on_delete=models.CASCADE, blank=True, null=True)
-    alarmlevel = models.ForeignKey(AlarmLevel, on_delete=models.CASCADE, blank=True, null=True)
-    mutualaid = models.ForeignKey(MutualAid, on_delete=models.CASCADE, blank=True, null=True)
+    incsitfoundprm = models.ForeignKey('Incsitfound', models.DO_NOTHING, blank=True, null=True)
+    alarmlevel = models.ForeignKey(AlarmLevel, models.DO_NOTHING, blank=True, null=True)
+    mutualaid = models.ForeignKey('Mutualaid', models.DO_NOTHING, blank=True, null=True)
     callreceived_id = models.IntegerField(blank=True, null=True)
     censustract = models.CharField(max_length=6, blank=True, null=True)
-    fmarespcomp = models.CharField(max_length=6, blank=True, null=True)
+    fmarespcomp = models.CharField(max_length=10, blank=True, null=True)
     career = models.IntegerField(blank=True, null=True)
     engresp = models.IntegerField(blank=True, null=True)
     aaresp = models.IntegerField(blank=True, null=True)
@@ -195,15 +195,14 @@ class Incident(models.Model):
     quad = models.CharField(max_length=2, blank=True, null=True)
     streettype = models.CharField(max_length=4, blank=True, null=True)
     streetname = models.CharField(max_length=30, blank=True, null=True)
-    quad2 = models.CharField(max_length=2, blank=True, null=True)
+    quad2 = models.CharField(max_length=4, blank=True, null=True)
     streetname2 = models.CharField(max_length=30, blank=True, null=True)
     streettype2 = models.CharField(max_length=4, blank=True, null=True)
-    county = models.CharField(max_length=30, blank=True, null=True)
-    city = models.CharField(max_length=30, blank=True, null=True)
+    city = models.CharField(max_length=20, blank=True, null=True)
     state = models.CharField(max_length=2, blank=True, null=True)
-    zip = models.CharField(max_length=9, blank=True, null=True)
-    neighborassoc = models.CharField(max_length=18, blank=True, null=True)
-    fireblock = models.CharField(max_length=6, blank=True, null=True)
+    zip = models.CharField(max_length=10, blank=True, null=True)
+    neighborassoc = models.CharField(max_length=20, blank=True, null=True)
+    fireblock = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False

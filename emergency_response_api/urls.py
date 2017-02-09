@@ -13,21 +13,32 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.routers import DefaultRouter
 from data import views
+
+# Create a router and register our viewsets with it.
+router = DefaultRouter()
+router.register(r'agencies', views.AgencyViewSet)
+router.register(r'alarmlevels', views.AlarmLevelViewSet)
+router.register(r'censustracts', views.CensusTractViewSet)
+router.register(r'fireblocks', views.FireBlockViewSet)
+router.register(r'typenaturecodes', views.TypeNatureCodeViewSet)
+router.register(r'stations', views.StationViewSet)
+router.register(r'firestations', views.FireStationViewSet)
+router.register(r'fmas', views.FMAViewSet)
+router.register(r'mutualaid', views.MutualAidViewSet)
+router.register(r'responderunits', views.ResponderUnitViewSet)
+router.register(r'incsitfoundclass', views.IncsitFoundClassViewSet)
+router.register(r'incsitfoundsub', views.IncsitFoundSubViewSet)
+router.register(r'incsitfound', views.IncsitFoundViewSet)
+router.register(r'incidents', views.IncidentViewSet)
+
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^incidents$', views.incident_list),
-    url(r'^agencies$', views.agency_list),
-    url(r'^alarmlevels$', views.alarmlevel_list),
-    url(r'^censustracts$', views.censustract_list),
-    url(r'^fireblocks$', views.fireblock_list),
-    url(r'^typenaturecodes$', views.typenaturecode_list),
-    url(r'^stations$', views.station_list),
-
+    url(r'^', include(router.urls)),
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)

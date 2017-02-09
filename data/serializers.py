@@ -1,15 +1,10 @@
 from rest_framework import serializers
-from data.models import Incident, Agency, AlarmLevel, CensusTract, FireBlock, TypeNatureCode, Station, FireStation
+from data.models import Incident, Agency, AlarmLevel, CensusTract, FireBlock, TypeNatureCode, Station, FireStation, FMA, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeNatureCode
         fields = ('typenaturecode_id', 'description', 'id_911', 'category', 'nemsis' )
-
-class IncidentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Incident
-        fields = ('incident_id', 'responderunit_id', 'runnumber', 'alarmlevel_id', 'mutualaid_id', 'fmarespcomp', 'fireblock', 'neighborassoc', 'censustract', 'quad', 'streetname', 'streettype', 'quad2', 'streetname2', 'streettype2', 'county', 'city', 'state', 'zip', 'incdate', 'typenaturecode_id', 'incsitfoundprm_id')
 
 class AgencySerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,17 +29,46 @@ class CensusTractSerializer(serializers.ModelSerializer):
 class FireBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = FireBlock
-        fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'shape_star', 'shape_stle', 'shape_leng', 'shape_area', 'geom')
+        fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'shape_leng', 'shape_area', 'geom')
 
 class FireStationSerializer(serializers.ModelSerializer):
     class Meta:
         model = FireStation
-        fields = ('gid', 'objectid', 'station')
-#
-# gid = models.AutoField(primary_key=True)
-# objectid = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-# station = models.CharField(max_length=6, blank=True, null=True)
-# address = models.CharField(max_length=38, blank=True, null=True)
-# city = models.CharField(max_length=28, blank=True, null=True)
-# district = models.CharField(max_length=40, blank=True, null=True)
-# geom =
+        fields = ('gid', 'objectid', 'station', 'address', 'city', 'district', 'geom', )
+
+class FMASerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FMA
+        fields = ('gid', 'objectid', 'fma', 'mv_label', 'geom')
+
+# 'shape_star', 'shape_stle',
+
+class MutualAidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MutualAid
+        fields = ('mutualaid_id', 'description', 'inactive', 'nfirs')
+
+class ResponderUnitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResponderUnit
+        fields = ('responderunit_id', 'description', 'id_911', 'station', 'translateto', 'agency', 'process', 'versaterm')
+
+class IncsitFoundClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncsitFoundClass
+        fields = ('incsitfoundclass_id', 'description', 'sortorder')
+
+class IncsitFoundSubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncsitFoundSub
+        fields = ('incsitfoundsub_id', 'incsitfoundclass', 'description', 'sortorder')
+
+class IncsitFoundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncsitFound
+        fields = ('incsitfound_id', 'incsitfoundsub', 'description', 'statecode', 'sortorder', 'inactive', 'nfirs')
+
+class IncidentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Incident
+        fields = ('incident_id', 'responderunit', 'deptrespond_id', 'runnumber', 'incdate', 'typenaturecode', 'foundsituation', 'incsitfoundprm', 'alarmlevel', 'mutualaid', 'callreceived_id', 'censustract', 'fmarespcomp', 'career', 'engresp', 'aaresp', 'medresp', 'othervehiclesresp', 'firstonscene', 'quad', 'streettype', 'streetname', 'quad2', 'streetname2', 'streettype2', 'city', 'state', 'zip', 'neighborassoc', 'fireblock')

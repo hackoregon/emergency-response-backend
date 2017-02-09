@@ -1,67 +1,131 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from data.models import Incident, Agency, AlarmLevel, CensusTract, FireBlock, TypeNatureCode, Station
-from data.serializers import IncidentSerializer, AgencySerializer, AlarmLevelSerializer, CensusTractSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer
+from data.models import Agency, AlarmLevel, CensusTract, FireBlock, TypeNatureCode, Station, FireStation, FMA, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock
+from data.serializers import AgencySerializer, AlarmLevelSerializer, CensusTractSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, FireStationSerializer, FMASerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import viewsets
+from rest_framework.decorators import detail_route
 
+class AgencyViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
-@api_view(['GET'])
-def incident_list(request, format=None):
+    queryset = Agency.objects.all()
+    serializer_class = AgencySerializer
 
-    if request.method == 'GET':
-        paginator = PageNumberPagination()
-        paginator.page_size = 10
-        incidents = Incident.objects.all()
-        result_page = paginator.paginate_queryset(incidents, request)
-        serializedIncidents = IncidentSerializer(result_page, many=True)
-        return paginator.get_paginated_response(serializedIncidents.data)
+class AlarmLevelViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
+    queryset = AlarmLevel.objects.all()
+    serializer_class = AlarmLevelSerializer
 
-@api_view(['GET'])
-def agency_list(request, format=None):
+class CensusTractViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
-    if request.method == 'GET':
-        agencies = Agency.objects.all()
-        serializedAgencies = AgencySerializer(agencies, many=True)
-        return Response(serializedAgencies.data)
+    queryset = CensusTract.objects.all()
+    serializer_class = CensusTractSerializer
 
-@api_view(['GET'])
-def alarmlevel_list(request, format=None):
+class FireBlockViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
-    if request.method == 'GET':
-        alarmLevels = AlarmLevel.objects.all()
-        serializedAlarmLevel = AlarmLevelSerializer(alarmLevels, many=True)
-        return Response(serializedAlarmLevel.data)
+    queryset = FireBlock.objects.all()
+    serializer_class = FireBlockSerializer
 
-@api_view(['GET'])
-def censustract_list(request, format=None):
+class TypeNatureCodeViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
-    if request.method == 'GET':
-        censusTracts = CensusTract.objects.all()
-        serializedCensusTracts = CensusTractSerializer(censusTracts, many=True)
-        return Response(serializedCensusTracts.data)
+    queryset = TypeNatureCode.objects.all()
+    serializer_class = TypeNatureCodeSerializer
 
-@api_view(['GET'])
-def fireblock_list(request, format=None):
+class StationViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
-    if request.method == 'GET':
-        fireBlocks = FireBlock.objects.all()
-        serializedFireBlocks = FireBlockSerializer(fireBlocks, many=True)
-        return Response(serializedFireBlocks.data)
+    queryset = Station.objects.all()
+    serializer_class = StationSerializer
 
-@api_view(['GET'])
-def typenaturecode_list(request, format=None):
+class FireStationViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
-    if request.method == 'GET':
-        typeNatureCodes = TypeNatureCode.objects.all()
-        serializedTypeNatureCodes = TypeNatureCodeSerializer(typeNatureCodes, many=True)
-        return Response(serializedTypeNatureCodes.data)
+    queryset = FireStation.objects.all()
+    serializer_class = FireStationSerializer
 
-@api_view(['GET'])
-def station_list(request, format=None):
+class FMAViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
 
-    if request.method == 'GET':
-        stations = Station.objects.all()
-        serializedStations = StationSerializer(stations, many=True)
-        return Response(serializedStations.data)
+    queryset = FMA.objects.all()
+    serializer_class = FMASerializer
+
+class MutualAidViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = MutualAid.objects.all()
+    serializer_class = MutualAidSerializer
+
+class ResponderUnitViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = ResponderUnit.objects.all()
+    serializer_class = ResponderUnitSerializer
+
+class IncsitFoundClassViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = IncsitFoundClass.objects.all()
+    serializer_class = IncsitFoundClassSerializer
+
+class IncsitFoundSubViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = IncsitFoundSub.objects.all()
+    serializer_class = IncsitFoundSubSerializer
+
+class IncsitFoundViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = IncsitFound.objects.all()
+    serializer_class = IncsitFoundSerializer
+
+class IncidentViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = Incident.objects.all()
+    serializer_class = IncidentSerializer
+
+# @api_view(['GET'])
+# def incident_list(request, format=None):
+#
+#     if request.method == 'GET':
+#         paginator = PageNumberPagination()
+#         paginator.page_size = 10
+#         incidents = Incident.objects.all()
+#         result_page = paginator.paginate_queryset(incidents, request)
+#         serializedIncidents = IncidentSerializer(result_page, many=True)
+#         return paginator.get_paginated_response(serializedIncidents.data)

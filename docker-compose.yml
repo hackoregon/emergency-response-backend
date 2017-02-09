@@ -3,7 +3,8 @@ services:
   web:
     build: .
     image: pdxdiver/django-web:latest
-    command: /code/entrypoint.sh
+    command:
+      - /code/docker-entrypoint.sh
     volumes:
       - .:/code
     ports:
@@ -11,4 +12,4 @@ services:
     links:
       - db
   db:
-    image: postgres
+    image: mdillon/postgis
