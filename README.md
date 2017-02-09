@@ -38,7 +38,7 @@ To run the API for the first time:
 
         ## this will create the fire database
 
-        $ docker exec -i erapiv2_db_1 createdb fire --username=postgres
+        $ docker exec -i erapiv2_db_1 createdb fire -T template_postgis --username=postgres
 
 
         ## this will load the data from the dumpfile  
