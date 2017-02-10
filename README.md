@@ -11,36 +11,36 @@ To run the API for the first time:
 
   1. Create the ./bin/env.sh and ./bin/secrets.sh files from templates:
 
-      $ mv ./bin/env-template.sh ./bin/env.sh
+        $ mv ./bin/env-template.sh ./bin/env.sh
 
-      #! /bin/bash
-      # Setup Project Specfics - Environment
-      # Do not upload to github.  Make sure env.sh is in .gitignore
-      # These will need to match your database settings postgres.
-      export DB_NAME=<YOUR_DB>
-      export DB_HOST=<YOUR_HOST>
-      export DB_PORT=<YOUR_PORT>
+        #! /bin/bash
+        # Setup Project Specfics - Environment
+        # Do not upload to github.  Make sure env.sh is in .gitignore
+        # These will need to match your database settings postgres.
+        export DB_NAME=<YOUR_DB>
+        export DB_HOST=<YOUR_HOST>
+        export DB_PORT=<YOUR_PORT>
 
-      # For Hack Oregon:
+        # For Hack Oregon:
 
-      export DB_NAME=fire
-      export DB_HOST=db
-      export DB_PORT=5432
+        export DB_NAME=fire
+        export DB_HOST=db
+        export DB_PORT=5432
 
-      $ mv ./bin/secrets-template.sh ./bin/secrets.sh
+        $ mv ./bin/secrets-template.sh ./bin/secrets.sh
 
-      #! /bin/bash
-      # Setup Project Specfics - Secrets
-      # Do not upload to github.  Make sure secrets.sh is in .gitignore
-      # These will need to match your database settings in postgres.
-      export DB_USER=<YOUR_USER_NAME>
-      export DB_USER_PASS=<YOUR_DB_PASSWORD>
+        #! /bin/bash
+        # Setup Project Specfics - Secrets
+        # Do not upload to github.  Make sure secrets.sh is in .gitignore
+        # These will need to match your database settings in postgres.
+        export DB_USER=<YOUR_USER_NAME>
+        export DB_USER_PASS=<YOUR_DB_PASSWORD>
 
-      # contact team member for login info for the docker container or build it from source [here](https://github.com/BrianHGrant/hacko-er-postgis-docker) to run locally with user created username/password
+        # contact team member for login info for the docker container or build it from source [here](https://github.com/BrianHGrant/hacko-er-postgis-docker) to run locally with user created username/password
 
   2. cd into the root folder of this repo and run:  
 
-      $ docker-compose up
+        $ docker-compose up
 
       * You will most likely see an error during this process about the db refusing connections, this is do to boot order, and can be ignored.
   3. Allow process to run, will take a few minutes the first time as it needs to build the fresh image.
@@ -72,20 +72,20 @@ To run the API for the first time:
 
 ## Existing API endpoints
 
-"agencies": "http://localhost:8000/agencies/",
-"alarmlevels": "http://localhost:8000/alarmlevels/",
-"censustracts": "http://localhost:8000/censustracts/",
-"fireblocks": "http://localhost:8000/fireblocks/",
-"typenaturecodes": "http://localhost:8000/typenaturecodes/",
-"stations": "http://localhost:8000/stations/",
-"firestations": "http://localhost:8000/firestations/",
-"fmas": "http://localhost:8000/fmas/",
-"mutualaid": "http://localhost:8000/mutualaid/",
-"responderunits": "http://localhost:8000/responderunits/",
-"incsitfoundclass": "http://localhost:8000/incsitfoundclass/",
-"incsitfoundsub": "http://localhost:8000/incsitfoundsub/",
-"incsitfound": "http://localhost:8000/incsitfound/",
-"incidents": "http://localhost:8000/incidents/"
+    "agencies": "http://localhost:8000/agencies/",  
+    "alarmlevels": "http://localhost:8000/alarmlevels/",  
+    "censustracts": "http://localhost:8000/censustracts/",  
+    "fireblocks": "http://localhost:8000/fireblocks/",  
+    "typenaturecodes": "http://localhost:8000/typenaturecodes/",  
+    "stations": "http://localhost:8000/stations/",  
+    "firestations": "http://localhost:8000/firestations/",  
+    "fmas": "http://localhost:8000/fmas/",  
+    "mutualaid": "http://localhost:8000/mutualaid/",  
+    "responderunits": "http://localhost:8000/responderunits/",  
+    "incsitfoundclass": "http://localhost:8000/incsitfoundclass/",  
+    "incsitfoundsub": "http://localhost:8000/incsitfoundsub/",  
+    "incsitfound": "http://localhost:8000/incsitfound/",   
+    "incidents": "http://localhost:8000/incidents/"  
 
 ## Pagination
 
@@ -101,9 +101,9 @@ Provided the correct dependencies and versions are installed one should be able 
 To Run:
 
   1. You will still need to download and save the dumpfile as directed.
-  2. Setup the database, user, and import the data. Commands should be similar to above, removing docker syntax and using your postgres admin account:
+  2. Setup the database, user, and import the data. Commands should be similar to above, removing docker syntax and using your postgres admin account:  
 
-      ie:
+  ie:  
 
       $ createuser eruser --username=<YOURNAME>  
       $ createdb fire --username=<YOURNAME>  
@@ -115,8 +115,8 @@ To Run:
 
   4. Migrate the database:
 
-      $ python manage.py migrate  
+        $ python manage.py migrate  
 
   5. Run the server:
 
-      $ gunicorn emergency_response_api.wsgi:application -b :8000  
+        $ gunicorn emergency_response_api.wsgi:application -b :8000  
