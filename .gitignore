@@ -1,7 +1,7 @@
-/postgresql/data
-
 *.pyc
 *.pyo
 
 __pycache__/
 *.py[cod]
+**/secrets.sh
+**/env.sh

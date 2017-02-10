@@ -1,8 +1,10 @@
 version: '2'
 services:
+    db:
+      image: brianhgrant/ho-emergency_db:latest
   web:
     build: .
-    image: pdxdiver/django-web:latest
+    image: brianhgrant/django-web:latest
     command:
       - /code/docker-entrypoint.sh
     volumes:
@@ -11,5 +13,3 @@ services:
       - "8000:8000"
     links:
       - db
-  db:
-    image: mdillon/postgis
