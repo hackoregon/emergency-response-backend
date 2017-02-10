@@ -1,53 +1,51 @@
 # emergency-response
 Simulations, Models, and Visualizations of Portland Fire and Rescue data
 
-## _IMPORTANT_
+## Docker:
 
-Before running, you must download the [fire_db_2010](https://drive.google.com/file/d/0B7k-dMOX1R5WOWpTZDdhMFBMUW8/view?usp=sharing) database file from the Hack Oregon Emergency Response shared drive.  
-
-Save it to postgresql/data/ (will need to create folder) within this repo.
-
-## DB Info:
-to log into the DB use:
-
-DB name: fire
-
-username: eruser
-
-password: fire
-
-
-_BUT_ I set it up so you don't have to enter the password, just hit 'ok' if you are asked for a password in pgadmin.
-
+This API is built user Docker containers for the api and database. The easiest option to run is with [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/) installed. If you would like to run natively see these [steps](#native). Any development work should be made with Docker.
 
 ## To Setup:
 
 To run the API for the first time:
 
-  1. Save the database file as discussed above.
+  1. Create the ./bin/env.sh and ./bin/secrets.sh files from templates:
+
+      $ mv ./bin/env-template.sh ./bin/env.sh
+
+      #! /bin/bash
+      # Setup Project Specfics - Environment
+      # Do not upload to github.  Make sure env.sh is in .gitignore
+      # These will need to match your database settings postgres.
+      export DB_NAME=<YOUR_DB>
+      export DB_HOST=<YOUR_HOST>
+      export DB_PORT=<YOUR_PORT>
+
+      # For Hack Oregon:
+
+      export DB_NAME=fire
+      export DB_HOST=db
+      export DB_PORT=5432
+
+      $ mv ./bin/secrets-template.sh ./bin/secrets.sh
+
+      #! /bin/bash
+      # Setup Project Specfics - Secrets
+      # Do not upload to github.  Make sure secrets.sh is in .gitignore
+      # These will need to match your database settings in postgres.
+      export DB_USER=<YOUR_USER_NAME>
+      export DB_USER_PASS=<YOUR_DB_PASSWORD>
+
+      # contact team member for login info for the docker container or build it from source [here](https://github.com/BrianHGrant/hacko-er-postgis-docker) to run locally with user created username/password
+
   2. cd into the root folder of this repo and run:  
+
       $ docker-compose up
+
+      * You will most likely see an error during this process about the db refusing connections, this is do to boot order, and can be ignored.
   3. Allow process to run, will take a few minutes the first time as it needs to build the fresh image.
-  4. When completed you most likely will be confronted with an error about unable to find or connect to database.
-  5. CTRL-C to stop the docker container.
-  6. To configure postgres user and database and load data run the following commands in order:  
 
-        ## this command will create the eruser  
-
-        $ docker exec -i erapiv2_db_1 createuser eruser --username=postgres  
-
-        ## this will create the fire database
-
-        $ docker exec -i erapiv2_db_1 createdb fire --username=postgres
-
-
-        ## this will load the data from the dumpfile  
-
-        $ docker exec -i erapiv2_db_1 psql --username=postgres fire < postgresql/data/fire_db_2010  
-
-  7. Run docker-compose up again to start api.
-
-  8. Access the api at:
+  4. Access the api at:
 
         $ http://localhost:8000/<endpoint>
 
@@ -91,6 +89,34 @@ To run the API for the first time:
 
 ## Pagination
 
-    '/incidents' pagination currently set to 10
+    Pagination currently set to 10
     ## To select page:
-    'http://localhost:4546/incidents?page=NUM'
+    'http://localhost:4546/<endpoint>?page=NUM'
+
+
+## Native
+
+Provided the correct dependencies and versions are installed one should be able to run api outside of Docker.  
+
+To Run:
+
+  1. You will still need to download and save the dumpfile as directed.
+  2. Setup the database, user, and import the data. Commands should be similar to above, removing docker syntax and using your postgres admin account:
+
+      ie:
+
+      $ createuser eruser --username=<YOURNAME>  
+      $ createdb fire --username=<YOURNAME>  
+      $ psql --username=<YOURNAME> fire < postgresql/data/fire_db_2010  
+
+      * You will get some errors unless you have a user named postgres. This should not effect the usability of the api.  
+
+  3. Alter /emergency_response_api/emergency_response_api/settings.py to match you postgres settings
+
+  4. Migrate the database:
+
+      $ python manage.py migrate  
+
+  5. Run the server:
+
+      $ gunicorn emergency_response_api.wsgi:application -b :8000  

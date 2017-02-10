@@ -83,9 +83,9 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': os.environ.get('DB_NAME', ''),
         'USER': os.environ.get('DB_USER', ''),
-        'PASSWORD': os.environ.get('DB_USER_PASS', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', ''),
-        'PORT': os.environ.get('DB_PORT', ''),,
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -130,5 +130,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/code/static')
-STATIC_URL = '/code/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+STATIC_URL = '/static/'

@@ -1,8 +1,6 @@
 #!/bin/bash
-
-
-source ./code/bin/secrets.sh
-source ./code/bin/env.sh
+source /code/secrets.sh
+source /code/env.sh
 
 python manage.py collectstatic --noinput
 python manage.py migrate --noinput

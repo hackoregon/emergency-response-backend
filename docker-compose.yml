@@ -1,7 +1,7 @@
 version: '2'
 services:
-    db:
-      image: brianhgrant/ho-emergency_db:latest
+  db:
+    image: brianhgrant/ho_emergency_db:latest
   web:
     build: .
     image: brianhgrant/django-web:latest
