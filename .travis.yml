@@ -1,0 +1,9 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - ./bin/config-ecs-cli.sh
+script:
+  - docker-compose run web python manage.py test
+after_success:
+  - ./bin/docker-push.sh
