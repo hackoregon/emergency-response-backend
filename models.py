@@ -7,8 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
-from django.db import models
-
+from django.contrib.gis.db import models
 
 class Agency(models.Model):
     agency_id = models.IntegerField(primary_key=True)
@@ -44,7 +43,8 @@ class Censustract(models.Model):
     awater = models.FloatField(blank=True, null=True)
     intptlat = models.CharField(max_length=11, blank=True, null=True)
     intptlon = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+    geom = models.MultiPolygonField(srid=0, blank=True, null=True)
+    objects = models.GeoManager()
 
     class Meta:
         managed = False
@@ -66,7 +66,8 @@ class Fireblock(models.Model):
     shape_stle = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     shape_leng = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     shape_area = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+    geom = models.MultiPolygonField(srid=0, blank=True, null=True)
+    objects = models.GeoManager()
 
     class Meta:
         managed = False
@@ -80,7 +81,7 @@ class Firestation(models.Model):
     address = models.CharField(max_length=38, blank=True, null=True)
     city = models.CharField(max_length=28, blank=True, null=True)
     district = models.CharField(max_length=40, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+    geom = models.PointField(srid=0, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -94,7 +95,7 @@ class FMA(models.Model):
     mv_label = models.CharField(max_length=15, blank=True, null=True)
     shape_star = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     shape_stle = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+    geom = models.MultiPolygonField(srid=0, blank=True, null=True)
 
     class Meta:
         managed = False

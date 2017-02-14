@@ -1,7 +1,11 @@
 *.pyc
 *.pyo
-
+*.pem
+.DS_Store
 __pycache__/
 *.py[cod]
+
 **/secrets.sh
 **/env.sh
+**/aws-secrets.sh
+**/aws-env.sh

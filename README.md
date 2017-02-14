@@ -9,9 +9,9 @@ This API is built user Docker containers for the api and database. The easiest o
 
 To run the API for the first time:
 
-  1. Create the ./bin/env.sh and ./bin/secrets.sh files from templates:
+  1. Create the env.sh and secrets.sh files from templates:
 
-        $ mv ./bin/env-template.sh ./bin/env.sh
+        $ mv ./env-template.sh ./env.sh
 
         #! /bin/bash
         # Setup Project Specfics - Environment
@@ -27,7 +27,7 @@ To run the API for the first time:
         export DB_HOST=db
         export DB_PORT=5432
 
-        $ mv ./bin/secrets-template.sh ./bin/secrets.sh
+        $ mv ./secrets-template.sh ./secrets.sh
 
         #! /bin/bash
         # Setup Project Specfics - Secrets
