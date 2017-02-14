@@ -72,6 +72,7 @@ To run the API for the first time:
 
 ## Existing API endpoints
 
+<<<<<<< HEAD
     "agencies": "http://localhost:8000/agencies/",  
     "alarmlevels": "http://localhost:8000/alarmlevels/",  
     "censustracts": "http://localhost:8000/censustracts/",  
