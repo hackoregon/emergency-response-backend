@@ -114,7 +114,7 @@ To Run:
 
   3. Alter /emergency_response_api/emergency_response_api/settings.py to match you postgres settings
 
-  4. Migrate the database:
+  4. Make sure to migrate the database:
 
         $ python manage.py migrate  
 
