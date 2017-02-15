@@ -3,13 +3,12 @@ services:
   web:
     build: .
     image: brianhgrant/django-web:latest
-    command:
-      - /code/docker-entrypoint.sh
+    command: ["/code/wait-for-it.sh", "db:5432", "--", "/code/docker-entrypoint.sh"]
     volumes:
       - .:/code
     ports:
       - "8000:8000"
-    links:
+    depends_on:
       - db
   db:
     image: brianhgrant/ho_emergency_db:latest
