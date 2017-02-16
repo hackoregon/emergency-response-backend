@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import sys
+from . import project_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "put_out_fires"
+SECRET_KEY = project_config.DJANGO_SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,11 +83,11 @@ WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ.get('AWS_DB_NAME', ''),
-        'USER': os.environ.get('AWS_DB_USER', ''),
-        'PASSWORD': os.environ.get('AWS_DB_PASSWORD', ''),
-        'HOST': os.environ.get('AWS_DB_HOST', ''),
-        'PORT': os.environ.get('AWS_DB_PORT'),
+        'NAME': project_config.AWS['NAME'],
+        'HOST': project_config.AWS['HOST'],
+        'USER': project_config.AWS['USER'],
+        'PASSWORD': project_config.AWS['PASSWORD'],
+        'PORT': 5432,
     }
 }
 
@@ -133,16 +134,3 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR + STATIC_URL
-
-
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': os.environ.get('AWS_DB_NAME', ''),
-            'USER': os.environ.get('AWS_DB_USER', ''),
-            'PASSWORD': os.environ.get('AWS_DB_PASSWORD', ''),
-            'HOST': os.environ.get('AWS_DB_HOST', ''),
-            'PORT': os.environ.get('AWS_DB_PORT'),
-        }
-    }

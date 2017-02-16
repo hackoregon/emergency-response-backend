@@ -9,43 +9,25 @@ This API is built user Docker containers for the api and database. The easiest o
 
 To run the API for the first time:
 
-  1. Create the env.sh and secrets.sh files from templates:
+  1. In the /emergency_response_api folder create a file project_config.py. This file is in the .gitignore so will not be committed with repo:
 
-        $ mv ./env-template.sh ./env.sh
+        AWS = {
+                'ENGINE': 'django.contrib.gis.db.backends.postgis',
+                'NAME': '<YOUR_AWS_DB_NAME>',
+                'HOST': '<YOUR_AWS_DB_NAME>',
+                'USER': '<YOUR_AWS_DB_NAME>',
+                'PASSWORD': '<YOUR_AWS_DB_NAME>',
+              }
 
-        #! /bin/bash
-        # Setup Project Specfics - Environment
-        # Do not upload to github.  Make sure env.sh is in .gitignore
-        # These will need to match your database settings postgres.
-        export DB_NAME=<YOUR_DB>
-        export DB_HOST=<YOUR_HOST>
-        export DB_PORT=<YOUR_PORT>
+        DJANGO_SECRET = <YOUR_DJANGO_SECRET>
 
-        # For Hack Oregon:
+  2. From project root run:  
 
-        export DB_NAME=fire
-        export DB_HOST=db
-        export DB_PORT=5432
+        $ docker-compose up  
 
-        $ mv ./secrets-template.sh ./secrets.sh
+  Allow process to run, can take 30-40 minutes the first time as it needs to build the fresh image and install the geospatial libraries.
 
-        #! /bin/bash
-        # Setup Project Specfics - Secrets
-        # Do not upload to github.  Make sure secrets.sh is in .gitignore
-        # These will need to match your database settings in postgres.
-        export DB_USER=<YOUR_USER_NAME>
-        export DB_USER_PASS=<YOUR_DB_PASSWORD>
-
-        # contact team member for login info for the docker container or build it from source [here](https://github.com/BrianHGrant/hacko-er-postgis-docker) to run locally with user created username/password
-
-  2. cd into the root folder of this repo and run:  
-
-        $ docker-compose up
-
-      * You will most likely see an error during this process about the db refusing connections, this is do to boot order, and can be ignored.
-  3. Allow process to run, will take a few minutes the first time as it needs to build the fresh image.
-
-  4. Access the api at:
+  3. Access the api at:
 
         $ http://localhost:8000/<endpoint>
 
@@ -72,7 +54,6 @@ To run the API for the first time:
 
 ## Existing API endpoints
 
-<<<<<<< HEAD
     "agencies": "http://localhost:8000/agencies/",  
     "alarmlevels": "http://localhost:8000/alarmlevels/",  
     "censustracts": "http://localhost:8000/censustracts/",  
@@ -101,23 +82,8 @@ Provided the correct dependencies and versions are installed one should be able 
 
 To Run:
 
-  1. You will still need to download and save the dumpfile as directed.
-  2. Setup the database, user, and import the data. Commands should be similar to above, removing docker syntax and using your postgres admin account:  
+  1. Create the project_config.py file as instructed in the Docker settings.
 
-  ie:  
-
-      $ createuser eruser --username=<YOURNAME>  
-      $ createdb fire --username=<YOURNAME>  
-      $ psql --username=<YOURNAME> fire < postgresql/data/fire_db_2010  
-
-      * You will get some errors unless you have a user named postgres. This should not effect the usability of the api.  
-
-  3. Alter /emergency_response_api/emergency_response_api/settings.py to match you postgres settings
-
-  4. Make sure to migrate the database:
-
-        $ python manage.py migrate  
-
-  5. Run the server:
+  2. Run the server:
 
         $ gunicorn emergency_response_api.wsgi:application -b :8000  
