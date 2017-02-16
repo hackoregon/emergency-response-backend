@@ -8,16 +8,19 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.gis.db import models
 
 
 class Agency(models.Model):
     agency_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    statecode = models.CharField(max_length=4, blank=True, null=True)
+    description = models.CharField(max_length=34)
+    statecode = models.CharField(max_length=4)
 
     class Meta:
         managed = False
         db_table = 'agency'
+
+
 
 class Station(models.Model):
     station_id = models.IntegerField(primary_key=True)
@@ -67,15 +70,13 @@ class FireBlock(models.Model):
     notes = models.CharField(max_length=60, blank=True, null=True)
     of_fma = models.CharField(max_length=26, blank=True, null=True)
     mv_label = models.CharField(max_length=15, blank=True, null=True)
-    shape_star = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    shape_stle = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     shape_leng = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     shape_area = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+    geom = models.MultiPolygonField(srid=4326, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'fireblock'
+        db_table = 'fblocks'
 
 
 class FireStation(models.Model):

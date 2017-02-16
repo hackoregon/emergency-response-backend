@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_gis import serializers
 from data.models import Incident, Agency, AlarmLevel, CensusTract, FireBlock, TypeNatureCode, Station, FireStation, FMA, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
@@ -26,9 +27,10 @@ class CensusTractSerializer(serializers.ModelSerializer):
         model = CensusTract
         fields = ('gid', 'statefp', 'countyfp', 'tractce', 'blkgrpce', 'geoid', 'namelsad', 'mtfcc', 'funcstat', 'aland', 'awater', 'intptlat', 'intptlon', 'geom')
 
-class FireBlockSerializer(serializers.ModelSerializer):
+class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = FireBlock
+        geo_field = "geom"
         fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'shape_leng', 'shape_area', 'geom')
 
 class FireStationSerializer(serializers.ModelSerializer):

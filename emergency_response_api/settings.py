@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import sys
+from . import project_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zcwlqvs++&nv!qc@rj+108ak)1qrp)y+_3&w_y#qqsb%w!u_ys'
+SECRET_KEY = project_config.DJANGO_SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,11 +83,11 @@ WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ.get('DB_NAME', ''),
-        'USER': os.environ.get('DB_USER', ''),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', ''),
-        'PORT': os.environ.get('DB_PORT'),
+        'NAME': project_config.AWS['NAME'],
+        'HOST': project_config.AWS['HOST'],
+        'USER': project_config.AWS['USER'],
+        'PASSWORD': project_config.AWS['PASSWORD'],
+        'PORT': 5432,
     }
 }
 
@@ -131,18 +132,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/code/static')
-STATIC_URL = '/code/static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR + STATIC_URL
 
 
 if 'test' in sys.argv:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': 'fire',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
-            'HOST': 'db',
+            'NAME': project_config.TEST['NAME'],
+            'HOST': project_config.TEST['HOST'],
+            'USER': project_config.TEST['USER'],
+            'PASSWORD': project_config.TEST['PASSWORD'],
             'PORT': 5432,
         }
     }

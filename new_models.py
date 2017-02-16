@@ -66,11 +66,11 @@ class Fireblock(models.Model):
     shape_stle = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     shape_leng = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     shape_area = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    geom = models.MultiPolygonField(srid=0, blank=True, null=True)
+    geom = models.MultiPolygonField(srid=4326, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'fireblock'
+        db_table = 'fblocks'
 
 
 class Firestation(models.Model):

@@ -1,4 +1,4 @@
 #! /bin/bash
-source ./env.sh
-source ./secrets.sh
+# source ./env.sh
+# source ./secrets.sh
 docker-compose up

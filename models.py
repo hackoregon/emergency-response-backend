@@ -62,17 +62,16 @@ class Fireblock(models.Model):
     notes = models.CharField(max_length=60, blank=True, null=True)
     of_fma = models.CharField(max_length=26, blank=True, null=True)
     mv_label = models.CharField(max_length=15, blank=True, null=True)
-    shape_star = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    shape_stle = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    shape_leng = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    shape_area = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    geom = models.MultiPolygonField(srid=0, blank=True, null=True)
+    shape_star = models.FileField
+    shape_stle = models.FileField
+    shape_leng = models.FileField
+    shape_area = models.FileField
+    geom = models.MultiPolygonField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
     class Meta:
         managed = False
-        db_table = 'fireblock'
-
+        db_table = 'fblocks'
 
 class Firestation(models.Model):
     gid = models.AutoField(primary_key=True)
