@@ -25,7 +25,7 @@ To run the API for the first time:
 
         $ docker-compose up  
 
-  Allow process to run, can take 30-40 minutes the first time as it needs to build the fresh image and install the geospatial libraries.
+  Allow process to run, can take 20-30 minutes the first time as it needs to build the fresh image and install the geospatial libraries.
 
   3. Access the api at:
 
