@@ -10,4 +10,4 @@ __pycache__/
 **/aws-secrets.sh
 **/aws-env.sh
 **/project_config.py
-**/.env
+**/.env.sh
