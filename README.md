@@ -1,5 +1,5 @@
 # emergency-response
-Simulations, Models, and Visualizations of Portland Fire and Rescue data
+This repo represents the backend development work for the Emeregency Response Team of Hack Oregon 2016-17 Project Season.
 
 ## Docker:
 
