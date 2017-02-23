@@ -20,8 +20,6 @@ class Agency(models.Model):
         managed = False
         db_table = 'agency'
 
-
-
 class Station(models.Model):
     station_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=50, blank=True, null=True)
@@ -32,14 +30,14 @@ class Station(models.Model):
 
 class AlarmLevel(models.Model):
     alarmlevel_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    id_911 = models.CharField(max_length=1, blank=True, null=True)
+    description = models.IntegerField()
+    id_911 = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'alarmlevel'
 
-class CensusTract(models.Model):
+class CensusBlock(models.Model):
     gid = models.AutoField(primary_key=True)
     statefp = models.CharField(max_length=2, blank=True, null=True)
     countyfp = models.CharField(max_length=3, blank=True, null=True)
@@ -53,11 +51,154 @@ class CensusTract(models.Model):
     awater = models.FloatField(blank=True, null=True)
     intptlat = models.CharField(max_length=11, blank=True, null=True)
     intptlon = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
+    geom = models.MultiPolygonField(srid=4269, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'censustract'
+        db_table = 'ceblocks'
+
+class CensusHouseholdIncome(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    estimate_total = models.IntegerField()
+    total_less_than_10000 = models.IntegerField()
+    total_10000_to_14999 = models.IntegerField()
+    total_15000_to_19999 = models.IntegerField()
+    total_20000_to_24999 = models.IntegerField()
+    total_25000_to_29999 = models.IntegerField()
+    total_30000_to_34999 = models.IntegerField()
+    total_35000_to_39999 = models.IntegerField()
+    total_40000_to_44999 = models.IntegerField()
+    total_45000_to_49999 = models.IntegerField()
+    total_50000_to_59999 = models.IntegerField()
+    total_60000_to_74999 = models.IntegerField()
+    total_75000_to_99999 = models.IntegerField()
+    total_100000_to_124999 = models.IntegerField()
+    total_125000_to_149999 = models.IntegerField()
+    total_150000_to_199999 = models.IntegerField()
+    total_200000_or_more = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_household_income'
+
+class CensusHouseholdLanguage(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    estimate_total = models.IntegerField()
+    english_only = models.IntegerField()
+    spanish_total = models.IntegerField()
+    spanish_lesh = models.IntegerField()
+    spanish_notlesh = models.IntegerField()
+    other_indo_euro_total = models.IntegerField()
+    other_indo_euro_lesh = models.IntegerField()
+    other_indo_euro_notlesh = models.IntegerField()
+    asian_pacific_island_total = models.IntegerField()
+    asian_pacific_island_lesh = models.IntegerField()
+    asian_pacific_island_notlesh = models.IntegerField()
+    other_total = models.IntegerField()
+    other_lesh = models.IntegerField()
+    other_notlesh = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_household_language'
+
+
+class CensusHousehold65Plus(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    totals = models.IntegerField()
+    oneplus_people_65plus = models.IntegerField()
+    one_or_more_people_65plus_1_person = models.IntegerField()
+    oneplus_people_65plus_2plus_person = models.IntegerField()
+    oneplus_people_65plus_2plus_person_family = models.IntegerField()
+    oneplus_people_65plus_2plus_person_nonfamily = models.IntegerField()
+    no_people_65plus = models.IntegerField()
+    no_people_65plus_1_person = models.IntegerField()
+    no_people_65plus_2plus_person = models.IntegerField()
+    no_people_65plus_2plus_person_family = models.IntegerField()
+    no_people_65plus_2plus_person_nonfamily = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_households_65plus'
+
+
+class CensusHousingTenure(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    estimate_total_households = models.IntegerField()
+    estimate_total_owner_occupied = models.IntegerField()
+    estimate_total_renter_occupied = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_housing_tenure'
+
+
+class CensusMedianHouseholdIncome(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    estimate_median_household_income = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_median_household_income'
+
+
+class CensusRace(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    total = models.IntegerField()
+    white_alone = models.IntegerField()
+    black_alone = models.IntegerField()
+    american_indian_alaska_native_alone = models.IntegerField()
+    asian_alone = models.IntegerField()
+    native_hawaiian_pacific_islander_alone = models.IntegerField()
+    some_other_alone = models.IntegerField()
+    two_or_more_races = models.IntegerField()
+    two_or_more_some_other = models.IntegerField()
+    two_or_more_excluding_some_other_three_or_more_races = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_race'
+
+
+class CensusTotalPopulation(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    estimate_total = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_total_population'
+
+class FcbProportion(models.Model):
+    c_block = models.CharField(max_length=12, blank=True, null=True)
+    fire_block = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    overlap_cbg = models.FloatField(blank=True, null=True)
+    overlap_fb = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'fcb_proportion'
+
+class FmaShape(models.Model):
+    fma = models.CharField(max_length=2, primary_key=True)
+    geom = models.GeometryField(srid=0, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'fma_shapes'
 
 class FireBlock(models.Model):
     gid = models.AutoField(primary_key=True)
@@ -77,34 +218,6 @@ class FireBlock(models.Model):
     class Meta:
         managed = False
         db_table = 'fblocks'
-
-
-class FireStation(models.Model):
-    gid = models.AutoField(primary_key=True)
-    objectid = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-    station = models.CharField(max_length=6, blank=True, null=True)
-    address = models.CharField(max_length=38, blank=True, null=True)
-    city = models.CharField(max_length=28, blank=True, null=True)
-    district = models.CharField(max_length=40, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
-
-    class Meta:
-        managed = False
-        db_table = 'firestation'
-
-
-class FMA(models.Model):
-    gid = models.AutoField(primary_key=True)
-    objectid = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-    fma = models.CharField(max_length=26, blank=True, null=True)
-    mv_label = models.CharField(max_length=15, blank=True, null=True)
-    shape_star = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    shape_stle = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    geom = models.TextField(blank=True, null=True)  # This field type is a guess.
-
-    class Meta:
-        managed = False
-        db_table = 'fma'
 
 class TypeNatureCode(models.Model):
     typenaturecode_id = models.IntegerField(primary_key=True)
@@ -182,7 +295,7 @@ class Incident(models.Model):
     typenaturecode = models.ForeignKey('Typenaturecode', models.DO_NOTHING, blank=True, null=True)
     foundsituation = models.IntegerField(blank=True, null=True)
     incsitfoundprm = models.ForeignKey('Incsitfound', models.DO_NOTHING, blank=True, null=True)
-    alarmlevel = models.ForeignKey(AlarmLevel, models.DO_NOTHING, blank=True, null=True)
+    alarmlevel = models.ForeignKey('AlarmLevel', models.DO_NOTHING, blank=True, null=True)
     mutualaid = models.ForeignKey('Mutualaid', models.DO_NOTHING, blank=True, null=True)
     callreceived_id = models.IntegerField(blank=True, null=True)
     censustract = models.CharField(max_length=6, blank=True, null=True)

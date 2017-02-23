@@ -3,12 +3,11 @@ djangorestframework==3.3.2
 django-filter
 django-rest-swagger
 djangorestframework-gis
+django-extensions
+
 psycopg2
 requests
-
-
 sniffer
-django-extensions
 coverage
 responses
 mock

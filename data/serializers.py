@@ -1,76 +1,115 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from data.models import Incident, Agency, AlarmLevel, CensusTract, FireBlock, TypeNatureCode, Station, FireStation, FMA, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeNatureCode
-        fields = ('typenaturecode_id', 'description', 'id_911', 'category', 'nemsis' )
+        fields = '__all__'
 
 class AgencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Agency
-        fields = ('agency_id', 'description', 'statecode')
+        fields = '__all__'
 
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ('station_id', 'description')
+        fields = '__all__'
 
 class AlarmLevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlarmLevel
-        fields = ('alarmlevel_id', 'description', 'id_911')
-
-class CensusTractSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusTract
-        fields = ('gid', 'statefp', 'countyfp', 'tractce', 'blkgrpce', 'geoid', 'namelsad', 'mtfcc', 'funcstat', 'aland', 'awater', 'intptlat', 'intptlon', 'geom')
+        fields = '__all__'
 
 class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = FireBlock
         geo_field = "geom"
-        fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'shape_leng', 'shape_area', 'geom')
-
-class FireStationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FireStation
-        fields = ('gid', 'objectid', 'station', 'address', 'city', 'district', 'geom', )
-
-class FMASerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FMA
-        fields = ('gid', 'objectid', 'fma', 'mv_label', 'geom')
-
-# 'shape_star', 'shape_stle',
+        fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'geom')
 
 class MutualAidSerializer(serializers.ModelSerializer):
     class Meta:
         model = MutualAid
-        fields = ('mutualaid_id', 'description', 'inactive', 'nfirs')
+        fields = '__all__'
 
 class ResponderUnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResponderUnit
-        fields = ('responderunit_id', 'description', 'id_911', 'station', 'translateto', 'agency', 'process', 'versaterm')
+        fields = '__all__'
 
 class IncsitFoundClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = IncsitFoundClass
-        fields = ('incsitfoundclass_id', 'description', 'sortorder')
+        fields = '__all__'
 
 class IncsitFoundSubSerializer(serializers.ModelSerializer):
     class Meta:
         model = IncsitFoundSub
-        fields = ('incsitfoundsub_id', 'incsitfoundclass', 'description', 'sortorder')
+        fields = '__all__'
 
 class IncsitFoundSerializer(serializers.ModelSerializer):
     class Meta:
         model = IncsitFound
-        fields = ('incsitfound_id', 'incsitfoundsub', 'description', 'statecode', 'sortorder', 'inactive', 'nfirs')
+        fields = '__all__'
 
 class IncidentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Incident
-        fields = ('incident_id', 'responderunit', 'deptrespond_id', 'runnumber', 'incdate', 'typenaturecode', 'foundsituation', 'incsitfoundprm', 'alarmlevel', 'mutualaid', 'callreceived_id', 'censustract', 'fmarespcomp', 'career', 'engresp', 'aaresp', 'medresp', 'othervehiclesresp', 'firstonscene', 'quad', 'streettype', 'streetname', 'quad2', 'streetname2', 'streettype2', 'city', 'state', 'zip', 'neighborassoc', 'fireblock')
+        fields = '__all__'
+
+class CensusBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusBlock
+        fields = '__all__'
+
+class CensusHouseholdIncomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusHouseholdIncome
+        fields = '__all__'
+
+class CensusHouseholdLanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusHouseholdLanguage
+        fields = '__all__'
+
+class CensusHousehold65PlusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusHousehold65Plus
+        fields = '__all__'
+
+class CensusHousingTenureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusHousingTenure
+        fields = '__all__'
+
+class CensusMedianHouseholdIncomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusMedianHouseholdIncome
+        fields = '__all__'
+
+class CensusRaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusRace
+        fields = '__all__'
+
+class CensusTotalPopulationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusTotalPopulation
+        fields = '__all__'
+
+class FcbProportionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FcbProportion
+        fields = '__all__'
+
+class FmaShapeSerializer(serializers.GeoFeatureModelSerializer):
+    class Meta:
+        model = FmaShape
+        geo_field = "geom"
+        fields = '__all__'
+
+class TimeDescSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeDesc
+        fields = '__all__'
