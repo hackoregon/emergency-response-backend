@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc
-from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, CensusBlockSerializer, CensusHouseholdIncomeSerializer, CensusHouseholdLanguageSerializer, CensusHousehold65PlusSerializer, CensusHousingTenureSerializer, CensusMedianHouseholdIncomeSerializer, CensusRaceSerializer, CensusTotalPopulationSerializer, FcbProportionSerializer, FmaShapeSerializer, TimeDescSerializer
+from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc, CensusEducationalAttainment
+from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, CensusBlockSerializer, CensusHouseholdIncomeSerializer, CensusHouseholdLanguageSerializer, CensusHousehold65PlusSerializer, CensusHousingTenureSerializer, CensusMedianHouseholdIncomeSerializer, CensusRaceSerializer, CensusTotalPopulationSerializer, FcbProportionSerializer, FmaShapeSerializer, TimeDescSerializer, CensusEducationalAttainmentSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
@@ -102,6 +102,14 @@ class CensusBlockViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = CensusBlock.objects.all()
     serializer_class = CensusBlockSerializer
+
+class CensusEducationalAttainmentViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusEducationalAttainment.objects.all()
+    serializer_class = CensusEducationalAttainmentSerializer
 
 class CensusHouseholdIncomeViewSet(viewsets.ReadOnlyModelViewSet):
     """

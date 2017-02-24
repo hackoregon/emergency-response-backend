@@ -1,5 +1,5 @@
 class CensusEducationalAttainment(models.Model):
-    id = models.CharField(max_length=21)
+    id = models.CharField(max_length=21, primary_key=True)
     id2 = models.BigIntegerField()
     geography = models.CharField(max_length=60)
     total = models.IntegerField()

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc, CensusEducationalAttainment
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -112,4 +112,9 @@ class FmaShapeSerializer(serializers.GeoFeatureModelSerializer):
 class TimeDescSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeDesc
+        fields = '__all__'
+
+class CensusEducationalAttainmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CensusEducationalAttainment
         fields = '__all__'
