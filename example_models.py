@@ -1,62 +1,3 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
-from __future__ import unicode_literals
-
-from django.db import models
-from django.contrib.gis.db import models
-
-
-class Agency(models.Model):
-    agency_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=34)
-    statecode = models.CharField(max_length=4)
-
-    class Meta:
-        managed = False
-        db_table = 'agency'
-
-class Station(models.Model):
-    station_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'station'
-
-class AlarmLevel(models.Model):
-    alarmlevel_id = models.IntegerField(primary_key=True)
-    description = models.IntegerField()
-    id_911 = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'alarmlevel'
-
-class CensusBlock(models.Model):
-    gid = models.AutoField(primary_key=True)
-    statefp = models.CharField(max_length=2, blank=True, null=True)
-    countyfp = models.CharField(max_length=3, blank=True, null=True)
-    tractce = models.CharField(max_length=6, blank=True, null=True)
-    blkgrpce = models.CharField(max_length=1, blank=True, null=True)
-    geoid = models.CharField(max_length=12, blank=True, null=True)
-    namelsad = models.CharField(max_length=13, blank=True, null=True)
-    mtfcc = models.CharField(max_length=5, blank=True, null=True)
-    funcstat = models.CharField(max_length=1, blank=True, null=True)
-    aland = models.FloatField(blank=True, null=True)
-    awater = models.FloatField(blank=True, null=True)
-    intptlat = models.CharField(max_length=11, blank=True, null=True)
-    intptlon = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.MultiPolygonField(srid=4269, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'ceblocks'
-
 class CensusEducationalAttainment(models.Model):
     id = models.CharField(max_length=21, primary_key=True)
     id2 = models.BigIntegerField()
@@ -91,8 +32,62 @@ class CensusEducationalAttainment(models.Model):
         managed = False
         db_table = 'census_educational_attainment'
 
+
+class CensusFoodStamps(models.Model):
+    id = models.CharField(max_length=21)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    total = models.IntegerField()
+    hh_rec_fs = models.IntegerField()
+    hh_rec_fs_omo_w_disability = models.IntegerField()
+    hh_rec_fs_no_disability = models.IntegerField()
+    hh_dn_rec_fs = models.IntegerField()
+    hh_dn_rec_fs_omo_w_disability = models.IntegerField()
+    hh_dn_rec_fs_no_disability = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_food_stamps'
+
+
+class CensusGeographicalMobility(models.Model):
+    id = models.CharField(max_length=21)
+    id2 = models.BigIntegerField()
+    geography = models.CharField(max_length=60)
+    total = models.IntegerField()
+    same_house_one_yr = models.IntegerField()
+    diff_house_us_one_yr = models.IntegerField()
+    diff_house_us_one_yr_same_metro = models.IntegerField()
+    diff_house_us_one_yr_same_metro_moved_fr_principal_city = models.IntegerField()
+    diff_house_us_one_yr_same_metro_moved_fr_rem_metro = models.IntegerField()
+    diff_house_us_one_yr_diff_metro_field = models.IntegerField(db_column='diff_house_us_one_yr_diff_metro_')  # Field renamed because it ended with '_'.
+    diff_house_us_one_yr_diff_metro_moved_fr_principal_city = models.IntegerField()
+    diff_house_us_one_yr_diff_metro_moved_fr_rem_metro = models.IntegerField()
+    diff_house_us_one_yr_micro_field = models.IntegerField(db_column='diff_house_us_one_yr_micro_')  # Field renamed because it ended with '_'.
+    diff_house_us_one_yr_micro_moved_fr_principal_city = models.IntegerField()
+    diff_house_us_one_yr_micro_moved_fr_rem_micro = models.IntegerField()
+    diff_house_us_one_yr_not_metro_micro = models.IntegerField()
+    abroad_one_yr = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_geographical_mobility'
+
+
+class CensusHealthInsurance(models.Model):
+    id = models.CharField(max_length=21)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    with_health_insurance = models.IntegerField()
+    no_health_insurance = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_health_insurance'
+
+
 class CensusHouseholdIncome(models.Model):
-    id = models.CharField(max_length=21, primary_key=True)
+    id = models.CharField(max_length=21)
     id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     estimate_total = models.IntegerField()
@@ -117,8 +112,9 @@ class CensusHouseholdIncome(models.Model):
         managed = False
         db_table = 'census_household_income'
 
+
 class CensusHouseholdLanguage(models.Model):
-    id = models.CharField(max_length=21, primary_key=True)
+    id = models.CharField(max_length=21)
     id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     estimate_total = models.IntegerField()
@@ -141,8 +137,8 @@ class CensusHouseholdLanguage(models.Model):
         db_table = 'census_household_language'
 
 
-class CensusHousehold65Plus(models.Model):
-    id = models.CharField(max_length=21, primary_key=True)
+class CensusHouseholds65Plus(models.Model):
+    id = models.CharField(max_length=21)
     id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     totals = models.IntegerField()
@@ -163,7 +159,7 @@ class CensusHousehold65Plus(models.Model):
 
 
 class CensusHousingTenure(models.Model):
-    id = models.CharField(max_length=21, primary_key=True)
+    id = models.CharField(max_length=21)
     id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     estimate_total_households = models.IntegerField()
@@ -176,7 +172,7 @@ class CensusHousingTenure(models.Model):
 
 
 class CensusMedianHouseholdIncome(models.Model):
-    id = models.CharField(max_length=21, primary_key=True)
+    id = models.CharField(max_length=21)
     id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     estimate_median_household_income = models.IntegerField()
@@ -186,8 +182,19 @@ class CensusMedianHouseholdIncome(models.Model):
         db_table = 'census_median_household_income'
 
 
+class CensusPovertyStatusIndividuals(models.Model):
+    id = models.CharField(max_length=21)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    estimate_total = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_poverty_status_individuals'
+
+
 class CensusRace(models.Model):
-    id = models.CharField(max_length=21, primary_key=True)
+    id = models.CharField(max_length=21)
     id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     total = models.IntegerField()
@@ -207,7 +214,7 @@ class CensusRace(models.Model):
 
 
 class CensusTotalPopulation(models.Model):
-    id = models.CharField(max_length=21, primary_key=True)
+    id = models.CharField(max_length=21)
     id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     estimate_total = models.IntegerField()
@@ -215,6 +222,29 @@ class CensusTotalPopulation(models.Model):
     class Meta:
         managed = False
         db_table = 'census_total_population'
+
+
+class Fblocks(models.Model):
+    gid = models.AutoField(primary_key=True)
+    objectid_1 = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    objectid = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    fma = models.CharField(max_length=2, blank=True, null=True)
+    resp_zone = models.CharField(max_length=6, blank=True, null=True)
+    jurisdict = models.CharField(max_length=2, blank=True, null=True)
+    dist_grp = models.CharField(max_length=2, blank=True, null=True)
+    notes = models.CharField(max_length=60, blank=True, null=True)
+    of_fma = models.CharField(max_length=26, blank=True, null=True)
+    mv_label = models.CharField(max_length=15, blank=True, null=True)
+    shape_star = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    shape_stle = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    shape_leng = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    shape_area = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    geom = models.MultiPolygonField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'fblocks'
+
 
 class FcbProportion(models.Model):
     c_block = models.CharField(max_length=12, blank=True, null=True)
@@ -226,110 +256,37 @@ class FcbProportion(models.Model):
         managed = False
         db_table = 'fcb_proportion'
 
-class FmaShape(models.Model):
-    fma = models.CharField(max_length=2, primary_key=True)
+
+class FmaShapes(models.Model):
+    fma = models.CharField(max_length=2, blank=True, null=True)
     geom = models.GeometryField(srid=0, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'fma_shapes'
 
-class FireBlock(models.Model):
-    gid = models.AutoField(primary_key=True)
-    objectid_1 = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-    objectid = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+
+class FmacProportion(models.Model):
+    c_block = models.CharField(max_length=12, blank=True, null=True)
     fma = models.CharField(max_length=2, blank=True, null=True)
-    resp_zone = models.CharField(max_length=6, blank=True, null=True)
-    jurisdict = models.CharField(max_length=2, blank=True, null=True)
-    dist_grp = models.CharField(max_length=2, blank=True, null=True)
-    notes = models.CharField(max_length=60, blank=True, null=True)
-    of_fma = models.CharField(max_length=26, blank=True, null=True)
-    mv_label = models.CharField(max_length=15, blank=True, null=True)
-    shape_leng = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    shape_area = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    geom = models.MultiPolygonField(srid=4326, blank=True, null=True)
+    overlap_cbg = models.FloatField(blank=True, null=True)
+    overlap_fma = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'fblocks'
+        db_table = 'fmac_proportion'
 
-class TypeNatureCode(models.Model):
-    typenaturecode_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    id_911 = models.CharField(max_length=8, blank=True, null=True)
-    category = models.IntegerField(blank=True, null=True)
-    nemsis = models.CharField(max_length=4, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'typenaturecode'
-
-class MutualAid(models.Model):
-    mutualaid_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    inactive = models.IntegerField(blank=True, null=True)
-    nfirs = models.CharField(max_length=3, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'mutualaid'
-
-class ResponderUnit(models.Model):
-    responderunit_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    id_911 = models.CharField(max_length=6, blank=True, null=True)
-    station = models.ForeignKey(Station, on_delete=models.CASCADE, blank=True, null=True)
-    translateto = models.CharField(max_length=50, blank=True, null=True)
-    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, blank=True, null=True)
-    process = models.IntegerField(blank=True, null=True)
-    versaterm = models.CharField(max_length=10, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'responderunit'
-
-class IncsitFoundClass(models.Model):
-    incsitfoundclass_id = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    sortorder = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'incsitfoundclass'
-
-class IncsitFoundSub(models.Model):
-    incsitfoundsub_id = models.IntegerField(primary_key=True)
-    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, blank=True, null=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    sortorder = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'incsitfoundsub'
-
-class IncsitFound(models.Model):
-    incsitfound_id = models.IntegerField(primary_key=True)
-    incsitfoundsub = models.ForeignKey(IncsitFoundSub, on_delete=models.CASCADE, blank=True, null=True)
-    description = models.CharField(max_length=50, blank=True, null=True)
-    statecode = models.CharField(max_length=3, blank=True, null=True)
-    sortorder = models.IntegerField(blank=True, null=True)
-    inactive = models.IntegerField(blank=True, null=True)
-    nfirs = models.CharField(max_length=3, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'incsitfound'
 
 class Incident(models.Model):
     incident_id = models.IntegerField(primary_key=True)
-    responderunit = models.ForeignKey(ResponderUnit, on_delete=models.CASCADE, blank=True, null=True)
+    responderunit_id = models.IntegerField(blank=True, null=True)
     deptrespond_id = models.IntegerField(blank=True, null=True)
     runnumber = models.CharField(max_length=20, blank=True, null=True)
     incdate = models.DateField(blank=True, null=True)
     typenaturecode = models.ForeignKey('Typenaturecode', models.DO_NOTHING, blank=True, null=True)
     foundsituation = models.IntegerField(blank=True, null=True)
     incsitfoundprm = models.ForeignKey('Incsitfound', models.DO_NOTHING, blank=True, null=True)
-    alarmlevel = models.ForeignKey('AlarmLevel', models.DO_NOTHING, blank=True, null=True)
+    alarmlevel = models.ForeignKey(Alarmlevel, models.DO_NOTHING, blank=True, null=True)
     mutualaid = models.ForeignKey('Mutualaid', models.DO_NOTHING, blank=True, null=True)
     callreceived_id = models.IntegerField(blank=True, null=True)
     censustract = models.CharField(max_length=6, blank=True, null=True)
@@ -356,7 +313,124 @@ class Incident(models.Model):
         managed = False
         db_table = 'incident'
 
-class TimeDesc(models.Model):
+
+class Incsitfound(models.Model):
+    incsitfound_id = models.IntegerField(primary_key=True)
+    incsitfoundsub = models.ForeignKey('Incsitfoundsub', models.DO_NOTHING, blank=True, null=True)
+    description = models.CharField(max_length=50, blank=True, null=True)
+    statecode = models.IntegerField(blank=True, null=True)
+    sortorder = models.IntegerField(blank=True, null=True)
+    inactive = models.IntegerField(blank=True, null=True)
+    nfirs = models.CharField(max_length=3, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'incsitfound'
+
+
+class Incsitfoundclass(models.Model):
+    incsitfoundclass_id = models.IntegerField(primary_key=True)
+    description = models.CharField(max_length=42)
+    sortorder = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'incsitfoundclass'
+
+
+class Incsitfoundsub(models.Model):
+    incsitfoundsub_id = models.IntegerField(primary_key=True)
+    incsitfoundclass = models.ForeignKey(Incsitfoundclass, models.DO_NOTHING, blank=True, null=True)
+    description = models.CharField(max_length=50, blank=True, null=True)
+    sortorder = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'incsitfoundsub'
+
+
+class Inctimes(models.Model):
+    inctimes_id = models.IntegerField(primary_key=True)
+    timedesc = models.ForeignKey('Timedesc', models.DO_NOTHING, blank=True, null=True)
+    incident = models.ForeignKey('Responder', models.DO_NOTHING, blank=True, null=True)
+    responder_id = models.IntegerField(blank=True, null=True)
+    realtime = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'inctimes'
+
+
+class Mutualaid(models.Model):
+    mutualaid_id = models.IntegerField(primary_key=True)
+    description = models.CharField(max_length=19, blank=True, null=True)
+    inactive = models.CharField(max_length=32, blank=True, null=True)
+    nfirs = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mutualaid'
+
+
+class OrHolidays(models.Model):
+    date = models.DateField()
+    holiday = models.CharField(max_length=27)
+
+    class Meta:
+        managed = False
+        db_table = 'or_holidays'
+
+
+class Responder(models.Model):
+    incident_id = models.IntegerField()
+    responder_id = models.IntegerField()
+    responderunit = models.ForeignKey('Responderunit', models.DO_NOTHING, blank=True, null=True)
+    codetosc = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'responder'
+        unique_together = (('incident_id', 'responder_id'),)
+
+
+class Responderunit(models.Model):
+    responderunit_id = models.IntegerField(primary_key=True)
+    description = models.CharField(max_length=6, blank=True, null=True)
+    id_911 = models.CharField(max_length=6, blank=True, null=True)
+    station = models.ForeignKey('Station', models.DO_NOTHING, blank=True, null=True)
+    translateto = models.CharField(max_length=4, blank=True, null=True)
+    agency = models.ForeignKey(Agency, models.DO_NOTHING, blank=True, null=True)
+    process = models.IntegerField(blank=True, null=True)
+    versaterm = models.CharField(max_length=6, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'responderunit'
+
+
+class Situationfound(models.Model):
+    situationfound_id = models.IntegerField(primary_key=True)
+    description = models.CharField(max_length=50, blank=True, null=True)
+    review = models.IntegerField(blank=True, null=True)
+    inactive = models.IntegerField(blank=True, null=True)
+    nemsis = models.IntegerField(blank=True, null=True)
+    e09_15 = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'situationfound'
+
+
+class Station(models.Model):
+    station_id = models.IntegerField(primary_key=True)
+    description = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'station'
+
+
+class Timedesc(models.Model):
     timedesc_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=50, blank=True, null=True)
     id_911 = models.CharField(max_length=6, blank=True, null=True)
@@ -365,47 +439,35 @@ class TimeDesc(models.Model):
         managed = False
         db_table = 'timedesc'
 
-class Responder(models.Model):
-    incident_id = models.IntegerField()
-    responder_id = models.IntegerField()
-    responderunit_id = models.ForeignKey(ResponderUnit, on_delete=models.CASCADE, blank=True, null=True)
-    codetosc = models.IntegerField(blank=True, null=True)
+
+class Tl201641Bg(models.Model):
+    gid = models.AutoField(primary_key=True)
+    statefp = models.CharField(max_length=2, blank=True, null=True)
+    countyfp = models.CharField(max_length=3, blank=True, null=True)
+    tractce = models.CharField(max_length=6, blank=True, null=True)
+    blkgrpce = models.CharField(max_length=1, blank=True, null=True)
+    geoid = models.CharField(max_length=12, blank=True, null=True)
+    namelsad = models.CharField(max_length=13, blank=True, null=True)
+    mtfcc = models.CharField(max_length=5, blank=True, null=True)
+    funcstat = models.CharField(max_length=1, blank=True, null=True)
+    aland = models.FloatField(blank=True, null=True)
+    awater = models.FloatField(blank=True, null=True)
+    intptlat = models.CharField(max_length=11, blank=True, null=True)
+    intptlon = models.CharField(max_length=12, blank=True, null=True)
+    geom = models.MultiPolygonField(srid=0, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'responder'
-        unique_together = (('incident_id', 'responder_id'),)
+        db_table = 'tl_2016_41_bg'
 
-class IncTimes(models.Model):
-    inctimes_id = models.IntegerField(primary_key=True)
-    timedesc_id = models.ForeignKey(TimeDesc, on_delete=models.CASCADE, blank=True, null=True)
-    incident_id = models.ForeignKey(Incident, on_delete=models.CASCADE, blank=True, null=True)
-    responder_id = models.ForeignKey(Responder, on_delete=models.CASCADE, blank=True, null=True)
-    realtime = models.DateTimeField(blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'inctimes'
-
-class SituationFound(models.Model):
-    situationfound_id = models.IntegerField(primary_key=True)
+class Typenaturecode(models.Model):
+    typenaturecode_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=50, blank=True, null=True)
-    review = models.IntegerField(blank=True, null=True)
-    inactive = models.IntegerField(blank=True, null=True)
-    nemsis = models.CharField(max_length=10, blank=True, null=True)
-    e09_15 = models.CharField(max_length=10, blank=True, null=True)
+    id_911 = models.CharField(max_length=15, blank=True, null=True)
+    category = models.IntegerField(blank=True, null=True)
+    nemsis = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'situationfound'
-
-class SpatialRefSys(models.Model):
-    srid = models.IntegerField(primary_key=True)
-    auth_name = models.CharField(max_length=256, blank=True, null=True)
-    auth_srid = models.IntegerField(blank=True, null=True)
-    srtext = models.CharField(max_length=2048, blank=True, null=True)
-    proj4text = models.CharField(max_length=2048, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'spatial_ref_sys'
+        db_table = 'typenaturecode'

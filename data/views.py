@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from data.models import Agency, AlarmLevel, CensusTract, FireBlock, TypeNatureCode, Station, FireStation, FMA, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock
-from data.serializers import AgencySerializer, AlarmLevelSerializer, CensusTractSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, FireStationSerializer, FMASerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer
+from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc, CensusEducationalAttainment
+from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, CensusBlockSerializer, CensusHouseholdIncomeSerializer, CensusHouseholdLanguageSerializer, CensusHousehold65PlusSerializer, CensusHousingTenureSerializer, CensusMedianHouseholdIncomeSerializer, CensusRaceSerializer, CensusTotalPopulationSerializer, FcbProportionSerializer, FmaShapeSerializer, TimeDescSerializer, CensusEducationalAttainmentSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
@@ -22,14 +22,6 @@ class AlarmLevelViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = AlarmLevel.objects.all()
     serializer_class = AlarmLevelSerializer
-
-class CensusTractViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    This viewset will provide 'list' and 'detail' actions.
-    """
-
-    queryset = CensusTract.objects.all()
-    serializer_class = CensusTractSerializer
 
 class FireBlockViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -54,22 +46,6 @@ class StationViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Station.objects.all()
     serializer_class = StationSerializer
-
-class FireStationViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    This viewset will provide 'list' and 'detail' actions.
-    """
-
-    queryset = FireStation.objects.all()
-    serializer_class = FireStationSerializer
-
-class FMAViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    This viewset will provide 'list' and 'detail' actions.
-    """
-
-    queryset = FMA.objects.all()
-    serializer_class = FMASerializer
 
 class MutualAidViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -119,13 +95,98 @@ class IncidentViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
-# @api_view(['GET'])
-# def incident_list(request, format=None):
-#
-#     if request.method == 'GET':
-#         paginator = PageNumberPagination()
-#         paginator.page_size = 10
-#         incidents = Incident.objects.all()
-#         result_page = paginator.paginate_queryset(incidents, request)
-#         serializedIncidents = IncidentSerializer(result_page, many=True)
-#         return paginator.get_paginated_response(serializedIncidents.data)
+class CensusBlockViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusBlock.objects.all()
+    serializer_class = CensusBlockSerializer
+
+class CensusEducationalAttainmentViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusEducationalAttainment.objects.all()
+    serializer_class = CensusEducationalAttainmentSerializer
+
+class CensusHouseholdIncomeViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusHouseholdIncome.objects.all()
+    serializer_class = CensusHouseholdIncomeSerializer
+
+class CensusHouseholdLanguageViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusHouseholdLanguage.objects.all()
+    serializer_class = CensusHouseholdLanguageSerializer
+
+class CensusHousehold65PlusViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusHousehold65Plus.objects.all()
+    serializer_class = CensusHousehold65PlusSerializer
+
+class CensusHousingTenureViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusHousingTenure.objects.all()
+    serializer_class = CensusHousingTenureSerializer
+
+class CensusMedianHouseholdIncomeViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusMedianHouseholdIncome.objects.all()
+    serializer_class = CensusMedianHouseholdIncomeSerializer
+
+class CensusRaceViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusRace.objects.all()
+    serializer_class = CensusRaceSerializer
+
+class CensusTotalPopulationViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = CensusTotalPopulation.objects.all()
+    serializer_class = CensusTotalPopulationSerializer
+
+class FcbProportionViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = FcbProportion.objects.all()
+    serializer_class = FcbProportionSerializer
+
+class FmaShapeViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = FmaShape.objects.all()
+    serializer_class = FmaShapeSerializer
+
+class TimeDescViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = TimeDesc.objects.all()
+    serializer_class = TimeDescSerializer
