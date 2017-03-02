@@ -5,12 +5,7 @@
 __pycache__/
 *.py[cod]
 
-**/secrets.sh
-**/env.sh
-**/aws-secrets.sh
-**/aws-env.sh
 **/project_config.py
-**/.env.sh
 venv3
 cover
 static/

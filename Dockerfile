@@ -14,6 +14,9 @@ RUN cd gdal-1.11.0; ./configure; make; make install
 RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/
+RUN pip install --upgrade --user awscli
 RUN pip install -r requirements.txt
+RUN python
 ADD . /code/
-chmod +x ./bin/
+COPY ./docker-entrypoint.sh /
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
