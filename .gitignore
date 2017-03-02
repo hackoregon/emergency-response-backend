@@ -11,3 +11,6 @@ __pycache__/
 **/aws-env.sh
 **/project_config.py
 **/.env.sh
+venv3
+cover
+static/

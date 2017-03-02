@@ -48,6 +48,7 @@ router.register(r'timedescription', views.TimeDescViewSet)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    # url(r'^swagger/', views.schema_view)
 ]
 
 urlpatterns += staticfiles_urlpatterns()

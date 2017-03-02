@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django_nose',
     'rest_framework',
     'rest_framework_gis',
+    'rest_framework_swagger',
     'data.apps.DataConfig',
 ]
 
@@ -95,6 +97,9 @@ DATABASES = {
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': [
+        'url_filter.integrations.drf.DjangoFilterBackend',
+    ]
 }
 
 
@@ -135,3 +140,13 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+# testing setup
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# auto includes these command line args that are run with nose
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=homelessApp',
+    '--cover-html'
+]

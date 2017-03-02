@@ -1,19 +1,35 @@
-from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework import status, viewsets, generics
+from rest_framework.decorators import api_view, detail_route
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.pagination import PageNumberPagination
+from django.http import Http404
+from rest_framework_gis.filterset import GeoFilterSet
+from rest_framework_gis import filters
+import django_filters
 from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc, CensusEducationalAttainment
 from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, CensusBlockSerializer, CensusHouseholdIncomeSerializer, CensusHouseholdLanguageSerializer, CensusHousehold65PlusSerializer, CensusHousingTenureSerializer, CensusMedianHouseholdIncomeSerializer, CensusRaceSerializer, CensusTotalPopulationSerializer, FcbProportionSerializer, FmaShapeSerializer, TimeDescSerializer, CensusEducationalAttainmentSerializer
-from rest_framework.pagination import PageNumberPagination
-from rest_framework import viewsets
-from rest_framework.decorators import detail_route
+
 
 class AgencyViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide 'list' and 'detail' actions.
+    ---
+        parameters:
+            - name: 'agency_id'
+              description: 'The agency's id (primary key)'
+              required: true
+              type: integer
+            - name: 'description'
+              description: 'The name of agency'
+              required: false
+              type: string
+
     """
 
     queryset = Agency.objects.all()
     serializer_class = AgencySerializer
+    filter_fields = ['agency_id', 'description', 'statecode']
 
 class AlarmLevelViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -22,6 +38,7 @@ class AlarmLevelViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = AlarmLevel.objects.all()
     serializer_class = AlarmLevelSerializer
+    filter_fields = '__all__'
 
 class FireBlockViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -31,6 +48,16 @@ class FireBlockViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = FireBlock.objects.all()
     serializer_class = FireBlockSerializer
 
+
+
+# class FireBlockFilter(GeoFilterSet):
+#     contains_point = filters.GeometryFilter(name='geom', lookup_type='contains')
+#     filter_overrides = {}
+#
+#     class Meta:
+#         model = FireBlock
+#         fields = ['contains_point',]
+
 class TypeNatureCodeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide 'list' and 'detail' actions.
@@ -38,6 +65,7 @@ class TypeNatureCodeViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = TypeNatureCode.objects.all()
     serializer_class = TypeNatureCodeSerializer
+    filter_fields = '__all__'
 
 class StationViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -46,6 +74,7 @@ class StationViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Station.objects.all()
     serializer_class = StationSerializer
+    filter_fields = '__all__'
 
 class MutualAidViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -54,6 +83,7 @@ class MutualAidViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = MutualAid.objects.all()
     serializer_class = MutualAidSerializer
+    filter_fields = '__all__'
 
 class ResponderUnitViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -62,6 +92,7 @@ class ResponderUnitViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = ResponderUnit.objects.all()
     serializer_class = ResponderUnitSerializer
+    filter_fields = '__all__'
 
 class IncsitFoundClassViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -70,6 +101,7 @@ class IncsitFoundClassViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = IncsitFoundClass.objects.all()
     serializer_class = IncsitFoundClassSerializer
+    filter_fields = '__all__'
 
 class IncsitFoundSubViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -78,6 +110,7 @@ class IncsitFoundSubViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = IncsitFoundSub.objects.all()
     serializer_class = IncsitFoundSubSerializer
+    filter_fields = '__all__'
 
 class IncsitFoundViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -94,6 +127,7 @@ class IncidentViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
+    filter_fields = ['incdate', 'fmarespcomp', 'fireblock']
 
 class CensusBlockViewSet(viewsets.ReadOnlyModelViewSet):
     """

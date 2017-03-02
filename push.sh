@@ -1,10 +1,11 @@
 #! /bin/bash
 # Tag, Push and Deploy only if it's not a pull request
 # Comment
-source ./bin/aws-env.sh
-
 if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
-    docker push "$DOCKER_REPO"/"$DOCKER_WEB_IMAGE":latest
-    ecs-cli compose --project-name "$ECS_PROJECT" --file ecs-deploy.yml service up;
+    docker push "$DOCKER_REPO"/"$DOCKER_IMAGE":latest
+    ./bin/ecs-deploy.sh \
+    -n $ECS_SERVICE_NAME \
+    -c $ECS_CLUSTER_NAME \
+    -i "$DOCKER_REPO"/"$DOCKER_IMAGE":latest
 fi
