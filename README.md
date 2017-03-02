@@ -1,5 +1,7 @@
 # emergency-response
-This repo represents the backend development work for the Emergency Response Team of Hack Oregon 2016-17 Project Season.
+This repo represents the backend development work for the Emergency Response Team of Hack Oregon 2016-17 Project Season. It is a work in progress. Yeah!
+
+
 
 ## Docker:
 
