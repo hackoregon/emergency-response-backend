@@ -11,18 +11,33 @@ from django.contrib.gis.geos import Point
 from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FMA, TimeDesc, CensusEducationalAttainment
 from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, CensusBlockSerializer, CensusHouseholdIncomeSerializer, CensusHouseholdLanguageSerializer, CensusHousehold65PlusSerializer, CensusHousingTenureSerializer, CensusMedianHouseholdIncomeSerializer, CensusRaceSerializer, CensusTotalPopulationSerializer, FcbProportionSerializer, FMASerializer, TimeDescSerializer, CensusEducationalAttainmentSerializer
 
-class AgencyViewSet(viewsets.ReadOnlyModelViewSet):
+class AgencyListViewSet(generics.ListAPIView):
     """
-    This viewset will provide 'list' and 'detail' actions.
+    This viewset will provide 'list' action.
     """
 
     queryset = Agency.objects.all()
     serializer_class = AgencySerializer
-    filter_fields = ['agency_id', 'description', 'statecode']
 
-class AlarmLevelViewSet(viewsets.ReadOnlyModelViewSet):
+class AgencyRetrieveViewSet(generics.RetrieveAPIView):
     """
-    This viewset will provide 'list' and 'detail' actions.
+    This viewset will provide the 'detail' action.
+    """
+
+    queryset = Agency.objects.all()
+    serializer_class = AgencySerializer
+
+class AlarmLevelListViewSet(generics.ListAPIView):
+    """
+    This viewset will provide 'list' action.
+    """
+
+    queryset = AlarmLevel.objects.all()
+    serializer_class = AlarmLevelSerializer
+
+class AlarmLevelRetrieveViewSet(generics.RetrieveAPIView):
+    """
+    This viewset will provide 'detail' action.
     """
 
     queryset = AlarmLevel.objects.all()
@@ -58,7 +73,7 @@ class FireBlockGeoFilterViewSet(generics.ListAPIView):
         lon = float(request.GET.get('lon', ' '))
         fireblocks = FireBlock.objects.all
         if lat != ' ' and lon != ' ':
-            pnt = Point(lat, lon, srid=4326)
+            pnt = Point(lon, lat, srid=4326)
             fireblocks = FireBlock.objects.filter(geom__contains=pnt)
             serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized firblock objects
             return Response(serialized_fireblocks.data) #returns to client
@@ -78,7 +93,7 @@ class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
         fireblocks = FireBlock.objects.all
 
         if lat != ' ' and lon != ' ':
-            pnt = Point(lat, lon, srid=4326)
+            pnt = Point(lon, lat, srid=4326)
             fireblocks = FireBlock.objects.filter(geom__contains=pnt)
             fireblockNumber = fireblocks[0].resp_zone
             incidents = Incident.objects.filter(fireblock=fireblockNumber)
@@ -92,9 +107,25 @@ class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
         else:
             return Response(serialized_incidents.data)
 
-class TypeNatureCodeViewSet(viewsets.ReadOnlyModelViewSet):
+class FireBlockRetrieveViewSet(generics.RetrieveAPIView):
     """
-    This viewset will provide 'list' and 'detail' actions.
+    This viewset will provide the 'detail' action.
+    """
+
+    queryset = FireBlock.objects.all()
+    serializer_class = FireBlockSerializer
+
+class TypeNatureCodeListViewSet(generics.ListAPIView):
+    """
+    This viewset will provide the 'list' action.
+    """
+
+    queryset = TypeNatureCode.objects.all()
+    serializer_class = TypeNatureCodeSerializer
+
+class TypeNatureCodeRetrieveViewSet(generics.RetrieveAPIView):
+    """
+    This viewset will provide the 'retrieve' action.
     """
 
     queryset = TypeNatureCode.objects.all()
@@ -164,7 +195,15 @@ class IncidentListViewSet(generics.ListAPIView):
         else:
             return Response(IncidentSerializer(Incident.objects.all(),many=True).data) # if no keys, returns unfiltered list of incidents
 
-class IncidentViewSet(viewsets.ReadOnlyModelViewSet):
+class IncidentRetrieveViewSet(generics.RetrieveAPIView):
+    """
+    This viewset will provide the 'detail' action.
+    """
+
+    queryset = Incident.objects.all()
+    serializer_class = IncidentSerializer
+
+class IncidentCountViewSet(generics.ListAPIView):
     """
     This viewset will provide 'list' and 'detail' actions.
     """
@@ -282,7 +321,7 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
         lon = float(request.GET.get('lon', ' '))
         fmas = FMA.objects.all
         if lat != ' ' and lon != ' ':
-            pnt = Point(lat, lon, srid=4326)
+            pnt = Point(lon, lat, srid=4326)
             fmas = FMA.objects.filter(geom__contains=pnt)
             serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
             return Response(serialized_fmas.data) #returns to client
@@ -302,7 +341,7 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
         fmas = FMA.objects.all
 
         if lat != ' ' and lon != ' ':
-            pnt = Point(lat, lon, srid=4326)
+            pnt = Point(lon, lat, srid=4326)
             fmas = FMA.objects.filter(geom__contains=pnt)
             fmaNumber = fmas[0].fma
             incidents = Incident.objects.filter(fmarespcomp=fmaNumber)

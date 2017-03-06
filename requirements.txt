@@ -6,7 +6,6 @@ django-nose==1.4.4
 django-rest-swagger==2.1.1
 djangorestframework==3.5.3
 django-filter
-django-url-filter==0.3.0
 djangorestframework-gis
 django-extensions
 django-crispy-forms

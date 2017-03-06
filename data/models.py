@@ -91,6 +91,22 @@ class CensusEducationalAttainment(models.Model):
         managed = False
         db_table = 'census_educational_attainment'
 
+class CensusFoodStamps(models.Model):
+    id = models.CharField(max_length=21, primary_key=True)
+    id2 = models.CharField(max_length=12)
+    geography = models.CharField(max_length=60)
+    total = models.IntegerField()
+    hh_rec_fs = models.IntegerField()
+    hh_rec_fs_omo_w_disability = models.IntegerField()
+    hh_rec_fs_no_disability = models.IntegerField()
+    hh_dn_rec_fs = models.IntegerField()
+    hh_dn_rec_fs_omo_w_disability = models.IntegerField()
+    hh_dn_rec_fs_no_disability = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'census_food_stamps'
+
 class CensusHouseholdIncome(models.Model):
     id = models.CharField(max_length=21, primary_key=True)
     id2 = models.CharField(max_length=12)
