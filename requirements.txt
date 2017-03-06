@@ -24,3 +24,5 @@ gunicorn
 sniffer
 responses
 mock
+
+django-cors-headers

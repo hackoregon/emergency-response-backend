@@ -46,11 +46,13 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'rest_framework_swagger',
     'data.apps.DataConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -96,10 +98,10 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 50,
     'DEFAULT_FILTER_BACKENDS': [
         'url_filter.integrations.drf.DjangoFilterBackend',
-    ]
+    ],
 }
 
 
@@ -150,3 +152,5 @@ NOSE_ARGS = [
     '--cover-package=homelessApp',
     '--cover-html'
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True

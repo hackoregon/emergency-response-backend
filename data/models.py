@@ -226,9 +226,9 @@ class FcbProportion(models.Model):
         managed = False
         db_table = 'fcb_proportion'
 
-class FmaShape(models.Model):
+class FMA(models.Model):
     fma = models.CharField(max_length=2, primary_key=True)
-    geom = models.GeometryField(srid=0, blank=True, null=True)
+    geom = models.GeometryField(srid=4326, blank=True, null=True)
 
     class Meta:
         managed = False
