@@ -25,20 +25,52 @@ schema_view = get_swagger_view(title='Emergency Response API')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
     url(r'^agencies/$', views.AgencyListViewSet.as_view(), name='agencies'),
     url(r'^agencies/(?P<pk>[0-9]+)/$', views.AgencyRetrieveViewSet.as_view(), name='agencies'),
+
     url(r'^alarmlevels/$', views.AlarmLevelListViewSet.as_view(), name='alarmlevels'),
     url(r'^alarmlevels/(?P<pk>[0-9]+)/$', views.AlarmLevelRetrieveViewSet.as_view(), name='alarmlevels'),
-    url(r'^incidents/$', views.IncidentListViewSet.as_view(), name='incidents'),
-    url(r'^incidents/(?P<pk>[0-9]+)/$', views.IncidentRetrieveViewSet.as_view(), name='incidents'),
-    url(r'^incidents/totals/$', views.IncidentCountViewSet.as_view(), name='incidents/totals'),
+
     url(r'^fireblocks/$', views.FireBlockListViewSet.as_view(), name='fireblocks'),
     url(r'^fireblocks/(?P<pk>[0-9]+)/$', views.FireBlockRetrieveViewSet.as_view(), name='fireblocks'),
     url(r'^fireblock/$', views.FireBlockGeoFilterViewSet.as_view(), name='fireblock'),
     url(r'^fireblock/incidents/$', views.FireBlockIncidentsFilterViewSet.as_view(), name='fireblock/incidents'),
+
     url(r'^fmas/$', views.FMAListViewSet.as_view(), name='fmas'),
     url(r'^fma/$', views.FMAGeoFilterViewSet.as_view(), name='fma'),
     url(r'^fma/incidents/$', views.FMAIncidentsFilterViewSet.as_view(), name='fma/incidents'),
+
+    url(r'^incidents/$', views.IncidentListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/(?P<pk>[0-9]+)/$', views.IncidentRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/totals/$', views.IncidentCountViewSet.as_view(), name='incidents/totals'),
+    url(r'^incidents/foundclass/$', views.IncsitFoundClassListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/foundclass/(?P<pk>[0-9]+)/$', views.IncsitFoundClassRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/foundclass_sub/$', views.IncsitFoundSubListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/foundclass_sub/(?P<pk>[0-9]+)/$', views.IncsitFoundSubRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/found/$', views.IncsitFoundListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/found/(?P<pk>[0-9]+)/$', views.IncsitFoundRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/times/$', views.IncidentTimesListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/times/(?P<pk>[0-9]+)/$', views.IncidentTimesRetrieveViewSet.as_view(), name='incidents'),
+
+    url(r'^mutualaid/$', views.MutualAidListViewSet.as_view(), name='mutualaid'),
+    url(r'^mutualaid/(?P<pk>[0-9]+)/$', views.MutualAidRetrieveViewSet.as_view(), name='mutualaid'),
+
+    url(r'^responders/$', views.ResponderListViewSet.as_view(), name='responders'),
+    url(r'^responders/(?P<pk>[0-9]+)/$', views.ResponderRetrieveViewSet.as_view(), name='responders'),
+
+    url(r'^responderunits/$', views.ResponderUnitListViewSet.as_view(), name='responderunits'),
+    url(r'^responderunits/(?P<pk>[0-9]+)/$', views.ResponderUnitRetrieveViewSet.as_view(), name='responderunits'),
+
+    url(r'^stations/$', views.StationListViewSet.as_view(), name='stations'),
+    url(r'^stations/(?P<pk>[0-9]+)/$', views.StationRetrieveViewSet.as_view(), name='stations'),
+
+    url(r'^timedescriptions/$', views.TimeDescListViewSet.as_view(), name='timedescriptions'),
+    url(r'^timedescriptions/(?P<pk>[0-9]+)/$', views.TimeDescRetrieveViewSet.as_view(), name='timedescriptions'),
+
+    url(r'^typenaturecodes/$', views.TypeNatureCodeListViewSet.as_view(), name='typenaturecodes'),
+    url(r'^typenaturecodes/(?P<pk>[0-9]+)/$', views.TypeNatureCodeRetrieveViewSet.as_view(), name='typenaturecodes'),
+
     url(r'^$', schema_view)
 ]
 

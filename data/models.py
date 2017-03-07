@@ -10,7 +10,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.gis.db import models
 
-
 class Agency(models.Model):
     agency_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=34)
@@ -59,7 +58,7 @@ class CensusBlock(models.Model):
 
 class CensusEducationalAttainment(models.Model):
     id = models.CharField(max_length=21, primary_key=True)
-    id2 = models.BigIntegerField()
+    id2 = models.CharField(max_length=12)
     geography = models.CharField(max_length=60)
     total = models.IntegerField()
     no_school_completed = models.IntegerField()
@@ -272,9 +271,9 @@ class FireBlock(models.Model):
 class TypeNatureCode(models.Model):
     typenaturecode_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=50, blank=True, null=True)
-    id_911 = models.CharField(max_length=8, blank=True, null=True)
+    id_911 = models.CharField(max_length=15, blank=True, null=True)
     category = models.IntegerField(blank=True, null=True)
-    nemsis = models.CharField(max_length=4, blank=True, null=True)
+    nemsis = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -382,21 +381,23 @@ class TimeDesc(models.Model):
         db_table = 'timedesc'
 
 class Responder(models.Model):
-    incident_id = models.IntegerField()
+    incident_id = models.IntegerField(primary_key=True)
     responder_id = models.IntegerField()
-    responderunit_id = models.ForeignKey(ResponderUnit, on_delete=models.CASCADE, blank=True, null=True)
+    responderunit = models.ForeignKey('ResponderUnit', models.DO_NOTHING, blank=True, null=True)
     codetosc = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'responder'
-        unique_together = (('incident_id', 'responder_id'),)
+        unique_together = [
+            ('incident_id', 'responder_id'),
+        ]
 
-class IncTimes(models.Model):
+class IncidentTimes(models.Model):
     inctimes_id = models.IntegerField(primary_key=True)
-    timedesc_id = models.ForeignKey(TimeDesc, on_delete=models.CASCADE, blank=True, null=True)
-    incident_id = models.ForeignKey(Incident, on_delete=models.CASCADE, blank=True, null=True)
-    responder_id = models.ForeignKey(Responder, on_delete=models.CASCADE, blank=True, null=True)
+    timedesc = models.ForeignKey('Timedesc', models.DO_NOTHING, blank=True, null=True)
+    incident = models.ForeignKey('Responder', models.DO_NOTHING, blank=True, null=True)
+    responder_id = models.IntegerField(blank=True, null=True)
     realtime = models.DateTimeField(blank=True, null=True)
 
     class Meta:
@@ -414,14 +415,3 @@ class SituationFound(models.Model):
     class Meta:
         managed = False
         db_table = 'situationfound'
-
-class SpatialRefSys(models.Model):
-    srid = models.IntegerField(primary_key=True)
-    auth_name = models.CharField(max_length=256, blank=True, null=True)
-    auth_srid = models.IntegerField(blank=True, null=True)
-    srtext = models.CharField(max_length=2048, blank=True, null=True)
-    proj4text = models.CharField(max_length=2048, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'spatial_ref_sys'
