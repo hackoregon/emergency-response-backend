@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FMA, TimeDesc, CensusEducationalAttainment, Responder, IncidentTimes
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,46 +59,6 @@ class IncidentSerializer(serializers.ModelSerializer):
         model = Incident
         fields = '__all__'
 
-class CensusBlockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusBlock
-        fields = '__all__'
-
-class CensusHouseholdIncomeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusHouseholdIncome
-        fields = '__all__'
-
-class CensusHouseholdLanguageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusHouseholdLanguage
-        fields = '__all__'
-
-class CensusHousehold65PlusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusHousehold65Plus
-        fields = '__all__'
-
-class CensusHousingTenureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusHousingTenure
-        fields = '__all__'
-
-class CensusMedianHouseholdIncomeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusMedianHouseholdIncome
-        fields = '__all__'
-
-class CensusRaceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusRace
-        fields = '__all__'
-
-class CensusTotalPopulationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusTotalPopulation
-        fields = '__all__'
-
 class FcbProportionSerializer(serializers.ModelSerializer):
     class Meta:
         model = FcbProportion
@@ -116,11 +76,6 @@ class TimeDescSerializer(serializers.ModelSerializer):
         model = TimeDesc
         fields = '__all__'
 
-class CensusEducationalAttainmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CensusEducationalAttainment
-        fields = '__all__'
-
 class ResponderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Responder
@@ -129,4 +84,9 @@ class ResponderSerializer(serializers.ModelSerializer):
 class IncidentTimesSerializer(serializers.ModelSerializer):
     class Meta:
         model = IncidentTimes
+        fields = '__all__'
+
+class SituationFoundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SituationFound
         fields = '__all__'
