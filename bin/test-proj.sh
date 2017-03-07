@@ -1,4 +1,3 @@
 #! /bin/bash
-source ./env.sh
-source ./secrets.sh
-docker-compose run web python manage.py test
+source ./bin/env.sh
+docker-compose run emergency-response-service python manage.py test

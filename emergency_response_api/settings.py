@@ -41,14 +41,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django_nose',
     'rest_framework',
     'rest_framework_gis',
+    'rest_framework_swagger',
     'data.apps.DataConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -94,7 +98,7 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 50,
 }
 
 
@@ -135,3 +139,15 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+# testing setup
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# auto includes these command line args that are run with nose
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=homelessApp',
+    '--cover-html'
+]
+
+CORS_ORIGIN_ALLOW_ALL = True

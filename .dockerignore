@@ -3,3 +3,8 @@
 Dockerfile
 .DS_Store
 .gitignore
+env.sh
+project_config.py
+images/
+static/
+staticfiles

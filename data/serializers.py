@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FmaShape, TimeDesc, CensusEducationalAttainment
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FMA, TimeDesc, CensusEducationalAttainment, Responder, IncidentTimes
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +26,7 @@ class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = FireBlock
         geo_field = "geom"
+        auto_bbox = True
         fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'geom')
 
 class MutualAidSerializer(serializers.ModelSerializer):
@@ -103,11 +104,12 @@ class FcbProportionSerializer(serializers.ModelSerializer):
         model = FcbProportion
         fields = '__all__'
 
-class FmaShapeSerializer(serializers.GeoFeatureModelSerializer):
+class FMASerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
-        model = FmaShape
+        model = FMA
         geo_field = "geom"
-        fields = '__all__'
+        auto_bbox = True
+        fields = ('fma', 'geom')
 
 class TimeDescSerializer(serializers.ModelSerializer):
     class Meta:
@@ -117,4 +119,14 @@ class TimeDescSerializer(serializers.ModelSerializer):
 class CensusEducationalAttainmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CensusEducationalAttainment
+        fields = '__all__'
+
+class ResponderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Responder
+        fields = '__all__'
+
+class IncidentTimesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncidentTimes
         fields = '__all__'

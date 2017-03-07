@@ -18,36 +18,60 @@ from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
 from data import views
+from rest_framework_swagger.views import get_swagger_view
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-# Create a router and register our viewsets with it.
-router = DefaultRouter()
-router.register(r'agencies', views.AgencyViewSet)
-router.register(r'alarmlevels', views.AlarmLevelViewSet)
-router.register(r'fireblocks', views.FireBlockViewSet)
-router.register(r'typenaturecodes', views.TypeNatureCodeViewSet)
-router.register(r'stations', views.StationViewSet)
-router.register(r'mutualaid', views.MutualAidViewSet)
-router.register(r'responderunits', views.ResponderUnitViewSet)
-router.register(r'incsitfoundclass', views.IncsitFoundClassViewSet)
-router.register(r'incsitfoundsub', views.IncsitFoundSubViewSet)
-router.register(r'incsitfound', views.IncsitFoundViewSet)
-router.register(r'incidents', views.IncidentViewSet)
-router.register(r'census/blocks', views.CensusBlockViewSet)
-router.register(r'census/householdincomes', views.CensusHouseholdIncomeViewSet)
-router.register(r'census/householdlanguages', views.CensusHouseholdLanguageViewSet)
-router.register(r'census/household65plus', views.CensusHousehold65PlusViewSet)
-router.register(r'census/housingtenure', views.CensusHousingTenureViewSet)
-router.register(r'census/medianhouseholdincome', views.CensusMedianHouseholdIncomeViewSet)
-router.register(r'census/race', views.CensusRaceViewSet)
-router.register(r'census/totalpopulation', views.CensusTotalPopulationViewSet)
-# router.register(r'fcbproportion', views.FcbProportionViewSet)
-# router.register(r'fmashapes', views.FmaShapeViewSet)
-router.register(r'timedescription', views.TimeDescViewSet)
+schema_view = get_swagger_view(title='Emergency Response API')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(router.urls)),
+
+    url(r'^agencies/$', views.AgencyListViewSet.as_view(), name='agencies'),
+    url(r'^agencies/(?P<pk>[0-9]+)/$', views.AgencyRetrieveViewSet.as_view(), name='agencies'),
+
+    url(r'^alarmlevels/$', views.AlarmLevelListViewSet.as_view(), name='alarmlevels'),
+    url(r'^alarmlevels/(?P<pk>[0-9]+)/$', views.AlarmLevelRetrieveViewSet.as_view(), name='alarmlevels'),
+
+    url(r'^fireblocks/$', views.FireBlockListViewSet.as_view(), name='fireblocks'),
+    url(r'^fireblocks/(?P<pk>[0-9]+)/$', views.FireBlockRetrieveViewSet.as_view(), name='fireblocks'),
+    url(r'^fireblock/$', views.FireBlockGeoFilterViewSet.as_view(), name='fireblock'),
+    url(r'^fireblock/incidents/$', views.FireBlockIncidentsFilterViewSet.as_view(), name='fireblock/incidents'),
+
+    url(r'^fmas/$', views.FMAListViewSet.as_view(), name='fmas'),
+    url(r'^fma/$', views.FMAGeoFilterViewSet.as_view(), name='fma'),
+    url(r'^fma/incidents/$', views.FMAIncidentsFilterViewSet.as_view(), name='fma/incidents'),
+
+    url(r'^incidents/$', views.IncidentListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/(?P<pk>[0-9]+)/$', views.IncidentRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/totals/$', views.IncidentCountViewSet.as_view(), name='incidents/totals'),
+    url(r'^incidents/foundclass/$', views.IncsitFoundClassListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/foundclass/(?P<pk>[0-9]+)/$', views.IncsitFoundClassRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/foundclass_sub/$', views.IncsitFoundSubListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/foundclass_sub/(?P<pk>[0-9]+)/$', views.IncsitFoundSubRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/found/$', views.IncsitFoundListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/found/(?P<pk>[0-9]+)/$', views.IncsitFoundRetrieveViewSet.as_view(), name='incidents'),
+    url(r'^incidents/times/$', views.IncidentTimesListViewSet.as_view(), name='incidents'),
+    url(r'^incidents/times/(?P<pk>[0-9]+)/$', views.IncidentTimesRetrieveViewSet.as_view(), name='incidents'),
+
+    url(r'^mutualaid/$', views.MutualAidListViewSet.as_view(), name='mutualaid'),
+    url(r'^mutualaid/(?P<pk>[0-9]+)/$', views.MutualAidRetrieveViewSet.as_view(), name='mutualaid'),
+
+    url(r'^responders/$', views.ResponderListViewSet.as_view(), name='responders'),
+    url(r'^responders/(?P<pk>[0-9]+)/$', views.ResponderRetrieveViewSet.as_view(), name='responders'),
+
+    url(r'^responderunits/$', views.ResponderUnitListViewSet.as_view(), name='responderunits'),
+    url(r'^responderunits/(?P<pk>[0-9]+)/$', views.ResponderUnitRetrieveViewSet.as_view(), name='responderunits'),
+
+    url(r'^stations/$', views.StationListViewSet.as_view(), name='stations'),
+    url(r'^stations/(?P<pk>[0-9]+)/$', views.StationRetrieveViewSet.as_view(), name='stations'),
+
+    url(r'^timedescriptions/$', views.TimeDescListViewSet.as_view(), name='timedescriptions'),
+    url(r'^timedescriptions/(?P<pk>[0-9]+)/$', views.TimeDescRetrieveViewSet.as_view(), name='timedescriptions'),
+
+    url(r'^typenaturecodes/$', views.TypeNatureCodeListViewSet.as_view(), name='typenaturecodes'),
+    url(r'^typenaturecodes/(?P<pk>[0-9]+)/$', views.TypeNatureCodeRetrieveViewSet.as_view(), name='typenaturecodes'),
+
+    url(r'^$', schema_view)
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -1,9 +1,15 @@
 version: '2'
 services:
-  web:
+  emergency-response-service:
+    environment:
+    - PROJ_SETTINGS_DIR=${PROJ_SETTINGS_DIR}
+    - DEPLOY_TARGET=${DEPLOY_TARGET}
+    - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+    - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - CONFIG_BUCKET=${CONFIG_BUCKET}
     build: .
-    image: brianhgrant/django-web:latest
-    command: /code/docker-entrypoint.sh
+    image: "${DOCKER_REPO}/${DOCKER_IMAGE}"
+    command: /code/bin/docker-entrypoint.sh
     volumes:
       - .:/code
     ports:

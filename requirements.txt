@@ -8,6 +8,7 @@ djangorestframework==3.5.3
 django-filter
 djangorestframework-gis
 django-extensions
+django-crispy-forms
 itypes==1.1.0
 nose==1.3.7
 openapi-codec==1.2.1
@@ -22,3 +23,5 @@ gunicorn
 sniffer
 responses
 mock
+
+django-cors-headers
