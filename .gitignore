@@ -9,4 +9,4 @@ __pycache__/
 venv3
 cover
 static/
-env.sh
+**/env.sh
