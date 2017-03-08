@@ -18,6 +18,7 @@ from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
 from data import views
+from census import census_views
 from rest_framework_swagger.views import get_swagger_view
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -31,6 +32,12 @@ urlpatterns = [
 
     url(r'^alarmlevels/$', views.AlarmLevelListViewSet.as_view(), name='alarmlevels'),
     url(r'^alarmlevels/(?P<pk>[0-9]+)/$', views.AlarmLevelRetrieveViewSet.as_view(), name='alarmlevels'),
+
+    url(r'^census/blocks/$', census_views.CensusBlockListViewSet.as_view(), name='census'),
+    url(r'^census/blocks/(?P<pk>[0-9]+)/$', census_views.CensusBlockRetrieveViewSet.as_view(), name='census'),
+    url(r'^census/educationalattainment/$', census_views.CensusEducationalAttainmentListViewSet.as_view(), name='census'),
+    url(r'^census/educationalattainment/(?P<pk>[0-9]+)/$', census_views.CensusEducationalAttainmentRetrieveViewSet.as_view(), name='census'),
+
 
     url(r'^fireblocks/$', views.FireBlockListViewSet.as_view(), name='fireblocks'),
     url(r'^fireblocks/(?P<pk>[0-9]+)/$', views.FireBlockRetrieveViewSet.as_view(), name='fireblocks'),
@@ -64,6 +71,9 @@ urlpatterns = [
 
     url(r'^stations/$', views.StationListViewSet.as_view(), name='stations'),
     url(r'^stations/(?P<pk>[0-9]+)/$', views.StationRetrieveViewSet.as_view(), name='stations'),
+
+    url(r'^situationfound/$', views.SituationFoundListViewSet.as_view(), name='situationfound'),
+    url(r'^situationfound/(?P<pk>[0-9]+)/$', views.SituationFoundRetrieveViewSet.as_view(), name='situationfound'),
 
     url(r'^timedescriptions/$', views.TimeDescListViewSet.as_view(), name='timedescriptions'),
     url(r'^timedescriptions/(?P<pk>[0-9]+)/$', views.TimeDescRetrieveViewSet.as_view(), name='timedescriptions'),

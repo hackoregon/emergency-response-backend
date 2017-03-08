@@ -8,8 +8,8 @@ from rest_framework_gis.filterset import GeoFilterSet
 from rest_framework_gis.filters import GeometryFilter
 from django_filters import filters
 from django.contrib.gis.geos import Point
-from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, CensusBlock, CensusHouseholdIncome, CensusHouseholdLanguage, CensusHousehold65Plus, CensusHousingTenure, CensusMedianHouseholdIncome, CensusRace, CensusTotalPopulation, FcbProportion, FMA, TimeDesc, CensusEducationalAttainment, Responder, IncidentTimes
-from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, CensusBlockSerializer, CensusHouseholdIncomeSerializer, CensusHouseholdLanguageSerializer, CensusHousehold65PlusSerializer, CensusHousingTenureSerializer, CensusMedianHouseholdIncomeSerializer, CensusRaceSerializer, CensusTotalPopulationSerializer, FcbProportionSerializer, FMASerializer, TimeDescSerializer, CensusEducationalAttainmentSerializer, ResponderSerializer, IncidentTimesSerializer
+from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
+from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FcbProportionSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer
 
 class AgencyListViewSet(generics.ListAPIView):
     """
@@ -276,150 +276,6 @@ class IncidentCountViewSet(generics.ListAPIView):
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
-class CensusBlockListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusBlock.objects.all()
-    serializer_class = CensusBlockSerializer
-
-class CensusBlockRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusBlock.objects.all()
-    serializer_class = CensusBlockSerializer
-
-class CensusEducationalListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusEducationalAttainment.objects.all()
-    serializer_class = CensusEducationalAttainmentSerializer
-
-class CensusEducationalRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusEducationalAttainment.objects.all()
-    serializer_class = CensusEducationalAttainmentSerializer
-
-class CensusHouseholdIncomeListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusHouseholdIncome.objects.all()
-    serializer_class = CensusHouseholdIncomeSerializer
-
-class CensusHouseholdIncomeRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusHouseholdIncome.objects.all()
-    serializer_class = CensusHouseholdIncomeSerializer
-
-class CensusHouseholdLanguageListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusHouseholdLanguage.objects.all()
-    serializer_class = CensusHouseholdLanguageSerializer
-
-class CensusHouseholdLanguageRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusHouseholdLanguage.objects.all()
-    serializer_class = CensusHouseholdLanguageSerializer
-
-class CensusHousehold65PlusListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusHousehold65Plus.objects.all()
-    serializer_class = CensusHousehold65PlusSerializer
-
-class CensusHousehold65PlusRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusHousehold65Plus.objects.all()
-    serializer_class = CensusHousehold65PlusSerializer
-
-class CensusHousingTenureListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusHousingTenure.objects.all()
-    serializer_class = CensusHousingTenureSerializer
-
-class CensusHousingTenureRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusHousingTenure.objects.all()
-    serializer_class = CensusHousingTenureSerializer
-
-class CensusMedianHouseholdIncomeListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusMedianHouseholdIncome.objects.all()
-    serializer_class = CensusMedianHouseholdIncomeSerializer
-
-class CensusMedianHouseholdIncomeRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusMedianHouseholdIncome.objects.all()
-    serializer_class = CensusMedianHouseholdIncomeSerializer
-
-class CensusRaceListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusRace.objects.all()
-    serializer_class = CensusRaceSerializer
-
-class CensusRaceListRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusRace.objects.all()
-    serializer_class = CensusRaceSerializer
-
-class CensusTotalPopulationListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = CensusTotalPopulation.objects.all()
-    serializer_class = CensusTotalPopulationSerializer
-
-class CensusTotalPopulationRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = CensusTotalPopulation.objects.all()
-    serializer_class = CensusTotalPopulationSerializer
-
 class FcbProportionListViewSet(generics.ListAPIView):
     """
     This viewset will provide 'list' action.
@@ -528,3 +384,19 @@ class ResponderRetrieveViewSet(generics.RetrieveAPIView):
 
     queryset = Responder.objects.all()
     serializer_class = ResponderSerializer
+
+class SituationFoundListViewSet(generics.ListAPIView):
+    """
+    This viewset will provide 'list' action.
+    """
+
+    queryset = SituationFound.objects.all()
+    serializer_class = SituationFoundSerializer
+
+class SituationFoundRetrieveViewSet(generics.RetrieveAPIView):
+    """
+    This viewset will provide the 'detail' action.
+    """
+
+    queryset = SituationFound.objects.all()
+    serializer_class = SituationFoundSerializer

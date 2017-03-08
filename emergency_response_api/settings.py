@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'rest_framework_swagger',
     'data.apps.DataConfig',
+    'census.apps.CensusConfig',
     'corsheaders',
 ]
 
