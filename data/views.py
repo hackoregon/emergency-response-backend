@@ -96,8 +96,6 @@ class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
             pnt = Point(lon, lat, srid=4326)
             fireblocks = FireBlock.objects.filter(geom__contains=pnt)
             fireblockNumber = fireblocks[0].resp_zone
-            incidents = Incident.objects.filter(fireblock=fireblockNumber)
-            serialized_incidents = IncidentSerializer(incidents, many=True)
             if start_date != ' ' and end_date != ' ':
                 incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fireblock=fireblockNumber)
             else:
@@ -260,6 +258,14 @@ class IncidentTimesListViewSet(generics.ListAPIView):
     queryset = IncidentTimes.objects.all()
     serializer_class = IncidentTimesSerializer
 
+class IncidentTimesTimeListViewSet(generics.ListAPIView):
+    """
+    This viewset will provide 'list' and 'detail' actions.
+    """
+
+    queryset = IncidentTimes.objects.all()
+    serializer_class = IncidentTimesSerializer
+
 class IncidentTimesRetrieveViewSet(generics.RetrieveAPIView):
     """
     This viewset will provide the 'detail' action.
@@ -345,13 +351,22 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
             pnt = Point(lon, lat, srid=4326)
             fmas = FMA.objects.filter(geom__contains=pnt)
             fmaNumber = fmas[0].fma
-            incidents = Incident.objects.filter(fmarespcomp=fmaNumber)
             if start_date != ' ' and end_date != ' ':
                 incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fmarespcomp=fmaNumber)
+            else:
+                incidents = Incident.objects.filter(fmarespcomp=fmaNumber)
             serialized_incidents = IncidentSerializer(incidents, many=True)
             return Response(serialized_incidents.data)
         else:
             return Response(serialized_incidents.data)
+
+class FMARetrieveViewSet(generics.RetrieveAPIView):
+    """
+    This viewset will provide the 'detail' action.
+    """
+
+    queryset = FMA.objects.all()
+    serializer_class = FMASerializer
 
 class TimeDescListViewSet(generics.ListAPIView):
     """

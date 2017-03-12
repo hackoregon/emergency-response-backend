@@ -58,7 +58,7 @@ class FireBlock(models.Model):
     gid = models.AutoField(primary_key=True)
     objectid_1 = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
     objectid = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-    fma = models.CharField(max_length=2, blank=True, null=True)
+    fma = models.ForeignKey(FMA, on_delete=models.CASCADE, blank=True, null=True, related_name='fireblocks', db_column="fma")
     resp_zone = models.CharField(max_length=6, blank=True, null=True)
     jurisdict = models.CharField(max_length=2, blank=True, null=True)
     dist_grp = models.CharField(max_length=2, blank=True, null=True)
@@ -98,9 +98,9 @@ class ResponderUnit(models.Model):
     responderunit_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=50, blank=True, null=True)
     id_911 = models.CharField(max_length=6, blank=True, null=True)
-    station = models.ForeignKey(Station, on_delete=models.CASCADE, blank=True, null=True)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE, blank=True, null=True, related_name='responderunits')
     translateto = models.CharField(max_length=50, blank=True, null=True)
-    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, blank=True, null=True)
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, blank=True, null=True, related_name='responderunits')
     process = models.IntegerField(blank=True, null=True)
     versaterm = models.CharField(max_length=10, blank=True, null=True)
 
@@ -119,7 +119,7 @@ class IncsitFoundClass(models.Model):
 
 class IncsitFoundSub(models.Model):
     incsitfoundsub_id = models.IntegerField(primary_key=True)
-    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, blank=True, null=True)
+    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, blank=True, null=True, related_name="incsitfoundsubs")
     description = models.CharField(max_length=50, blank=True, null=True)
     sortorder = models.IntegerField(blank=True, null=True)
 
@@ -129,7 +129,7 @@ class IncsitFoundSub(models.Model):
 
 class IncsitFound(models.Model):
     incsitfound_id = models.IntegerField(primary_key=True)
-    incsitfoundsub = models.ForeignKey(IncsitFoundSub, on_delete=models.CASCADE, blank=True, null=True)
+    incsitfoundsub = models.ForeignKey(IncsitFoundSub, on_delete=models.CASCADE, blank=True, null=True, related_name="incsitfounds")
     description = models.CharField(max_length=50, blank=True, null=True)
     statecode = models.CharField(max_length=3, blank=True, null=True)
     sortorder = models.IntegerField(blank=True, null=True)

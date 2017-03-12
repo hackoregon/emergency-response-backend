@@ -7,16 +7,6 @@ class TypeNatureCodeSerializer(serializers.ModelSerializer):
         model = TypeNatureCode
         fields = '__all__'
 
-class AgencySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Agency
-        fields = '__all__'
-
-class StationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Station
-        fields = '__all__'
-
 class AlarmLevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlarmLevel
@@ -29,6 +19,21 @@ class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
         auto_bbox = True
         fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'geom')
 
+class FMAFireBlockSerializer(serializers.GeoFeatureModelSerializer):
+    class Meta:
+        model = FireBlock
+        geo_field = "geom"
+        auto_bbox = True
+        fields = ('gid', 'objectid_1', 'objectid', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'mv_label')
+
+class FMASerializer(serializers.GeoFeatureModelSerializer):
+    fireblocks = FMAFireBlockSerializer(many=True)
+    class Meta:
+        model = FMA
+        geo_field = "geom"
+        auto_bbox = True
+        fields = ('fma', 'geom', 'fireblocks')
+
 class MutualAidSerializer(serializers.ModelSerializer):
     class Meta:
         model = MutualAid
@@ -39,17 +44,37 @@ class ResponderUnitSerializer(serializers.ModelSerializer):
         model = ResponderUnit
         fields = '__all__'
 
-class IncsitFoundClassSerializer(serializers.ModelSerializer):
+class ForeignResponderUnitSerializer(serializers.ModelSerializer):
     class Meta:
-        model = IncsitFoundClass
-        fields = '__all__'
+        model = ResponderUnit
+        fields = ('responderunit_id', 'description', 'id_911', 'translateto', 'agency', 'process', 'versaterm')
+
+class StationSerializer(serializers.ModelSerializer):
+    responderunits = ForeignResponderUnitSerializer(many=True)
+    class Meta:
+        model = Station
+        fields = ('station_id', 'description', 'responderunits')
+        depth = 2
+
+class AgencySerializer(serializers.ModelSerializer):
+    responderunits = ForeignResponderUnitSerializer(many=True)
+    class Meta:
+        model = Agency
+        fields = ('agency_id', 'description', 'statecode', 'responderunits')
 
 class IncsitFoundSubSerializer(serializers.ModelSerializer):
     class Meta:
         model = IncsitFoundSub
         fields = '__all__'
 
+class IncsitFoundClassSerializer(serializers.ModelSerializer):
+    incsitfoundsubs = IncsitFoundSubSerializer(many=True)
+    class Meta:
+        model = IncsitFoundClass
+        fields = ('incsitfoundclass_id', 'description', 'sortorder', 'incsitfoundsubs')
+
 class IncsitFoundSerializer(serializers.ModelSerializer):
+    incsitfoundclasses = IncsitFoundClassSerializer(many=True)
     class Meta:
         model = IncsitFound
         fields = '__all__'
@@ -63,13 +88,6 @@ class FcbProportionSerializer(serializers.ModelSerializer):
     class Meta:
         model = FcbProportion
         fields = '__all__'
-
-class FMASerializer(serializers.GeoFeatureModelSerializer):
-    class Meta:
-        model = FMA
-        geo_field = "geom"
-        auto_bbox = True
-        fields = ('fma', 'geom')
 
 class TimeDescSerializer(serializers.ModelSerializer):
     class Meta:

@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^fireblock/incidents/$', views.FireBlockIncidentsFilterViewSet.as_view(), name='fireblock/incidents'),
 
     url(r'^fmas/$', views.FMAListViewSet.as_view(), name='fmas'),
+    url(r'^fmas/(?P<pk>[0-9]+)/$', views.FMARetrieveViewSet.as_view(), name='fmas'),
     url(r'^fma/$', views.FMAGeoFilterViewSet.as_view(), name='fma'),
     url(r'^fma/incidents/$', views.FMAIncidentsFilterViewSet.as_view(), name='fma/incidents'),
 
