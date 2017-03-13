@@ -10,6 +10,17 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.gis.db import models
 
+class AddressGeocode(models.Model):
+    rating = models.IntegerField(primary_key=True)
+    lon = models.DecimalField(max_digits=13, decimal_places=10)
+    lat = models.DecimalField(max_digits=13, decimal_places=10)
+    stno = models.CharField(max_length=100)
+    street = models.CharField(max_length=100)
+    styp =  models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    st = models.CharField(max_length=100)
+    zip = models.CharField(max_length=10, blank=True, null=True)
+
 class Agency(models.Model):
     agency_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=34)

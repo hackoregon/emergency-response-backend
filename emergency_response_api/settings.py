@@ -94,6 +94,14 @@ DATABASES = {
         'USER': project_config.AWS['USER'],
         'PASSWORD': project_config.AWS['PASSWORD'],
         'PORT': 5432,
+    },
+    'geocoder': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': project_config.GEOCODE['NAME'],
+        'HOST': project_config.GEOCODE['HOST'],
+        'USER': project_config.GEOCODE['USER'],
+        'PASSWORD': project_config.GEOCODE['PASSWORD'],
+        'PORT': 5432,
     }
 }
 

@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, AddressGeocode
+
+class AddressGeocodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AddressGeocode
+        fields = '__all__'
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
     class Meta:

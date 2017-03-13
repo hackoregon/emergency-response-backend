@@ -49,6 +49,8 @@ urlpatterns = [
     url(r'^fma/$', views.FMAGeoFilterViewSet.as_view(), name='fma'),
     url(r'^fma/incidents/$', views.FMAIncidentsFilterViewSet.as_view(), name='fma/incidents'),
 
+    url(r'^geocoder/$', views.address_geocode, name='geocoder'),
+
     url(r'^incidents/$', views.IncidentListViewSet.as_view(), name='incidents'),
     url(r'^incidents/(?P<pk>[0-9]+)/$', views.IncidentRetrieveViewSet.as_view(), name='incidents'),
     url(r'^incidents/totals/$', views.IncidentCountViewSet.as_view(), name='incidents/totals'),

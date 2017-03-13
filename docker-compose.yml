@@ -14,3 +14,8 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+  geocoder-service:
+      build: .
+      environment:
+          - POSTGRES_PASSWORD=yourpasswordhere
+      image: docker.io/znmeb/postgis:build
