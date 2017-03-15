@@ -14,7 +14,3 @@ services:
       - .:/code
     ports:
       - "8000:8000"
-  test_database:
-    image: ho_emergency_db
-    ports:
-      - "5433:5432"

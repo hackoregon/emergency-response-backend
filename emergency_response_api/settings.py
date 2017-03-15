@@ -83,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 
-SPATIALITE_LIBRARY_PATH='/usr/local/lib/mod_spatialite.dylib'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -114,7 +113,10 @@ if 'test' in sys.argv or 'test_coverage' in sys.argv:
             'HOST': project_config.TEST['HOST'],
             'USER': project_config.TEST['USER'],
             'PASSWORD': project_config.TEST['PASSWORD'],
-            'PORT': 5433,
+            'PORT': 5432,
+            'TEST': {
+                    'NAME': 'fire',
+                },
         }
     }
 
@@ -163,14 +165,14 @@ USE_TZ = True
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = "/static/"
 
-# # testing setup
-# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-#
-# # auto includes these command line args that are run with nose
-# NOSE_ARGS = [
-#     '--with-coverage',
-#     '--cover-package=homelessApp',
-#     '--cover-html'
-# ]
+# testing setup
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# auto includes these command line args that are run with nose
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=data',
+    '--cover-html'
+]
 
 CORS_ORIGIN_ALLOW_ALL = True
