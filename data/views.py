@@ -10,6 +10,7 @@ from django_filters import filters
 from django.contrib.gis.geos import Point
 from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
 from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FcbProportionSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 class AgencyListViewSet(generics.ListAPIView):
     """
@@ -18,6 +19,8 @@ class AgencyListViewSet(generics.ListAPIView):
 
     queryset = Agency.objects.all()
     serializer_class = AgencySerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = {'description': ['exact', 'icontains']}
 
 class AgencyRetrieveViewSet(generics.RetrieveAPIView):
     """

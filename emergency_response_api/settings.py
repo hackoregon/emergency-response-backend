@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'data.apps.DataConfig',
     'census.apps.CensusConfig',
     'corsheaders',
+    'crispy_forms',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -82,7 +83,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 
-
+SPATIALITE_LIBRARY_PATH='/usr/local/lib/mod_spatialite.dylib'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -94,12 +95,33 @@ DATABASES = {
         'USER': project_config.AWS['USER'],
         'PASSWORD': project_config.AWS['PASSWORD'],
         'PORT': 5432,
-    }
+    },
+    'geocoder': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': project_config.GEOCODE['NAME'],
+        'HOST': project_config.GEOCODE['HOST'],
+        'USER': project_config.GEOCODE['USER'],
+        'PASSWORD': project_config.GEOCODE['PASSWORD'],
+        'PORT': 5432,
+    },
 }
+
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'NAME': project_config.TEST['NAME'],
+            'HOST': project_config.TEST['HOST'],
+            'USER': project_config.TEST['USER'],
+            'PASSWORD': project_config.TEST['PASSWORD'],
+            'PORT': 5432,
+        }
+    }
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
 
@@ -139,16 +161,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_ROOT = 'staticfiles'
-STATIC_URL = "/emerresponse/static/"
+STATIC_URL = "/static/"
 
-# testing setup
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-# auto includes these command line args that are run with nose
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=homelessApp',
-    '--cover-html'
-]
+# # testing setup
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+#
+# # auto includes these command line args that are run with nose
+# NOSE_ARGS = [
+#     '--with-coverage',
+#     '--cover-package=homelessApp',
+#     '--cover-html'
+# ]
 
 CORS_ORIGIN_ALLOW_ALL = True
