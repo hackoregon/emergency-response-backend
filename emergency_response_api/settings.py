@@ -114,7 +114,7 @@ if 'test' in sys.argv or 'test_coverage' in sys.argv:
             'HOST': project_config.TEST['HOST'],
             'USER': project_config.TEST['USER'],
             'PASSWORD': project_config.TEST['PASSWORD'],
-            'PORT': 5432,
+            'PORT': 5433,
         }
     }
 
