@@ -24,7 +24,6 @@ def address_geocode(request, format=None, *args, **kwargs):
         serializedAddresses = AddressGeocodeSerializer(addresses, many=True)
         return Response(serializedAddresses.data)
 
-
 class AgencyListViewSet(generics.ListAPIView):
     """
     This viewset will provide 'list' action.
@@ -32,6 +31,8 @@ class AgencyListViewSet(generics.ListAPIView):
 
     queryset = Agency.objects.all()
     serializer_class = AgencySerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = {'description': ['exact', 'icontains']}
 
 class AgencyRetrieveViewSet(generics.RetrieveAPIView):
     """
