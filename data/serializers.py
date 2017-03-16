@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, AddressGeocode
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
 
-class AddressGeocodeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AddressGeocode
-        fields = '__all__'
+# add AddressGeocode import to models if using geocoder
+
+# class AddressGeocodeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = AddressGeocode
+#         fields = '__all__'
 
 class TypeNatureCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,27 +69,27 @@ class AgencySerializer(serializers.ModelSerializer):
         model = Agency
         fields = ('agency_id', 'description', 'statecode', 'responderunits')
 
+class IncsitFoundClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncsitFoundClass
+        fields = ('incsitfoundclass_id', 'description', 'sortorder')
+
 class IncsitFoundSubSerializer(serializers.ModelSerializer):
+    incitfoundclasses = IncsitFoundClassSerializer(many=True)
     class Meta:
         model = IncsitFoundSub
         fields = '__all__'
 
-class IncsitFoundClassSerializer(serializers.ModelSerializer):
-    incsitfoundsubs = IncsitFoundSubSerializer(many=True)
-    class Meta:
-        model = IncsitFoundClass
-        fields = ('incsitfoundclass_id', 'description', 'sortorder', 'incsitfoundsubs')
-
 class IncsitFoundSerializer(serializers.ModelSerializer):
-    incsitfoundclasses = IncsitFoundClassSerializer(many=True)
+    # incsitfoundsubs = IncsitFoundSubSerializer(many=True)
     class Meta:
         model = IncsitFound
-        fields = '__all__'
+        fields = ('incsitfound_id', 'statecode', 'sortorder', 'inactive', 'nfirs')
 
 class IncidentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Incident
-        fields = '__all__'
+        fields = ('incident_id', 'responderunit', 'deptrespond_id', 'runnumber', 'incdate', 'typenaturecode', 'foundsituation', 'incsitfoundprm', 'alarmlevel', 'callreceived_id', 'censustract', 'fmarespcomp', 'career', 'engresp', 'aaresp', 'medresp', 'othervehiclesresp', 'firstonscene', 'quad', 'streettype', 'streetname', 'quad2', 'streettype', 'streetname', 'quad2', 'streetname2', 'streettype2', 'city', 'state', 'zip', 'neighborassoc', 'fireblock')
 
 class FcbProportionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -99,6 +101,11 @@ class TimeDescSerializer(serializers.ModelSerializer):
         model = TimeDesc
         fields = '__all__'
 
+class IncidentResponderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Responder
+        fields = ('responder_id', 'responderunit', 'codetosc')
+
 class ResponderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Responder
@@ -108,6 +115,11 @@ class IncidentTimesSerializer(serializers.ModelSerializer):
     class Meta:
         model = IncidentTimes
         fields = '__all__'
+
+class IncidentIncidentTimesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncidentTimes
+        fields = ('inctimes_id','timedesc', 'responder_id','realtime')
 
 class SituationFoundSerializer(serializers.ModelSerializer):
     class Meta:

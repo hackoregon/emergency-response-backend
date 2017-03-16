@@ -8,21 +8,30 @@ from rest_framework_gis.filterset import GeoFilterSet
 from rest_framework_gis.filters import GeometryFilter
 from django_filters import filters
 from django.contrib.gis.geos import Point
-from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, AddressGeocode
-from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FcbProportionSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer, AddressGeocodeSerializer
+from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
 
-@api_view(['GET'])
-def address_geocode(request, format=None, *args, **kwargs):
-    """
-    This viewset will provide 'list' action for a geocode response to an address.
-    """
-    if request.method == 'GET':
-        address = request.GET.get('address', ' ')
+from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FcbProportionSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer, IncidentIncidentTimesSerializer, IncidentResponderSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
-        addresses = AddressGeocode.objects.using('geocoder').raw("SELECT g.rating, ST_X(g.geomout) As lon, ST_Y(g.geomout) As lat, (addy).address As stno, (addy).streetname As street, (addy).streettypeabbrev As styp, (addy).location As city, (addy).stateabbrev As st,(addy).zip FROM geocode(%s) As g;", [address])
+# add AddressGeocode and AddressGeocodeSerializer to models and serializers imports if using geocoder
 
-        serializedAddresses = AddressGeocodeSerializer(addresses, many=True)
-        return Response(serializedAddresses.data)
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 50
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+# @api_view(['GET'])
+# def address_geocode(request, format=None, *args, **kwargs):
+#     """
+#     This viewset will provide 'list' action for a geocode response to an address.
+#     """
+#     if request.method == 'GET':
+#         address = request.GET.get('address', ' ')
+#
+#         addresses = AddressGeocode.objects.using('geocoder').raw("SELECT g.rating, ST_X(g.geomout) As lon, ST_Y(g.geomout) As lat, (addy).address As stno, (addy).streetname As street, (addy).streettypeabbrev As styp, (addy).location As city, (addy).stateabbrev As st,(addy).zip FROM geocode(%s) As g;", [address])
+#
+#         serializedAddresses = AddressGeocodeSerializer(addresses, many=True)
+#         return Response(serializedAddresses.data)
 
 class AgencyListViewSet(generics.ListAPIView):
     """
@@ -32,7 +41,9 @@ class AgencyListViewSet(generics.ListAPIView):
     queryset = Agency.objects.all()
     serializer_class = AgencySerializer
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = {'description': ['exact', 'icontains']}
+    filter_fields = {'description': ['exact', 'icontains'],
+        'statecode': ['exact', 'icontains']
+    }
 
 class AgencyRetrieveViewSet(generics.RetrieveAPIView):
     """
@@ -242,28 +253,47 @@ class IncsitFoundRetrieveViewSet(generics.RetrieveAPIView):
 
 
 class IncidentListViewSet(generics.ListAPIView):
+    """
+    This viewset will provide the 'list' action.
+    """
+    queryset = Incident.objects.all()
+    serializer_class = IncidentSerializer
+    pagination_class = StandardResultsSetPagination
+
+class IncidentInfoViewSet(generics.ListAPIView):
+    """
+    This viewset will provide the details of an incident.
+    """
     queryset = Incident.objects.all()
     serializer_class = IncidentSerializer
 
     def get(self, request, *args, **kwargs):
-        k = request.GET.keys() #get the keys from url
-        filter_dict = {}  #create empty dictonary to hold values
-        if(k): # checks if keys exist
-            for key, value in request.GET.items(): # loops through all keys
-                filter_dict[key] = value # adds the values =  filter type of object
-            incidents = Incident.objects.filter(**filter_dict) #returns the incidents filtered by selection
-            serialized_incidents = IncidentSerializer(incidents, many=True) # return the serialized incident objects
-            return Response(serialized_incidents.data) #returns to client
+        if request.GET.get('incident_id', ' ') != ' ':
+            this_incident_id = request.GET.get('incident_id', ' ')
+            try:
+                incidents = Incident.objects.filter(incident_id=this_incident_id)
+                if incidents:
+                    serialized_incidents = IncidentSerializer(incidents, many=True)
+                    incident_times = IncidentTimes.objects.filter(incident_id=this_incident_id).order_by("realtime")
+                    serialized_itimes = IncidentIncidentTimesSerializer(incident_times, many=True)
+                    first_response=incident_times.get(timedesc=0)
+                    on_scene=incident_times.filter(timedesc=5).order_by("realtime")
+                    first_on_scene=on_scene[0]
+                    response_time=(first_on_scene.realtime-first_response.realtime).total_seconds()
+                    responders = Responder.objects.filter(incident_id=this_incident_id)
+                    serialized_responders = IncidentResponderSerializer(responders, many=True)
+                    return Response({
+                        'data': serialized_incidents.data,
+                        'incident_times': serialized_itimes.data,
+                        'responders':serialized_responders.data,
+                        'response_time':response_time
+                            })
+                else:
+                    return Response('Incident ID not found', status=status.HTTP_404_NOT_FOUND)
+            except ValueError:
+                return Response('Incident ID must be integer', status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response(IncidentSerializer(Incident.objects.all(),many=True).data) # if no keys, returns unfiltered list of incidents
-
-class IncidentRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = Incident.objects.all()
-    serializer_class = IncidentSerializer
+            return Response('Missing Incident ID paramater', status=status.HTTP_400_BAD_REQUEST)
 
 class IncidentTimesListViewSet(generics.ListAPIView):
     """
@@ -272,14 +302,9 @@ class IncidentTimesListViewSet(generics.ListAPIView):
 
     queryset = IncidentTimes.objects.all()
     serializer_class = IncidentTimesSerializer
-
-class IncidentTimesTimeListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' and 'detail' actions.
-    """
-
-    queryset = IncidentTimes.objects.all()
-    serializer_class = IncidentTimesSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = {'incident_id': ['exact',],
+        }
 
 class IncidentTimesRetrieveViewSet(generics.RetrieveAPIView):
     """
@@ -406,6 +431,9 @@ class ResponderListViewSet(generics.ListAPIView):
 
     queryset = Responder.objects.all()
     serializer_class = ResponderSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = {'incident_id': ['exact', 'icontains'],
+    }
 
 class ResponderRetrieveViewSet(generics.RetrieveAPIView):
     """
