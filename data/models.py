@@ -10,6 +10,17 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.gis.db import models
 
+# class AddressGeocode(models.Model):
+#     rating = models.IntegerField(primary_key=True)
+#     lon = models.DecimalField(max_digits=13, decimal_places=10)
+#     lat = models.DecimalField(max_digits=13, decimal_places=10)
+#     stno = models.CharField(max_length=100)
+#     street = models.CharField(max_length=100)
+#     styp =  models.CharField(max_length=100)
+#     city = models.CharField(max_length=100)
+#     st = models.CharField(max_length=100)
+#     zip = models.CharField(max_length=10, blank=True, null=True)
+
 class Agency(models.Model):
     agency_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=34)
@@ -58,7 +69,7 @@ class FireBlock(models.Model):
     gid = models.AutoField(primary_key=True)
     objectid_1 = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
     objectid = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-    fma = models.CharField(max_length=2, blank=True, null=True)
+    fma = models.ForeignKey(FMA, on_delete=models.CASCADE, blank=True, null=True, related_name='fireblocks', db_column="fma")
     resp_zone = models.CharField(max_length=6, blank=True, null=True)
     jurisdict = models.CharField(max_length=2, blank=True, null=True)
     dist_grp = models.CharField(max_length=2, blank=True, null=True)
@@ -98,9 +109,9 @@ class ResponderUnit(models.Model):
     responderunit_id = models.IntegerField(primary_key=True)
     description = models.CharField(max_length=50, blank=True, null=True)
     id_911 = models.CharField(max_length=6, blank=True, null=True)
-    station = models.ForeignKey(Station, on_delete=models.CASCADE, blank=True, null=True)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE, blank=True, null=True, related_name='responderunits')
     translateto = models.CharField(max_length=50, blank=True, null=True)
-    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, blank=True, null=True)
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, blank=True, null=True, related_name='responderunits')
     process = models.IntegerField(blank=True, null=True)
     versaterm = models.CharField(max_length=10, blank=True, null=True)
 
@@ -119,7 +130,7 @@ class IncsitFoundClass(models.Model):
 
 class IncsitFoundSub(models.Model):
     incsitfoundsub_id = models.IntegerField(primary_key=True)
-    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, blank=True, null=True)
+    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, blank=True, null=True, related_name="incsitfoundsubs")
     description = models.CharField(max_length=50, blank=True, null=True)
     sortorder = models.IntegerField(blank=True, null=True)
 
@@ -129,7 +140,7 @@ class IncsitFoundSub(models.Model):
 
 class IncsitFound(models.Model):
     incsitfound_id = models.IntegerField(primary_key=True)
-    incsitfoundsub = models.ForeignKey(IncsitFoundSub, on_delete=models.CASCADE, blank=True, null=True)
+    incsitfoundsub = models.ForeignKey(IncsitFoundSub, on_delete=models.CASCADE, blank=True, null=True, related_name="incsitfounds")
     description = models.CharField(max_length=50, blank=True, null=True)
     statecode = models.CharField(max_length=3, blank=True, null=True)
     sortorder = models.IntegerField(blank=True, null=True)
@@ -188,7 +199,7 @@ class TimeDesc(models.Model):
 class Responder(models.Model):
     incident_id = models.IntegerField(primary_key=True)
     responder_id = models.IntegerField()
-    responderunit = models.ForeignKey('ResponderUnit', models.DO_NOTHING, blank=True, null=True)
+    responderunit = models.ForeignKey(ResponderUnit, models.DO_NOTHING, blank=True, null=True, related_name="responders")
     codetosc = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -201,7 +212,7 @@ class Responder(models.Model):
 class IncidentTimes(models.Model):
     inctimes_id = models.IntegerField(primary_key=True)
     timedesc = models.ForeignKey('Timedesc', models.DO_NOTHING, blank=True, null=True)
-    incident = models.ForeignKey('Responder', models.DO_NOTHING, blank=True, null=True)
+    incident_id = models.IntegerField(blank=True, null=True)
     responder_id = models.IntegerField(blank=True, null=True)
     realtime = models.DateTimeField(blank=True, null=True)
 

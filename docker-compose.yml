@@ -1,6 +1,6 @@
 version: '2'
 services:
-  emergency-response-service:
+  emerresponse-service:
     environment:
     - PROJ_SETTINGS_DIR=${PROJ_SETTINGS_DIR}
     - DEPLOY_TARGET=${DEPLOY_TARGET}
@@ -14,3 +14,8 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+  # geocoder-service:
+  #     build: .
+  #     environment:
+  #         - POSTGRES_PASSWORD=yourpasswordhere
+  #     image: docker.io/znmeb/postgis:build
