@@ -4,5 +4,6 @@ services:
   - docker
 script:
   - ./bin/build-proj.sh
+  - ./bin/test-proj.sh
 after_success:
   - ./bin/push.sh
