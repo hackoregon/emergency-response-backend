@@ -19,8 +19,10 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
 from data import views
 from census import census_views
-from rest_framework_swagger.views import get_swagger_view
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from data.swagger_utils import get_swagger_view
+
 
 schema_view = get_swagger_view(title='Emergency Response API')
 

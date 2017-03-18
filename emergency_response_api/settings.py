@@ -88,34 +88,34 @@ WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': project_config.AWS['NAME'],
-        'HOST': project_config.AWS['HOST'],
-        'USER': project_config.AWS['USER'],
-        'PASSWORD': project_config.AWS['PASSWORD'],
-        'PORT': 5432,
+        'ENGINE': os.environ.get("DATABASE_ENGINE"),
+        'NAME': os.environ.get("DATABASE_NAME"),
+        'HOST': os.environ.get("DATABASE_HOST"),
+        'PORT': os.environ.get("DATABASE_PORT"),
+        'USER': os.environ.get("DATABASE_USER"),
+        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
     },
-    'geocoder': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': project_config.GEOCODE['NAME'],
-        'HOST': project_config.GEOCODE['HOST'],
-        'USER': project_config.GEOCODE['USER'],
-        'PASSWORD': project_config.GEOCODE['PASSWORD'],
-        'PORT': 5432,
-    },
+    # 'geocoder': {
+    #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
+    #     'NAME': project_config.GEOCODE['NAME'],
+    #     'HOST': project_config.GEOCODE['HOST'],
+    #     'USER': project_config.GEOCODE['USER'],
+    #     'PASSWORD': project_config.GEOCODE['PASSWORD'],
+    #     'PORT': 5432,
+    # },
 }
 
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': project_config.TEST['NAME'],
-            'HOST': project_config.TEST['HOST'],
-            'USER': project_config.TEST['USER'],
-            'PASSWORD': project_config.TEST['PASSWORD'],
-            'PORT': 5432,
+            'ENGINE': os.environ.get("TEST_DATABASE_ENGINE"),
+            'NAME': os.environ.get("TEST_DATABASE_NAME"),
+            'HOST': os.environ.get("TEST_DATABASE_HOST"),
+            'PORT': os.environ.get("TEST_DATABASE_PORT"),
+            'USER': os.environ.get("TEST_DATABASE_USER"),
+            'PASSWORD': os.environ.get("TEST_DATABASE_PASSWORD"),
             'TEST': {
-                    'NAME': 'fire',
+                    'NAME': os.environ.get("TEST_DATABASE_TEST"),
                 },
         }
     }
