@@ -88,34 +88,34 @@ WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': project_config.AWS['ENGINE'],
         'NAME': project_config.AWS['NAME'],
         'HOST': project_config.AWS['HOST'],
+        'PORT': 5432,
         'USER': project_config.AWS['USER'],
         'PASSWORD': project_config.AWS['PASSWORD'],
-        'PORT': 5432,
     },
-    'geocoder': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': project_config.GEOCODE['NAME'],
-        'HOST': project_config.GEOCODE['HOST'],
-        'USER': project_config.GEOCODE['USER'],
-        'PASSWORD': project_config.GEOCODE['PASSWORD'],
-        'PORT': 5432,
-    },
+    # 'geocoder': {
+    #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
+    #     'NAME': project_config.GEOCODE['NAME'],
+    #     'HOST': project_config.GEOCODE['HOST'],
+    #     'USER': project_config.GEOCODE['USER'],
+    #     'PASSWORD': project_config.GEOCODE['PASSWORD'],
+    #     'PORT': 5432,
+    # },
 }
 
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'ENGINE': project_config.TEST['ENGINE'],
             'NAME': project_config.TEST['NAME'],
             'HOST': project_config.TEST['HOST'],
+            'PORT': 5432,
             'USER': project_config.TEST['USER'],
             'PASSWORD': project_config.TEST['PASSWORD'],
-            'PORT': 5432,
             'TEST': {
-                    'NAME': 'fire',
+                    'NAME': project_config.TEST['TEST_NAME'],
                 },
         }
     }

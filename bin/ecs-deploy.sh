@@ -9,11 +9,9 @@ function usage() {
     ##### ecs-deploy #####
     Simple script for triggering blue/green deployments on Amazon Elastic Container Service
     https://github.com/silinternational/ecs-deploy
-
     One of the following is required:
         -n | --service-name     Name of service to deploy
         -d | --task-definition  Name of task definition to deploy
-
     Required arguments:
         -k | --aws-access-key        AWS Access Key ID. May also be set as environment variable AWS_ACCESS_KEY_ID
         -s | --aws-secret-key        AWS Secret Access Key. May also be set as environment variable AWS_SECRET_ACCESS_KEY
@@ -25,7 +23,6 @@ function usage() {
                                      Examples: mariadb, mariadb:latest, silintl/mariadb,
                                                silintl/mariadb:latest, private.registry.com:8000/repo/image:tag
         --aws-instance-profile  Use the IAM role associated with this instance
-
     Optional arguments:
         -D | --desired-count    The number of instantiations of the task to place and keep running in your service.
         -m | --min              minumumHealthyPercent: The lower limit on the number of running tasks during a deployment.
@@ -34,28 +31,18 @@ function usage() {
         -e | --tag-env-var      Get image tag name from environment variable. If provided this will override value specified in image name argument.
         --max-definitions       Number of Task Definition Revisions to persist before deregistering oldest revisions.
         -v | --verbose          Verbose output
-
     Requirements:
         aws:  AWS Command Line Interface
         jq:   Command-line JSON processor
-
     Examples:
       Simple deployment of a service (Using env vars for AWS settings):
-
         ecs-deploy -c production1 -n doorman-service -i docker.repo.com/doorman:latest
-
       All options:
-
         ecs-deploy -k ABC123 -s SECRETKEY -r us-east-1 -c production1 -n doorman-service -i docker.repo.com/doorman -t 240 -e CI_TIMESTAMP -v
-
       Updating a task definition with a new image:
-
         ecs-deploy -d open-door-task -i docker.repo.com/doorman:17
-
       Using profiles (for STS delegated credentials, for instance):
-
         ecs-deploy -p PROFILE -c production1 -n doorman-service -i docker.repo.com/doorman -t 240 -e CI_TIMESTAMP -v
-
     Notes:
       - If a tag is not found in image and an ENV var is not used via -e, it will default the tag to "latest"
 EOM
@@ -325,7 +312,7 @@ done
 NEW_DEF=$(echo $DEF | jq "{${NEW_DEF_JQ_FILTER}}")
 
 # Register the new task definition, and store its ARN
-NEW_TASKDEF=`$AWS_ECS register-task-definition --cli-input-json "$NEW_DEF" | jq -r .taskDefinition.taskDefinitionArn`
+  NEW_TASKDEF=`$AWS_ECS register-task-definition --cli-input-json "$NEW_DEF" | jq -r .taskDefinition.taskDefinitionArn`
 echo "New task definition: $NEW_TASKDEF";
 
 if [ $SERVICE == false ]; then

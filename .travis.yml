@@ -3,6 +3,6 @@ sudo: required
 services:
   - docker
 script:
-  - ./bin/build-proj.sh
+  - './bin/build-test-proj.sh -t'
 after_success:
-  - ./bin/push.sh
+  - ./bin/push

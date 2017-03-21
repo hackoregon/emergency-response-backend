@@ -1,0 +1,14 @@
+version: '2'
+services:
+  emerresponse-service:
+    environment:
+    - PROJ_SETTINGS_DIR=${PROJ_SETTINGS_DIR}
+    - DEPLOY_TARGET=${DEPLOY_TARGET}
+    - CONFIG_BUCKET=${CONFIG_BUCKET}
+    build: .
+    image: "${DOCKER_IMAGE}"
+    command: ./code/bin/docker-entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
