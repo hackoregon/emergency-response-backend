@@ -6,7 +6,8 @@ from rest_framework.pagination import PageNumberPagination
 from django.http import Http404
 from rest_framework_gis.filterset import GeoFilterSet
 from rest_framework_gis.filters import GeometryFilter
-from django_filters import filters
+import django_filters
+import coreapi
 from django.contrib.gis.geos import Point
 from django.db.models import Avg, Max, Min, Sum
 from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
@@ -66,11 +67,37 @@ class FireBlockListViewSet(generics.ListAPIView):
         else:
             return Response(FireBlockSerializer(FireBlock.objects.all(),many=True).data) # if no keys, returns unfiltered list of incidents
 
+class FireBlockGeoFilter(GeoFilterSet):
+
+    class Meta:
+        model = FireBlock
+        fields = []
+
+    def get_schema_fields(self, view):
+        fields = []
+        lat = coreapi.Field(
+            name="lat",
+            location="query",
+            required="true",
+            description="Latitude of search point",
+            type="number",
+            )
+        lon = coreapi.Field(
+            name="lon",
+            location="query",
+            required="true",
+            description="Longitude of search point",
+            type="number",
+            )
+        fields.append(lat)
+        fields.append(lon)
+        return fields
+
 class FireBlockGeoFilterViewSet(generics.ListAPIView):
 
     queryset = FireBlock.objects.all
     serializer_class = FireBlockSerializer
-
+    filter_backends = (FireBlockGeoFilter,)
     def get(self, request, *args, **kwargs):
         lat = float(request.GET.get('lat', ' '))
         lon = float(request.GET.get('lon', ' '))

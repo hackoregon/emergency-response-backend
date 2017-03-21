@@ -21,10 +21,12 @@ from data import views
 from census import census_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from data.swagger_utils import get_swagger_view
+# from data.swagger_utils import get_swagger_view
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
 
 
-schema_view = get_swagger_view(title='Emergency Response API')
+schema_view = get_schema_view(title='Emergency Response API', renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer])
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

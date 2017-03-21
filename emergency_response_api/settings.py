@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import sys
 ## imports sensitive settings from file. you need to create this as instructed in README
-# from . import project_config
+from . import project_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY"),
+SECRET_KEY = project_config.DJANGO_SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,12 +88,12 @@ WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get("DATABASE_ENGINE"),
-        'NAME': os.environ.get("DATABASE_NAME"),
-        'HOST': os.environ.get("DATABASE_HOST"),
-        'PORT': os.environ.get("DATABASE_PORT"),
-        'USER': os.environ.get("DATABASE_USER"),
-        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
+        'ENGINE': project_config.AWS['ENGINE'],
+        'NAME': project_config.AWS['NAME'],
+        'HOST': project_config.AWS['HOST'],
+        'PORT': 5432,
+        'USER': project_config.AWS['USER'],
+        'PASSWORD': project_config.AWS['PASSWORD'],
     },
     # 'geocoder': {
     #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
@@ -108,14 +108,14 @@ DATABASES = {
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES = {
         'default': {
-            'ENGINE': os.environ.get("TEST_DATABASE_ENGINE"),
-            'NAME': os.environ.get("TEST_DATABASE_NAME"),
-            'HOST': os.environ.get("TEST_DATABASE_HOST"),
-            'PORT': os.environ.get("TEST_DATABASE_PORT"),
-            'USER': os.environ.get("TEST_DATABASE_USER"),
-            'PASSWORD': os.environ.get("TEST_DATABASE_PASSWORD"),
+            'ENGINE': project_config.TEST['ENGINE'],
+            'NAME': project_config.TEST['NAME'],
+            'HOST': project_config.TEST['HOST'],
+            'PORT': 5432,
+            'USER': project_config.TEST['USER'],
+            'PASSWORD': project_config.TEST['PASSWORD'],
             'TEST': {
-                    'NAME': os.environ.get("TEST_DATABASE_TEST"),
+                    'NAME': project_config.TEST['TEST_NAME'],
                 },
         }
     }
