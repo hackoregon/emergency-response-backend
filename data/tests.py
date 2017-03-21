@@ -27,3 +27,9 @@ class IncidentInfoEndpointCase(TestCase):
         client = APIClient()
         response = client.get('/incidents/info/?incident_id=564343')
         assert response.status_code == 404
+
+class FMAListEndpointCase(TestCase):
+    def test_200_response(self):
+        client = APIClient()
+        response = client.get('/fmas/')
+        assert response.status_code == 200
