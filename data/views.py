@@ -105,8 +105,11 @@ class FireBlockGeoFilterViewSet(generics.ListAPIView):
         if lat != ' ' and lon != ' ':
             pnt = Point(lon, lat, srid=4326)
             fireblocks = FireBlock.objects.filter(geom__contains=pnt)
-            serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized firblock objects
-            return Response(serialized_fireblocks.data) #returns to client
+            if fireblocks:
+                serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized firblock objects
+                return Response(serialized_fireblocks.data) #returns to client
+            else:
+                return Response('Incident ID not found', status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(FireBlockSerializer(FireBlock.objects.all(),many=True).data) # if no keys, returns unfiltered list of incidents
 
