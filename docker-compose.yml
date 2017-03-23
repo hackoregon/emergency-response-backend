@@ -8,20 +8,6 @@ services:
     # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     - CONFIG_BUCKET=${CONFIG_BUCKET}
     - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-    - DATABASE_ENGINE=${DATABASE_ENGINE}
-    - DATABASE_NAME=${DATABASE_NAME}
-    - DATABASE_HOST=${DATABASE_HOST}
-    - DATABASE_PORT=${DATABASE_PORT}
-    - DATABASE_USER=${DATABASE_USER}
-    - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-    - TEST_DATABASE_ENGINE=${TEST_DATABASE_ENGINE}
-    - TEST_DATABASE_NAME=${TEST_DATABASE_NAME}
-    - TEST_DATABASE_HOST=${TEST_DATABASE_HOST}
-    - TEST_DATABASE_PORT=${TEST_DATABASE_PORT}
-    - TEST_DATABASE_USER=${TEST_DATABASE_USER}
-    - TEST_DATABASE_PASSWORD=${TEST_DATABASE_PASSWORD}
-    - TEST_DATABASE_TEST=${TEST_DATABASE_TEST}
-
     build: .
     image: "${DOCKER_REPO}/${DOCKER_IMAGE}"
     command: /code/bin/docker-entrypoint.sh
@@ -29,8 +15,8 @@ services:
       - .:/code
     ports:
       - "8000:8000"
-  # geocoder-service:
-  #     build: .
-  #     environment:
-  #         - POSTGRES_PASSWORD=yourpasswordhere
-  #     image: docker.io/znmeb/postgis:build
+  geocoder-service:
+      build: .
+      environment:
+          - POSTGRES_PASSWORD=yourpasswordhere
+      image: docker.io/znmeb/postgis:build

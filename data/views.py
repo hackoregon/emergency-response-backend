@@ -55,19 +55,17 @@ class FireBlockListViewSet(generics.ListAPIView):
     queryset = FireBlock.objects.all()
     serializer_class = FireBlockSerializer
 
-    def get(self, request, *args, **kwargs):
-        k = request.GET.keys() #get the keys from url
-        filter_dict = {}  #create empty dictonary to hold values
-        if(k): # checks if keys exist
-            for key, value in request.GET.items(): # loops through all keys
-                filter_dict[key] = value # adds the values =  filter type of object
-            fireblocks = FireBlock.objects.filter(**filter_dict) #returns the fireblocks filtered by selection
-            serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized firblock objects
-            return Response(serialized_fireblocks.data) #returns to client
-        else:
-            return Response(FireBlockSerializer(FireBlock.objects.all(),many=True).data) # if no keys, returns unfiltered list of incidents
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = {'gid': ['exact',],
+            'fma': ['exact',],
+            'resp_zone': ['icontains',],
+            'jurisdict': ['icontains',],
+            'dist_grp': ['icontains',],
+            }
 
-class FireBlockGeoFilter(GeoFilterSet):
+## This filter is necessary to add query params into swagger
+
+class LatLonGeoFilter(GeoFilterSet):
 
     class Meta:
         model = FireBlock
@@ -97,43 +95,57 @@ class FireBlockGeoFilterViewSet(generics.ListAPIView):
 
     queryset = FireBlock.objects.all
     serializer_class = FireBlockSerializer
-    filter_backends = (FireBlockGeoFilter,)
+    filter_backends = (LatLonGeoFilter,)
     def get(self, request, *args, **kwargs):
-        lat = float(request.GET.get('lat', ' '))
-        lon = float(request.GET.get('lon', ' '))
-        fireblocks = FireBlock.objects.all
-        if lat != ' ' and lon != ' ':
-            pnt = Point(lon, lat, srid=4326)
-            fireblocks = FireBlock.objects.filter(geom__contains=pnt)
-            serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized firblock objects
-            return Response(serialized_fireblocks.data) #returns to client
+        if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
+            try:
+                lat = float(request.GET.get('lat', ' '))
+                lon = float(request.GET.get('lon', ' '))
+                pnt = Point(lon, lat, srid=4326)
+                fireblocks = FireBlock.objects.filter(geom__contains=pnt)
+                if fireblocks:
+                    serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized fireblock objects
+                    return Response(serialized_fireblocks.data) #returns to client
+                else:
+                    return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
+            except ValueError:
+                return Response('Latitude or longitude is invalid.', status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response(FireBlockSerializer(FireBlock.objects.all(),many=True).data) # if no keys, returns unfiltered list of incidents
+            return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
 
 class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
 
     queryset = FireBlock.objects.all
     serializer_class = FireBlockSerializer
+    pagination_class = StandardResultsSetPagination
+    filter_backends = (LatLonGeoFilter,)
 
     def get(self, request, *args, **kwargs):
-        lat = float(request.GET.get('lat', ' '))
-        lon = float(request.GET.get('lon', ' '))
         start_date = request.GET.get('start_date', ' ')
         end_date = request.GET.get('end_date', ' ')
-        fireblocks = FireBlock.objects.all
-
-        if lat != ' ' and lon != ' ':
-            pnt = Point(lon, lat, srid=4326)
-            fireblocks = FireBlock.objects.filter(geom__contains=pnt)
-            fireblockNumber = fireblocks[0].resp_zone
-            if start_date != ' ' and end_date != ' ':
-                incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fireblock=fireblockNumber)
-            else:
-                incidents = Incident.objects.filter(fireblock=fireblockNumber)
-            serialized_incidents = IncidentSerializer(incidents, many=True)
-            return Response(serialized_incidents.data)
+        if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
+            try:
+                lat = float(request.GET.get('lat', ' '))
+                lon = float(request.GET.get('lon', ' '))
+                pnt = Point(lon, lat, srid=4326)
+                fireblocks = FireBlock.objects.filter(geom__contains=pnt)
+                if fireblocks:
+                    fireblockNumber = fireblocks[0].resp_zone
+                    if start_date != ' ' and end_date != ' ':
+                        incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fireblock=fireblockNumber)
+                    else:
+                        incidents = Incident.objects.filter(fireblock=fireblockNumber)
+                    if incidents:
+                        serialized_incidents = IncidentSerializer(incidents, many=True)
+                        return Response(serialized_incidents.data)
+                    else:
+                        return Response('No Incidents found for the fireblock in this date range.', status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
+            except ValueError:
+                return Response('Latitude or longitude is invalid.', status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response(serialized_incidents.data)
+            return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
 
 class FireBlockRetrieveViewSet(generics.RetrieveAPIView):
     """
@@ -153,24 +165,13 @@ class FMAListViewSet(generics.ListAPIView):
     queryset = FMA.objects.all()
     serializer_class = FMASerializer
 
-    def get(self, request, *args, **kwargs):
-        k = request.GET.keys() #get the keys from url
-        filter_dict = {}  #create empty dictonary to hold values
-        if(k): # checks if keys exist
-            for key, value in request.GET.items(): # loops through all keys
-                filter_dict[key] = value # adds the values =  filter type of object
-            fmas = FMA.objects.filter(**filter_dict) #returns the fmas filtered by selection
-            serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fmas objects
-            return Response(serialized_fmas.data) #returns to client
-        else:
-            return Response(FMASerializer(FMA.objects.all(),many=True).data) # if no keys, returns unfiltered list of fmas
-
 class FMAGeoFilterViewSet(generics.ListAPIView):
     """
     """
 
     queryset = FMA.objects.all
     serializer_class = FMASerializer
+    filter_backends = (LatLonGeoFilter,)
 
     def get(self, request, *args, **kwargs):
         lat = float(request.GET.get('lat', ' '))
@@ -189,6 +190,7 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
     queryset = FMA.objects.all
     serializer_class = FMASerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = (LatLonGeoFilter,)
 
     def get(self, request, *args, **kwargs):
         lat = float(request.GET.get('lat', ' '))
