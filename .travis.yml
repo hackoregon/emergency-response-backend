@@ -8,4 +8,4 @@ install:
 script:
   - './bin/build-test-proj.sh -t'
 after_success:
-  - ./bin/push
+  - ./bin/push.sh
