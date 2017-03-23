@@ -6,6 +6,6 @@ services:
 install:
   - pip install awscli
 script:
-  - './bin/build-test-proj -t'
+  - './bin/build-test-proj.sh -t'
 after_success:
   - ./bin/push
