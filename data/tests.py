@@ -45,8 +45,35 @@ class FireBlocksEndpointsTestCase(TestCase):
     def geofilter_query_200_response(self):
         response = self.client.get('/fireblock/?lat=45.520697&lon=-122.677345')
         assert response.status_code == 200
-    def test_404_response(self):
+    def test_geofilter_400_response(self):
+        response = self.client.get('/fireblock/')
+        assert response.status_code == 400
+    def test_fireblockincidents_badrequest_404_response(self):
+        response = self.client.get('/fireblock/?lat=-8d0.6875419&lon=4d0.032249')
+    def test_geofilter_404_response(self):
         response = self.client.get('/fireblock/?lat=-80.6875419&lon=40.032249')
+        assert response.status_code == 404
+    def fireblockincidents_query_200_response(self):
+        response = self.client.get('/fireblock/incidents/?lat=45.520697&lon=-122.677345')
+        assert response.status_code == 200
+    def test_fireblockincidents_400_response(self):
+        response = self.client.get('/fireblock/incidents/')
+        assert response.status_code == 400
+    def test_fireblockincidents_badrequest_404_response(self):
+        response = self.client.get('/fireblock/incidents/?lat=-8d0.6875419&lon=4d0.032249')
+        assert response.status_code == 404
+    def test_fireblockincidents_404_response(self):
+        response = self.client.get('/fireblock/incidents/?lat=-80.6875419&lon=40.032249')
+        assert response.status_code == 404
+
+class FMAEndpointsCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+    def test_200_response(self):
+        response = self.client.get('/fmas/')
+        assert response.status_code == 200
+    def test_404_response(self):
+        response = self.client.get('/fma/?lat=-80.6875419&lon=40.032249')
         assert response.status_code == 404
 
 class IncidentInfoEndpointCase(TestCase):
@@ -64,15 +91,3 @@ class IncidentInfoEndpointCase(TestCase):
     def test_404_not_found_incident_id_response(self):
         response = self.client.get('/incidents/info/?incident_id=564343')
         assert response.status_code == 404
-
-class FMAListEndpointCase(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-
-    def test_200_response(self):
-        response = self.client.get('/fmas/')
-        assert response.status_code == 200
-
-    # def test_404_response(self):
-    #     response = self.client.get('/fma/?lat=-80.6875419&lon=40.032249')
-    #     assert response.status_code == 404
