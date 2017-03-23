@@ -32,9 +32,9 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+# if needing admin add: 'django.contrib.admin', to list
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -85,6 +85,7 @@ WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# uncomment geocoder if using endpoint
 DATABASES = {
     'default': {
         'ENGINE': project_config.AWS['ENGINE'],

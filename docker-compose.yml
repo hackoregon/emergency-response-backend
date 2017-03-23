@@ -12,8 +12,11 @@ services:
       - .:/code
     ports:
       - "8000:8000"
-  geocoder-service:
-      build: .
-      environment:
-          - POSTGRES_PASSWORD=yourpasswordhere
-      image: docker.io/znmeb/postgis:build
+
+  # uncomment geocoder if using endpoint and add pword to env variables either in env.sh locally and/or in the travis build if deploying
+
+  # geocoder-service:
+  #     build: .
+  #     environment:
+  #         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #     image: docker.io/znmeb/postgis:build

@@ -93,3 +93,8 @@ To run the API for the first time:
     Pagination currently set to 50
     ## To select page:
     'http://localhost:4546/<endpoint>?page=NUM'
+
+
+## Thank You:
+
+Thanks to all the members of the Hack Oregon Team. This repo represents the work of many volunteers including the Hack Oregon 2017 DevOps group, the Emergency Response Team, and others.
