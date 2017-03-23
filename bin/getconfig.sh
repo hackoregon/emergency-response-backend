@@ -21,3 +21,4 @@ else
           $PROJ_SETTINGS_DIR/project_config.py;
 
   echo "#### CONFIG COPY COMPLETE###"
+fi
