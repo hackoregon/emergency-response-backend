@@ -5,8 +5,6 @@ services:
   - docker
 install:
   - pip install awscli
-before_script:
-  - ./bin/getconfig.sh
 script:
   - './bin/build-test-proj.sh -t'
 after_success:
