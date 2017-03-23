@@ -3,7 +3,7 @@ sudo: required
 services:
   - docker
 before_script:
-  - .bin/getconfig.sh
+  - ./bin/getconfig.sh
 script:
   - './bin/build-test-proj.sh -t'
 after_success:
