@@ -85,6 +85,7 @@ WSGI_APPLICATION = 'emergency_response_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# uncomment geocoder if using endpoint
 DATABASES = {
     'default': {
         'ENGINE': project_config.AWS['ENGINE'],
