@@ -14,80 +14,80 @@ class AgencyEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/agencies/')
+        response = self.client.get('/emergency/agencies/')
         assert response.status_code == 200
     def test_list_description__icontains_query_works(self):
-        response = self.client.get('/agencies/?description__icontains=portland')
+        response = self.client.get('/emergency/agencies/?description__icontains=portland')
         assert response.status_code == 200
     def test_retrieve_200_response(self):
-        response = self.client.get('/agencies/1/')
+        response = self.client.get('/emergency/agencies/1/')
         assert response.status_code == 200
 
 class AlarmLevelsEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/alarmlevels/')
+        response = self.client.get('/emergency/alarmlevels/')
         assert response.status_code == 200
     def test_retrieve_200_response(self):
-        response = self.client.get('/alarmlevels/1/')
+        response = self.client.get('/emergency/alarmlevels/1/')
         assert response.status_code == 200
 
 class FireBlocksEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/fireblocks/')
+        response = self.client.get('/emergency/fireblocks/')
         assert response.status_code == 200
     def test_retrieve_200_response(self):
-        response = self.client.get('/fireblocks/471/')
+        response = self.client.get('/emergency/fireblocks/471/')
         assert response.status_code == 200
     def geofilter_query_200_response(self):
-        response = self.client.get('/fireblock/?lat=45.520697&lon=-122.677345')
+        response = self.client.get('/emergency/fireblock/?lat=45.520697&lon=-122.677345')
         assert response.status_code == 200
     def test_geofilter_400_response(self):
-        response = self.client.get('/fireblock/')
+        response = self.client.get('/emergency/fireblock/')
         assert response.status_code == 400
     def test_fireblockincidents_badrequest_404_response(self):
-        response = self.client.get('/fireblock/?lat=-8d0.6875419&lon=4d0.032249')
+        response = self.client.get('/emergency/fireblock/?lat=-8d0.6875419&lon=4d0.032249')
     def test_geofilter_404_response(self):
-        response = self.client.get('/fireblock/?lat=-80.6875419&lon=40.032249')
+        response = self.client.get('/emergency/fireblock/?lat=-80.6875419&lon=40.032249')
         assert response.status_code == 404
     def fireblockincidents_query_200_response(self):
-        response = self.client.get('/fireblock/incidents/?lat=45.520697&lon=-122.677345')
+        response = self.client.get('/emergency/fireblock/incidents/?lat=45.520697&lon=-122.677345')
         assert response.status_code == 200
     def test_fireblockincidents_400_response(self):
-        response = self.client.get('/fireblock/incidents/')
+        response = self.client.get('/emergency/fireblock/incidents/')
         assert response.status_code == 400
     def test_fireblockincidents_badrequest_404_response(self):
-        response = self.client.get('/fireblock/incidents/?lat=-8d0.6875419&lon=4d0.032249')
+        response = self.client.get('/emergency/fireblock/incidents/?lat=-8d0.6875419&lon=4d0.032249')
         assert response.status_code == 404
     def test_fireblockincidents_404_response(self):
-        response = self.client.get('/fireblock/incidents/?lat=-80.6875419&lon=40.032249')
+        response = self.client.get('/emergency/fireblock/incidents/?lat=-80.6875419&lon=40.032249')
         assert response.status_code == 404
 
 class FMAEndpointsCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_200_response(self):
-        response = self.client.get('/fmas/')
+        response = self.client.get('/emergency/fmas/')
         assert response.status_code == 200
     # def test_404_response(self):
-    #     response = self.client.get('/fma/?lat=-80.6875419&lon=40.032249')
+    #     response = self.client.get('/emergency/fma/?lat=-80.6875419&lon=40.032249')
     #     assert response.status_code == 404
 
 class IncidentInfoEndpointCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_200_response(self):
-        response = self.client.get('/incidents/info/?incident_id=1281359')
+        response = self.client.get('/emergency/incidents/info/?incident_id=1281359')
         assert response.status_code == 200
     def test_400_response(self):
-        response = self.client.get('/incidents/info/')
+        response = self.client.get('/emergency/incidents/info/')
         assert response.status_code == 400
     def test_404_bad_incident_id_response(self):
-        response = self.client.get('/incidents/info/?incident_id=ab343')
+        response = self.client.get('/emergency/incidents/info/?incident_id=ab343')
         assert response.status_code == 404
     def test_404_not_found_incident_id_response(self):
-        response = self.client.get('/incidents/info/?incident_id=564343')
+        response = self.client.get('/emergency/incidents/info/?incident_id=564343')
         assert response.status_code == 404
