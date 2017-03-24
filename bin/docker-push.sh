@@ -8,12 +8,12 @@ if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     echo Getting the ECR login... # Troubleshooting
     eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
     echo Running docker push command... # Troubleshooting
-    docker push "$DOCKER_IMAGE":latest
+    docker push "$DOCKER_REPO"/"$DEPLOY_TARGET"/"$DOCKER_IMAGE":latest
     echo Running ecs-deploy.sh script... # Troubleshooting
     ./bin/ecs-deploy.sh  \
      -n "$ECS_SERVICE_NAME" \
      -c "$ECS_CLUSTER"   \
-     -i "$DOCKER_IMAGE":latest
+     -i "$DOCKER_REPO"/"$DEPLOY_TARGET"/"$DOCKER_IMAGE":latest
    else
      echo "Skipping deploy because branch is not master"
   fi
