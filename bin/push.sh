@@ -7,7 +7,7 @@ if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     pip install --user awscli
     export PATH=$PATH:$HOME/.local/bin
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REPO"
-    docker push "$DOCKER_REPO"/"$DEPLOY_TARGET"/"$DOCKER_IMAGE":latest
+    docker push.sh "$DOCKER_REPO"/"$DEPLOY_TARGET"/"$DOCKER_IMAGE":latest
     ./bin/ecs-deploy.sh  \
      -n "$ECS_SERVICE_NAME" \
      -c "$ECS_CLUSTER"   \
