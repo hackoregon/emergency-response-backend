@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import sys
+import requests
 ## imports sensitive settings from file. you need to create this as instructed in README
 from . import project_config
 
@@ -28,7 +29,20 @@ SECRET_KEY = project_config.DJANGO_SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+DEBUG = True
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100']
+
+# Get the IPV4 address we're working with on AWS
+# The Loadbalancer uses this ip address for healthchecks
+EC2_PRIVATE_IP = None
+try:
+    EC2_PRIVATE_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
+except requests.exceptions.RequestException:
+    pass
+
+if EC2_PRIVATE_IP:
+    ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
 
 
 # Application definition
