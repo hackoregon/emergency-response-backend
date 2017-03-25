@@ -165,6 +165,15 @@ class FMAListViewSet(generics.ListAPIView):
     queryset = FMA.objects.all()
     serializer_class = FMASerializer
 
+    # def get(self, request, *args, **kwargs):
+    #     fmas = FMA.objects.all
+    #     data = {}
+    #     for fma in fmas:
+    #         fma_id = fma.fma
+    #         geo_shape = FMA.objects.get(pk=fma_id)
+    #         fma_stats = FMAStats.objects.get(pk=fma_id)
+    #         data.append('object': [FMAgeo_shape, fma_stats])
+    #
 class FMAGeoFilterViewSet(generics.ListAPIView):
     """
     """
@@ -480,9 +489,6 @@ class IncsitFoundRetrieveViewSet(generics.RetrieveAPIView):
 
     queryset = IncsitFound.objects.all()
     serializer_class = IncsitFoundSerializer
-
-
-
 
 class TimeDescListViewSet(generics.ListAPIView):
     """

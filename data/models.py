@@ -59,6 +59,26 @@ class FMA(models.Model):
         managed = False
         db_table = 'fma_shapes'
 
+class FMAStats(models.Model):
+    fma = models.CharField(max_length=2, blank=True, null=True)
+    fma_population_total = models.IntegerField(blank=True, null=True)
+    percent_owner_occ_hh = models.FloatField(blank=True, null=True)
+    percent_renter_occ_hh = models.FloatField(blank=True, null=True)
+    median_hh_income = models.IntegerField(blank=True, null=True)
+    percent_w_hinsurance = models.FloatField(blank=True, null=True)
+    percent_wo_hinsurance = models.FloatField(blank=True, null=True)
+    percent_college_grad_or_higher = models.FloatField(blank=True, null=True)
+    percent_rec_fs = models.FloatField(blank=True, null=True)
+    percent_total_lesh = models.FloatField(blank=True, null=True)
+    percent_non_white = models.FloatField(blank=True, null=True)
+    percent_below_pov = models.FloatField(blank=True, null=True)
+    percent_member_65plus = models.FloatField(blank=True, null=True)
+    percent_diff_area = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'fma_api_rollup'
+
 class FireBlock(models.Model):
     gid = models.AutoField(primary_key=True)
     objectid_1 = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)

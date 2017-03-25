@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
+from rest_framework.serializers import CharField
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
 
 # add AddressGeocode import to models if using geocoder
 
@@ -41,6 +42,11 @@ class FMASerializer(serializers.GeoFeatureModelSerializer):
         auto_bbox = True
         fields = ('fma', 'geom', 'fireblocks')
 
+class FMAStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MutualAid
+        fields = '__all__'
+
 class MutualAidSerializer(serializers.ModelSerializer):
     class Meta:
         model = MutualAid
@@ -64,10 +70,11 @@ class StationSerializer(serializers.ModelSerializer):
         depth = 2
 
 class AgencySerializer(serializers.ModelSerializer):
+    name = CharField(source='description')
     responderunits = ForeignResponderUnitSerializer(many=True)
     class Meta:
         model = Agency
-        fields = ('agency_id', 'description', 'statecode', 'responderunits')
+        fields = ('agency_id', 'name', 'statecode', 'responderunits')
 
 class IncsitFoundClassSerializer(serializers.ModelSerializer):
     class Meta:
