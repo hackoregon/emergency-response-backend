@@ -31,7 +31,7 @@ DEBUG = True
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100']
+ALLOWED_HOSTS = project_config.ALLOWED_HOSTS
 
 # Get the IPV4 address we're working with on AWS
 # The Loadbalancer uses this ip address for healthchecks
