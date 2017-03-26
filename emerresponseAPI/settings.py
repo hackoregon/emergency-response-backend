@@ -141,7 +141,7 @@ REST_FRAMEWORK = {
 }
 
 SWAGGER_SETTINGS = {
-    'VALIDATOR_URL': 'none'
+    'VALIDATOR_URL': None
 }
 
 
