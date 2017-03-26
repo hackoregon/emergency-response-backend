@@ -5,7 +5,8 @@ Django==1.10.5
 django-nose==1.4.4
 django-rest-swagger==2.1.1
 djangorestframework==3.5.3
-django-filter
+django-filter==1.0.1
+django-filters==0.2.1
 djangorestframework-gis
 django-extensions
 django-crispy-forms
@@ -20,8 +21,5 @@ simplejson==3.10.0
 six==1.10.0
 uritemplate==3.0.0
 gunicorn
-sniffer
 responses
-mock
-
 django-cors-headers
