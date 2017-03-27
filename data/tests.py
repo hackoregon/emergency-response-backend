@@ -48,8 +48,6 @@ class FireBlocksEndpointsTestCase(TestCase):
     def test_geofilter_400_response(self):
         response = self.client.get('/emergency/fireblock/')
         assert response.status_code == 400
-    def test_fireblockincidents_badrequest_404_response(self):
-        response = self.client.get('/emergency/fireblock/?lat=-8d0.6875419&lon=4d0.032249')
     def test_geofilter_404_response(self):
         response = self.client.get('/emergency/fireblock/?lat=-80.6875419&lon=40.032249')
         assert response.status_code == 404
@@ -72,8 +70,32 @@ class FMAEndpointsCase(TestCase):
     def test_200_response(self):
         response = self.client.get('/emergency/fmas/')
         assert response.status_code == 200
-    # def test_404_response(self):
-    #     response = self.client.get('/emergency/fma/?lat=-80.6875419&lon=40.032249')
+    def test_retrieve_200_response(self):
+        response = self.client.get('/emergency/fmas/23/')
+        assert response.status_code == 200
+    def geofilter_query_200_response(self):
+        response = self.client.get('/emergency/fma/?lat=45.520697&lon=-122.677345')
+        assert response.status_code == 200
+    def test_404_response(self):
+        response = self.client.get('/emergency/fma/?lat=-80.6875419&lon=40.032249')
+        assert response.status_code == 404
+    def test_geofilter_400_response(self):
+        response = self.client.get('/emergency/fma/')
+        assert response.status_code == 400
+    def test_geofilter_404_response(self):
+        response = self.client.get('/emergency/fma/?lat=-80.6875419&lon=40.032249')
+        assert response.status_code == 404
+    def fmaincidents_query_200_response(self):
+        response = self.client.get('/emergency/fma/incidents/?lat=45.520697&lon=-122.677345')
+        assert response.status_code == 200
+    def test_fmaincidents_400_response(self):
+        response = self.client.get('/emergency/fma/incidents/')
+        assert response.status_code == 400
+    # def test_fireblockincidents_badrequest_404_response(self):
+    #     response = self.client.get('/emergency/fireblock/incidents/?lat=-8d0.6875419&lon=4d0.032249')
+    #     assert response.status_code == 404
+    # def test_fireblockincidents_404_response(self):
+    #     response = self.client.get('/emergency/fireblock/incidents/?lat=-80.6875419&lon=40.032249')
     #     assert response.status_code == 404
 
 class IncidentInfoEndpointCase(TestCase):
