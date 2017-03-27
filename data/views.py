@@ -76,14 +76,14 @@ class LatLonGeoFilter(GeoFilterSet):
         lat = coreapi.Field(
             name="lat",
             location="query",
-            required="true",
+            required=True,
             description="Latitude of search point",
             type="number",
             )
         lon = coreapi.Field(
             name="lon",
             location="query",
-            required="true",
+            required=True,
             description="Longitude of search point",
             type="number",
             )
@@ -183,16 +183,21 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
     filter_backends = (LatLonGeoFilter,)
 
     def get(self, request, *args, **kwargs):
-        lat = float(request.GET.get('lat', ' '))
-        lon = float(request.GET.get('lon', ' '))
-        fmas = FMA.objects.all
-        if lat != ' ' and lon != ' ':
-            pnt = Point(lon, lat, srid=4326)
-            fmas = FMA.objects.filter(geom__contains=pnt)
-            serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
-            return Response(serialized_fmas.data) #returns to client
+        if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
+            try:
+                lat = float(request.GET.get('lat', ' '))
+                lon = float(request.GET.get('lon', ' '))
+                pnt = Point(lon, lat, srid=4326)
+                fmas = FMA.objects.filter(geom__contains=pnt)
+                if fmas:
+                    serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
+                    return Response(serialized_fmas.data) #returns to client
+                else:
+                    return Response('No FMA found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
+            except ValueError:
+                return Response('Latitude or longitude is invalid.', status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response(FMASerializer(FMA.objects.all(),many=True).data) # if no keys, returns unfiltered list of fmas
+            return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
 
 class FMAIncidentsFilterViewSet(generics.ListAPIView):
 
