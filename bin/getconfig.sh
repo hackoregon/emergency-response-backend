@@ -1,4 +1,3 @@
-
 # Get Configuration
 echo "##############################"
 echo  CONFIG SETTINGS

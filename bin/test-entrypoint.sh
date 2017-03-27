@@ -1,3 +1,4 @@
+
 #!/bin/bash
 export PATH=$PATH:~/.local/bin
 ./bin/getconfig.sh

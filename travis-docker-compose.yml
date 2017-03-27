@@ -8,7 +8,7 @@ services:
     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     - CONFIG_BUCKET=${CONFIG_BUCKET}
     build: .
-    image: "${DOCKER_REPO}/${DEPLOY_TARGET}/${DOCKER_IMAGE}:latest"
+    image: "${DOCKER_IMAGE}"
     command: ./code/bin/docker-entrypoint.sh
     volumes:
       - .:/code
