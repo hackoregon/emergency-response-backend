@@ -49,7 +49,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 class FireBlockListViewSet(generics.ListAPIView):
     """
-    This viewset will provide 'list' and 'detail' actions.
+    This viewset will provide a list of Fireblocks.
     """
 
     queryset = FireBlock.objects.all()
