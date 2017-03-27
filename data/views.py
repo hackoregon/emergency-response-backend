@@ -76,14 +76,12 @@ class LatLonGeoFilter(GeoFilterSet):
         lat = coreapi.Field(
             name="lat",
             location="query",
-            required=true,
             description="Latitude of search point",
             type="number",
             )
         lon = coreapi.Field(
             name="lon",
             location="query",
-            required=true,
             description="Longitude of search point",
             type="number",
             )
