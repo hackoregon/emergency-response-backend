@@ -1,4 +1,3 @@
-
 #! /bin/bash
 
 # Tag, Push and Deploy only if it's not a pull request
