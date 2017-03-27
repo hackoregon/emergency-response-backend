@@ -1,3 +1,4 @@
+
 # create a travis env variable to get the first 6 chars of the git commit hash. $TRAVIS_COMMIT has the full hash value.
 
 sudo: required
