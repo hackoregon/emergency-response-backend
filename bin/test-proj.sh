@@ -1,3 +1,5 @@
+
+
 #! /bin/bash
 
 # PURPOSE: used to test that the DRF app is running inside the Docker container
