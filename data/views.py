@@ -188,6 +188,8 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
                 pnt = Point(lon, lat, srid=4326)
                 fmas = FMA.objects.filter(geom__contains=pnt)
                 if fmas:
+                    # fma_id = fma[0].fma
+                    # fma_stats = FMAStats.objects.get(pk=fma_id)
                     serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
                     return Response(serialized_fmas.data) #returns to client
                 else:
@@ -204,34 +206,6 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = (LatLonGeoFilter,)
 
-    def get(self, request, *args, **kwargs):
-        lat = float(request.GET.get('lat', ' '))
-        lon = float(request.GET.get('lon', ' '))
-        start_date = request.GET.get('start_date', ' ')
-        end_date = request.GET.get('end_date', ' ')
-        fmas = FMA.objects.all
-
-        if lat != ' ' and lon != ' ':
-            pnt = Point(lon, lat, srid=4326)
-            fmas = FMA.objects.filter(geom__contains=pnt)
-            fmaNumber = fmas[0].fma
-            if start_date != ' ' and end_date != ' ':
-                incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fmarespcomp=fmaNumber)
-            else:
-                incidents = Incident.objects.filter(fmarespcomp=fmaNumber)
-            serialized_incidents = IncidentSerializer(incidents, many=True)
-            total_incidents = incidents.count()
-            return Response({
-                "incidents": serialized_incidents.data,
-                "total_incidents": total_incidents})
-        else:
-            return Response(serialized_incidents.data)
-
-class FMAIncidentsFilterViewSet(generics.ListAPIView):
-
-    queryset = FMA.objects.all
-    serializer_class = FMASerializer
-    pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
         if request.GET.get('lat') and request.GET.get('lon'):
