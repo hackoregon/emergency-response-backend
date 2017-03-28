@@ -40,7 +40,7 @@ class AlarmLevel(models.Model):
     class Meta:
         managed = False
         db_table = 'alarmlevel'
-        
+
 class FMA(models.Model):
     fma = models.CharField(max_length=2, primary_key=True)
     geom = models.GeometryField(srid=4326, blank=True, null=True)
@@ -50,7 +50,7 @@ class FMA(models.Model):
         db_table = 'fma_shapes'
 
 class FMAStats(models.Model):
-    fma = models.CharField(max_length=2, blank=True, null=True)
+    fma = models.CharField(max_length=2, primary_key=True)
     fma_population_total = models.IntegerField(blank=True, null=True)
     percent_owner_occ_hh = models.FloatField(blank=True, null=True)
     percent_renter_occ_hh = models.FloatField(blank=True, null=True)

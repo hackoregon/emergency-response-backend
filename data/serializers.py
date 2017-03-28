@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
 from rest_framework.serializers import CharField
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
 
 # add AddressGeocode import to models if using geocoder
 
@@ -97,11 +97,6 @@ class IncidentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Incident
         fields = ('incident_id', 'responderunit', 'deptrespond_id', 'runnumber', 'incdate', 'typenaturecode', 'foundsituation', 'incsitfoundprm', 'alarmlevel', 'callreceived_id', 'censustract', 'fmarespcomp', 'career', 'engresp', 'aaresp', 'medresp', 'othervehiclesresp', 'firstonscene', 'quad', 'streettype', 'streetname', 'quad2', 'streettype', 'streetname', 'quad2', 'streetname2', 'streettype2', 'city', 'state', 'zip', 'neighborassoc', 'fireblock')
-
-class FcbProportionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FcbProportion
-        fields = '__all__'
 
 class TimeDescSerializer(serializers.ModelSerializer):
     class Meta:
