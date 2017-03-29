@@ -29,9 +29,6 @@ class AlarmLevelsEndpointsTestCase(TestCase):
     def test_list_200_response(self):
         response = self.client.get('/emergency/alarmlevels/')
         assert response.status_code == 200
-    def test_retrieve_200_response(self):
-        response = self.client.get('/emergency/alarmlevels/1/')
-        assert response.status_code == 200
 
 class FireBlocksEndpointsTestCase(TestCase):
     def setUp(self):

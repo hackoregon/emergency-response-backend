@@ -27,12 +27,10 @@ class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
         auto_bbox = True
         fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'geom')
 
-class FMAFireBlockSerializer(serializers.GeoFeatureModelSerializer):
+class FMAFireBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = FireBlock
-        geo_field = "geom"
-        auto_bbox = True
-        fields = ('gid', 'objectid_1', 'objectid', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'mv_label')
+        fields = ('gid',)
 
 class FMASerializer(serializers.GeoFeatureModelSerializer):
     fireblocks = FMAFireBlockSerializer(many=True)
@@ -40,12 +38,12 @@ class FMASerializer(serializers.GeoFeatureModelSerializer):
         model = FMA
         geo_field = "geom"
         auto_bbox = True
-        fields = ('fma', 'geom', 'fireblocks')
+        fields = ('geom', 'fireblocks')
 
 class FMAStatsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MutualAid
-        fields = '__all__'
+        model = FMAStats
+        exclude = ('fma',)
 
 class MutualAidSerializer(serializers.ModelSerializer):
     class Meta:
