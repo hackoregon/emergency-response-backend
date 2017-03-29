@@ -10,9 +10,9 @@ import django_filters
 import coreapi
 from django.contrib.gis.geos import Point
 from django.db.models import Avg, Max, Min, Sum
-from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound
+from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
 
-from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FcbProportionSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer, IncidentIncidentTimesSerializer, IncidentResponderSerializer
+from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer, IncidentIncidentTimesSerializer, IncidentResponderSerializer, FMAStatsSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -89,7 +89,35 @@ class LatLonGeoFilter(GeoFilterSet):
         fields.append(lon)
         return fields
 
+# class DateRangeFilter(django_filters.FilterSet):
+#
+#     class Meta:
+#         model = FireBlock
+#         fields = []
+#
+#     def get_schema_fields(self, view):
+#         fields = []
+#         lat = coreapi.Field(
+#             name="start_date",
+#             location="query",
+#             description="Start Date of Query",
+#             type="date",
+#             )
+#         lon = coreapi.Field(
+#             name="end_date",
+#             location="query",
+#             description="End Date of Query",
+#             type="date",
+#             )
+#         fields.append(start_date)
+#         fields.append(end_date)
+#         return fields
+
 class FireBlockGeoFilterViewSet(generics.ListAPIView):
+    """
+    This endpoint filters for a fireblock based on the latitude and longitude.
+    It will return a list with a single fireblock's information and geom.
+    """
 
     queryset = FireBlock.objects.all
     serializer_class = FireBlockSerializer
@@ -112,6 +140,11 @@ class FireBlockGeoFilterViewSet(generics.ListAPIView):
             return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
 
 class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
+    """
+    This endpoint filters for incidents within a specific fireblock.
+    It filters based on geolocation, as well as date range.
+    Results are paginated at 50 with max_page_size of 100.
+    """
 
     queryset = FireBlock.objects.all
     serializer_class = FireBlockSerializer
@@ -188,8 +221,15 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
                 pnt = Point(lon, lat, srid=4326)
                 fmas = FMA.objects.filter(geom__contains=pnt)
                 if fmas:
+                    fma_id = fmas[0].fma
+                    fma_stats = FMAStats.objects.get(pk=fma_id)
                     serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
-                    return Response(serialized_fmas.data) #returns to client
+                    serialized_stats = FMAStatsSerializer(fma_stats)
+                    return Response({
+                        'id': fma_id,
+                        'geometry': serialized_fmas.data,
+                        'stats': serialized_stats.data,
+                            })
                 else:
                     return Response('No FMA found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
@@ -204,34 +244,6 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = (LatLonGeoFilter,)
 
-    def get(self, request, *args, **kwargs):
-        lat = float(request.GET.get('lat', ' '))
-        lon = float(request.GET.get('lon', ' '))
-        start_date = request.GET.get('start_date', ' ')
-        end_date = request.GET.get('end_date', ' ')
-        fmas = FMA.objects.all
-
-        if lat != ' ' and lon != ' ':
-            pnt = Point(lon, lat, srid=4326)
-            fmas = FMA.objects.filter(geom__contains=pnt)
-            fmaNumber = fmas[0].fma
-            if start_date != ' ' and end_date != ' ':
-                incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fmarespcomp=fmaNumber)
-            else:
-                incidents = Incident.objects.filter(fmarespcomp=fmaNumber)
-            serialized_incidents = IncidentSerializer(incidents, many=True)
-            total_incidents = incidents.count()
-            return Response({
-                "incidents": serialized_incidents.data,
-                "total_incidents": total_incidents})
-        else:
-            return Response(serialized_incidents.data)
-
-class FMAIncidentsFilterViewSet(generics.ListAPIView):
-
-    queryset = FMA.objects.all
-    serializer_class = FMASerializer
-    pagination_class = StandardResultsSetPagination
 
     def get(self, request, *args, **kwargs):
         if request.GET.get('lat') and request.GET.get('lon'):
@@ -319,20 +331,20 @@ class IncidentInfoViewSet(generics.ListAPIView):
 
 class AgencyListViewSet(generics.ListAPIView):
     """
-    This viewset will provide 'list' action.
+    This viewset lists the agencies that respond to emergency incidents within Portland.
     """
 
     queryset = Agency.objects.all()
     serializer_class = AgencySerializer
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = {'description': ['exact', 'icontains'],
-        'statecode': ['exact', 'icontains']
+    filter_fields = {'description': ['icontains'],
+        'statecode': ['icontains']
     }
 
 
 class AgencyRetrieveViewSet(generics.RetrieveAPIView):
     """
-    This viewset will provide the 'detail' action.
+    This viewset retrievies a specific agency.
     """
 
     queryset = Agency.objects.all()
@@ -340,15 +352,7 @@ class AgencyRetrieveViewSet(generics.RetrieveAPIView):
 
 class AlarmLevelListViewSet(generics.ListAPIView):
     """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = AlarmLevel.objects.all()
-    serializer_class = AlarmLevelSerializer
-
-class AlarmLevelRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide 'detail' action.
+    This viewset lists the levels of alarms.
     """
 
     queryset = AlarmLevel.objects.all()
@@ -545,19 +549,3 @@ class SituationFoundRetrieveViewSet(generics.RetrieveAPIView):
     serializer_class = SituationFoundSerializer
 
 #### These viewsets are not being used at this time:
-
-class FcbProportionListViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' action.
-    """
-
-    queryset = FcbProportion.objects.all()
-    serializer_class = FcbProportionSerializer
-
-class FcbProportionListRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = FcbProportion.objects.all()
-    serializer_class = FcbProportionSerializer

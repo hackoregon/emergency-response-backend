@@ -11,3 +11,4 @@ cover
 static/
 **/env.sh
 staticfiles/
+.coverage

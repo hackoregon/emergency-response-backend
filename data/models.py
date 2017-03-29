@@ -41,16 +41,6 @@ class AlarmLevel(models.Model):
         managed = False
         db_table = 'alarmlevel'
 
-class FcbProportion(models.Model):
-    c_block = models.CharField(max_length=12, blank=True, null=True)
-    fire_block = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-    overlap_cbg = models.FloatField(blank=True, null=True)
-    overlap_fb = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'fcb_proportion'
-
 class FMA(models.Model):
     fma = models.CharField(max_length=2, primary_key=True)
     geom = models.GeometryField(srid=4326, blank=True, null=True)
@@ -60,7 +50,7 @@ class FMA(models.Model):
         db_table = 'fma_shapes'
 
 class FMAStats(models.Model):
-    fma = models.CharField(max_length=2, blank=True, null=True)
+    fma = models.CharField(max_length=2, primary_key=True)
     fma_population_total = models.IntegerField(blank=True, null=True)
     percent_owner_occ_hh = models.FloatField(blank=True, null=True)
     percent_renter_occ_hh = models.FloatField(blank=True, null=True)

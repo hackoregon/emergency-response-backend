@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_gis import serializers
 from rest_framework.serializers import CharField
-from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FcbProportion, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
+from data.models import Incident, Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
 
 # add AddressGeocode import to models if using geocoder
 
@@ -27,12 +27,10 @@ class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
         auto_bbox = True
         fields = ('gid', 'objectid_1', 'objectid', 'fma', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'of_fma', 'mv_label', 'geom')
 
-class FMAFireBlockSerializer(serializers.GeoFeatureModelSerializer):
+class FMAFireBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = FireBlock
-        geo_field = "geom"
-        auto_bbox = True
-        fields = ('gid', 'objectid_1', 'objectid', 'resp_zone', 'jurisdict', 'dist_grp', 'notes', 'mv_label')
+        fields = ('gid',)
 
 class FMASerializer(serializers.GeoFeatureModelSerializer):
     fireblocks = FMAFireBlockSerializer(many=True)
@@ -40,12 +38,12 @@ class FMASerializer(serializers.GeoFeatureModelSerializer):
         model = FMA
         geo_field = "geom"
         auto_bbox = True
-        fields = ('fma', 'geom', 'fireblocks')
+        fields = ('geom', 'fireblocks')
 
 class FMAStatsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MutualAid
-        fields = '__all__'
+        model = FMAStats
+        exclude = ('fma',)
 
 class MutualAidSerializer(serializers.ModelSerializer):
     class Meta:
@@ -97,11 +95,6 @@ class IncidentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Incident
         fields = ('incident_id', 'responderunit', 'deptrespond_id', 'runnumber', 'incdate', 'typenaturecode', 'foundsituation', 'incsitfoundprm', 'alarmlevel', 'callreceived_id', 'censustract', 'fmarespcomp', 'career', 'engresp', 'aaresp', 'medresp', 'othervehiclesresp', 'firstonscene', 'quad', 'streettype', 'streetname', 'quad2', 'streettype', 'streetname', 'quad2', 'streetname2', 'streettype2', 'city', 'state', 'zip', 'neighborassoc', 'fireblock')
-
-class FcbProportionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FcbProportion
-        fields = '__all__'
 
 class TimeDescSerializer(serializers.ModelSerializer):
     class Meta:

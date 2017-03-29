@@ -5,4 +5,4 @@
 
 echo Running test_proj.sh...
 
-docker-compose run --entrypoint="python manage.py test --keepdb" emergency-service
+docker-compose -f local-docker-compose.yml run --entrypoint="python manage.py test --keepdb" emergency-service
