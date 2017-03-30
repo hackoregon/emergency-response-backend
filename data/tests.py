@@ -56,7 +56,7 @@ class FireBlocksEndpointsTestCase(TestCase):
         assert response.status_code == 400
     def test_fireblockincidents_badrequest_404_response(self):
         response = self.client.get('/emergency/fireblock/incidents/?lat=-8d0.6875419&lon=4d0.032249')
-        assert response.status_code == 404
+        assert response.status_code == 400
     def test_fireblockincidents_404_response(self):
         response = self.client.get('/emergency/fireblock/incidents/?lat=-80.6875419&lon=40.032249')
         assert response.status_code == 404
@@ -90,7 +90,7 @@ class FMAEndpointsCase(TestCase):
         assert response.status_code == 400
     def test_fireblockincidents_badrequest_404_response(self):
         response = self.client.get('/emergency/fireblock/incidents/?lat=-8d0.6875419&lon=4d0.032249')
-        assert response.status_code == 404
+        assert response.status_code == 400
     def test_fireblockincidents_404_response(self):
         response = self.client.get('/emergency/fireblock/incidents/?lat=-80.6875419&lon=40.032249')
         assert response.status_code == 404
@@ -106,7 +106,7 @@ class IncidentInfoEndpointCase(TestCase):
         assert response.status_code == 400
     def test_404_bad_incident_id_response(self):
         response = self.client.get('/emergency/incidents/info/?incident_id=ab343')
-        assert response.status_code == 404
+        assert response.status_code == 400
     def test_404_not_found_incident_id_response(self):
         response = self.client.get('/emergency/incidents/info/?incident_id=564343')
         assert response.status_code == 404

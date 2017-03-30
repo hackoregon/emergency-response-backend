@@ -85,6 +85,12 @@ class LatLonGeoFilter(GeoFilterSet):
             description="Longitude of search point",
             type="number",
             )
+        gid = coreapi.Field(
+            name="gid",
+            location="query",
+            description="Fireblock id",
+            type="number",
+            )
         fields.append(lat)
         fields.append(lon)
         return fields
@@ -122,6 +128,7 @@ class FireBlockGeoFilterViewSet(generics.ListAPIView):
     queryset = FireBlock.objects.all
     serializer_class = FireBlockSerializer
     filter_backends = (LatLonGeoFilter,)
+
     def get(self, request, *args, **kwargs):
         if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
             try:
@@ -135,7 +142,7 @@ class FireBlockGeoFilterViewSet(generics.ListAPIView):
                 else:
                     return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
-                return Response('Latitude or longitude is invalid.', status=status.HTTP_404_NOT_FOUND)
+                return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
 
@@ -174,39 +181,23 @@ class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
                 else:
                     return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
-                return Response('Latitude or longitude is invalid.', status=status.HTTP_404_NOT_FOUND)
+                return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
-
-class FireBlockRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide the 'detail' action.
-    """
-
-    queryset = FireBlock.objects.all()
-    serializer_class = FireBlockSerializer
 
 ## These are the viewsets based on FMAs
 
 class FMAListViewSet(generics.ListAPIView):
     """
-    This viewset will provide 'list' and 'detail' actions.
+    This endpoint provides the fma id and geoms for all FMAs (Fire Management Areas).
     """
 
     queryset = FMA.objects.all()
     serializer_class = FMASerializer
 
-    # def get(self, request, *args, **kwargs):
-    #     fmas = FMA.objects.all
-    #     data = {}
-    #     for fma in fmas:
-    #         fma_id = fma.fma
-    #         geo_shape = FMA.objects.get(pk=fma_id)
-    #         fma_stats = FMAStats.objects.get(pk=fma_id)
-    #         data.append('object': [FMAgeo_shape, fma_stats])
-    #
 class FMAGeoFilterViewSet(generics.ListAPIView):
     """
+    This endpoint finds an FMA based on a latitude and longitude. It returns an id, the geom, and demographic stats about a FMA.
     """
 
     queryset = FMA.objects.all
@@ -233,16 +224,22 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
                 else:
                     return Response('No FMA found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
-                return Response('Latitude or longitude is invalid.', status=status.HTTP_404_NOT_FOUND)
+                return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
 
 class FMAIncidentsFilterViewSet(generics.ListAPIView):
+    """
+    This view returns all incidents for a FMA based on a latitude and longitude.
+    It can be further filtered by a date range.
+    If passed param totals = True will return only the total number of incidents.
+    Otherwise will return the total number and individual incidents.
+    """
 
     queryset = FMA.objects.all
     serializer_class = FMASerializer
     pagination_class = StandardResultsSetPagination
-    filter_backends = (LatLonGeoFilter,)
+    filter_backends = (LatLonGeoFilter, DjangoFilterBackend,)
 
 
     def get(self, request, *args, **kwargs):
@@ -322,7 +319,7 @@ class IncidentInfoViewSet(generics.ListAPIView):
                 else:
                     return Response('Incident ID not found', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
-                return Response('Incident ID must be integer', status=status.HTTP_404_NOT_FOUND)
+                return Response('Incident ID must be integer', status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response('Missing Incident ID paramater', status=status.HTTP_400_BAD_REQUEST)
 
