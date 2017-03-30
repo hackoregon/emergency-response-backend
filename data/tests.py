@@ -36,9 +36,6 @@ class FireBlocksEndpointsTestCase(TestCase):
     def test_list_200_response(self):
         response = self.client.get('/emergency/fireblocks/')
         assert response.status_code == 200
-    def test_retrieve_200_response(self):
-        response = self.client.get('/emergency/fireblocks/471/')
-        assert response.status_code == 200
     def geofilter_query_200_response(self):
         response = self.client.get('/emergency/fireblock/?lat=45.520697&lon=-122.677345')
         assert response.status_code == 200
