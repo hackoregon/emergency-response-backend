@@ -24,3 +24,4 @@ gunicorn
 responses
 django-cors-headers
 sniffer
+eventlet
