@@ -34,7 +34,6 @@ urlpatterns = [
     url(r'^alarmlevels/$', views.AlarmLevelListViewSet.as_view(), name='alarmlevels'),
 
     url(r'^fireblocks/$', views.FireBlockListViewSet.as_view(), name='fireblocks'),
-    url(r'^fireblocks/(?P<pk>[0-9]+)/$', views.FireBlockRetrieveViewSet.as_view(), name='fireblocks'),
     url(r'^fireblock/$', views.FireBlockGeoFilterViewSet.as_view(), name='fireblock'),
     url(r'^fireblock/incidents/$', views.FireBlockIncidentsFilterViewSet.as_view(), name='fireblock/incidents'),
 
