@@ -25,7 +25,7 @@ This project was setup in a single database environment. Development, testing, a
 
 To run the API for the first time:
 
-  1. In the /emergency_response_api folder create a file project_config.py. Make sure env.sh is in the .gitignore and .dockerignore:
+  1. In the /emerresponseAPI folder create a file project_config.py. Make sure env.sh is in the .gitignore and .dockerignore:
 
         AWS = {
                 'ENGINE': 'django.contrib.gis.db.backends.postgis',
