@@ -24,4 +24,5 @@ gunicorn
 responses
 django-cors-headers
 sniffer
-eventlet
+gevent
+psycogreen
