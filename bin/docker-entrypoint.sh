@@ -5,5 +5,5 @@ export PATH=$PATH:~/.local/bin
 
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
-gunicorn emerresponseAPI.wsgi:application -b :8000 -k 'eventlet' --keep-alive 120
+gunicorn emerresponseAPI.wsgi:application -b :8000 -k 'gevent' -w 3
 # python manage.py runserver 0.0.0.0:8000
