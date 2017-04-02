@@ -10,5 +10,4 @@ venv3
 cover
 static/
 **/env.sh
-staticfiles/
 .coverage
