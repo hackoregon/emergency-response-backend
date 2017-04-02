@@ -8,9 +8,11 @@ https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
 from gevent import monkey; monkey.patch_all()
 from psycogreen.gevent import patch_psycopg
 patch_psycopg()
+from whitenoise.django import DjangoWhiteNoise
 
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "emerresponseAPI.settings")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+application = DjangoWhiteNoise(application)
