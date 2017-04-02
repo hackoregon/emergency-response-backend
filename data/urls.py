@@ -20,9 +20,9 @@ from rest_framework.routers import DefaultRouter
 from data import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from rest_framework_swagger.views import get_swagger_view
-
-schema_view = get_swagger_view(title='Emergency Response API')
+# from rest_framework_swagger.views import get_swagger_view
+#
+# schema_view = get_swagger_view(title='Emergency Response API')
 
 urlpatterns = [
 
@@ -75,7 +75,7 @@ urlpatterns = [
     url(r'^typenaturecodes/$', views.TypeNatureCodeListViewSet.as_view(), name='typenaturecodes'),
     url(r'^typenaturecodes/(?P<pk>[0-9]+)/$', views.TypeNatureCodeRetrieveViewSet.as_view(), name='typenaturecodes'),
 
-    url(r'^$', schema_view)
+    # url(r'^$', schema_view)
 ]
 
 urlpatterns += staticfiles_urlpatterns()
