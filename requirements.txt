@@ -27,3 +27,4 @@ sniffer
 gevent
 psycogreen
 whitenoise
+mock
