@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'django_nose',
     'rest_framework',
     'rest_framework_gis',
-    # 'rest_framework_swagger',
+    'rest_framework_swagger',
     'data.apps.DataConfig',
     'corsheaders',
     'crispy_forms',
@@ -138,10 +138,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
-# SWAGGER_SETTINGS = {
-#     'VALIDATOR_URL': None
-# }
-#
+SWAGGER_SETTINGS = {
+    'VALIDATOR_URL': None
+}
+
 
 
 # Password validation
