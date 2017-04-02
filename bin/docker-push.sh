@@ -14,7 +14,7 @@
      -n "$ECS_SERVICE_NAME" \
      -c "$ECS_CLUSTER"   \
      -i "$DOCKER_REPO"/"$DEPLOY_TARGET"/"$DOCKER_IMAGE":latest  \
-     -t 90 \
+     -t 300 \
      -v
 #    else
 #      echo "Skipping deploy because branch is not master"
