@@ -27,3 +27,4 @@ sniffer
 gevent
 psycogreen
 django-debug-toolbar
+whitenoise
