@@ -20,11 +20,9 @@ from rest_framework.routers import DefaultRouter
 from data import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from rest_framework.schemas import get_schema_view
-from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
+from rest_framework_swagger.views import get_swagger_view
 
-
-schema_view = get_schema_view(title='Emergency Response API', renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer])
+schema_view = get_swagger_view(title='Emergency Response API')
 
 urlpatterns = [
 
