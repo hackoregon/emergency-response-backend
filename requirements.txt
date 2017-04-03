@@ -28,4 +28,3 @@ gevent
 psycogreen
 whitenoise
 mock
-newrelic
