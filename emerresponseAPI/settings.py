@@ -29,7 +29,7 @@ SECRET_KEY = project_config.DJANGO_SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100', 'hacko-integration-658279555.us-west-2.elb.amazonaws.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100']
 
 AWS_LOAD_BALANCER = 'hacko-integration-658279555.us-west-2.elb.amazonaws.com'
 
@@ -45,7 +45,6 @@ except requests.exceptions.RequestException:
 
 if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
-
 
 # Application definition
 # if needing admin add: 'django.contrib.admin', to list
@@ -143,12 +142,6 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 50,
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
-
-SWAGGER_SETTINGS = {
-    'VALIDATOR_URL': None
-}
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

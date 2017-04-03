@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # Tag, Push and Deploy only if it's not a pull request
-# if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-#   # Push only if we're testing the master branch
-#   if [ "$TRAVIS_BRANCH" == "master" ]; then
+if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+  # Push only if we're testing the master branch
+  if [ "$TRAVIS_BRANCH" == "master" ]; then
     export PATH=$PATH:$HOME/.local/bin
     echo Getting the ECR login... # Troubleshooting
     eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
@@ -15,10 +15,9 @@
      -c "$ECS_CLUSTER"   \
      -i "$DOCKER_REPO"/"$DEPLOY_TARGET"/"$DOCKER_IMAGE":latest  \
      -t 300 \
-     -v
-#    else
-#      echo "Skipping deploy because branch is not master"
-#   fi
-# else
-#   echo "Skipping deploy because it's a pull request"
-# fi
+   else
+     echo "Skipping deploy because branch is not master"
+  fi
+else
+  echo "Skipping deploy because it's a pull request"
+fi
