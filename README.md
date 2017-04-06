@@ -27,15 +27,15 @@ To run the API for the first time:
 
   1. In the /emerresponseAPI folder create a file project_config.py. Make sure env.sh is in the .gitignore and .dockerignore:
 
-        AWS = {
-                'ENGINE': 'django.contrib.gis.db.backends.postgis',
-                'NAME': '<YOUR_AWS_DB_NAME>',
-                'HOST': '<YOUR_AWS_DB_NAME>',
-                'USER': '<YOUR_AWS_DB_NAME>',
-                'PASSWORD': '<YOUR_AWS_DB_NAME>',
-              }
+          AWS = {  
+                  'ENGINE':   'django.contrib.gis.db.backends.postgis',  
+                  'NAME': '<YOUR_AWS_DB_NAME>',  
+                  'HOST': '<YOUR_AWS_DB_NAME>',  
+                  'USER': '<YOUR_AWS_DB_NAME>',  
+                  'PASSWORD': '<YOUR_AWS_DB_NAME>',  
+                }  
 
-        DJANGO_SECRET_KEY = <YOUR_DJANGO_SECRET>
+          DJANGO_SECRET_KEY = <YOUR_DJANGO_SECRET>  
 
   2. Create `env.sh` in the project ./bin folder. Make sure env.sh is in the .gitignore and .dockerignore (You will provide values if deploying to your own cluster. For the Hack Oregon project, consult the team.):
 
@@ -54,8 +54,11 @@ To run the API for the first time:
             echo PROJ_SETTINGS_DIR: $PROJ_SETTINGS_DIR
             echo DEPLOY_TARGET: $DEPLOY_TARGET
             echo CONFIG_BUCKET: $CONFIG_BUCKET
+  3. Source the 'env.sh' file:  
 
-  3. From project root run:  
+        $ source ./bin/env.sh  
+
+  4. From project root run:  
 
         $ ./bin/build-proj.sh -l (flag is for local)
 
@@ -74,12 +77,15 @@ To run the API for the first time:
 
   7. Consult here for CI/CD info: https://github.com/hackoregon/backend-service-pattern
 
-  8. For changes in the django code, stop the container and re-run the start-proj.sh command.
+  8. For changes in the Django code, stop the container and re-run the start-proj.sh command.
 
   9. For any changes to the docker image, additions to the pip packages (requirements.txt), or other non-code changes rerun the build-proj.sh command.
 
   10. If you are receiving a 'permission denied' notification on any of the shell commands, they may have lost the executable permission. run: $ chmod +x ./bin/*.* should correct the problem. You may choose to run command on individual files as well.
 
+# Contributing
+
+  We are using Travis-CI for a CI/CD toolchain. We run automated tests on all branches, merged PRs on master will automatically deploy to the AWS integration environment. Do not merge or commit to master without getting a plus one approval.
 
 ## API Info:
 
