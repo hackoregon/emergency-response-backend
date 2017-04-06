@@ -58,9 +58,6 @@ class FireBlockListViewSet(generics.ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filter_fields = {'gid': ['exact',],
             'fma': ['exact',],
-            'resp_zone': ['icontains',],
-            'jurisdict': ['icontains',],
-            'dist_grp': ['icontains',],
             }
 
 ## This filter is necessary to add query params into swagger
@@ -93,31 +90,8 @@ class LatLonGeoFilter(GeoFilterSet):
             )
         fields.append(lat)
         fields.append(lon)
+        fields.append(gid)
         return fields
-
-# class DateRangeFilter(django_filters.FilterSet):
-#
-#     class Meta:
-#         model = FireBlock
-#         fields = []
-#
-#     def get_schema_fields(self, view):
-#         fields = []
-#         lat = coreapi.Field(
-#             name="start_date",
-#             location="query",
-#             description="Start Date of Query",
-#             type="date",
-#             )
-#         lon = coreapi.Field(
-#             name="end_date",
-#             location="query",
-#             description="End Date of Query",
-#             type="date",
-#             )
-#         fields.append(start_date)
-#         fields.append(end_date)
-#         return fields
 
 class FireBlockGeoFilterViewSet(generics.ListAPIView):
     """
@@ -130,21 +104,33 @@ class FireBlockGeoFilterViewSet(generics.ListAPIView):
     filter_backends = (LatLonGeoFilter,)
 
     def get(self, request, *args, **kwargs):
-        if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
+        if request.GET.get('gid', ' ') == ' ':
+            if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
+                try:
+                    lat = float(request.GET.get('lat', ' '))
+                    lon = float(request.GET.get('lon', ' '))
+                    pnt = Point(lon, lat, srid=4326)
+                    fireblocks = FireBlock.objects.filter(geom__contains=pnt)
+                    if fireblocks:
+                        serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized fireblock objects
+                        return Response(serialized_fireblocks.data) #returns to client
+                    else:
+                        return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
+                except ValueError:
+                    return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response('Missing either gid or latitude and longitude paramaters.', status=status.HTTP_400_BAD_REQUEST)
+        else:
             try:
-                lat = float(request.GET.get('lat', ' '))
-                lon = float(request.GET.get('lon', ' '))
-                pnt = Point(lon, lat, srid=4326)
-                fireblocks = FireBlock.objects.filter(geom__contains=pnt)
+                gid = float(request.GET.get('gid', ' '))
+                fireblocks = [FireBlock.objects.get(gid=gid)]
                 if fireblocks:
                     serialized_fireblocks = FireBlockSerializer(fireblocks, many=True) # return the serialized fireblock objects
                     return Response(serialized_fireblocks.data) #returns to client
                 else:
-                    return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
+                    return Response('No Fireblock found for this gid.', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
-                return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
+                return Response('Gid is invalid.', status=status.HTTP_400_BAD_REQUEST)
 
 class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
     """
@@ -159,14 +145,36 @@ class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
     filter_backends = (LatLonGeoFilter,)
 
     def get(self, request, *args, **kwargs):
-        start_date = request.GET.get('start_date', ' ')
-        end_date = request.GET.get('end_date', ' ')
-        if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
+        if request.GET.get('gid', ' ') == ' ':
+            start_date = request.GET.get('start_date', ' ')
+            end_date = request.GET.get('end_date', ' ')
+            if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
+                try:
+                    lat = float(request.GET.get('lat', ' '))
+                    lon = float(request.GET.get('lon', ' '))
+                    pnt = Point(lon, lat, srid=4326)
+                    fireblocks = FireBlock.objects.filter(geom__contains=pnt)
+                    if fireblocks:
+                        fireblockNumber = fireblocks[0].resp_zone
+                        if start_date != ' ' and end_date != ' ':
+                            incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fireblock=fireblockNumber)
+                        else:
+                            incidents = Incident.objects.filter(fireblock=fireblockNumber)
+                        if incidents:
+                            serialized_incidents = IncidentSerializer(incidents, many=True)
+                            return Response(serialized_incidents.data)
+                        else:
+                            return Response('No Incidents found for the fireblock in this date range.', status=status.HTTP_404_NOT_FOUND)
+                    else:
+                        return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
+                except ValueError:
+                    return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response('Missing either gid or latitude and longitude paramaters.', status=status.HTTP_400_BAD_REQUEST)
+        else:
             try:
-                lat = float(request.GET.get('lat', ' '))
-                lon = float(request.GET.get('lon', ' '))
-                pnt = Point(lon, lat, srid=4326)
-                fireblocks = FireBlock.objects.filter(geom__contains=pnt)
+                gid = float(request.GET.get('gid', ' '))
+                fireblocks = [FireBlock.objects.get(gid=gid)]
                 if fireblocks:
                     fireblockNumber = fireblocks[0].resp_zone
                     if start_date != ' ' and end_date != ' ':
@@ -179,12 +187,9 @@ class FireBlockIncidentsFilterViewSet(generics.ListAPIView):
                     else:
                         return Response('No Incidents found for the fireblock in this date range.', status=status.HTTP_404_NOT_FOUND)
                 else:
-                    return Response('No Fireblock found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
+                    return Response('No Fireblock found for this gid.', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
-                return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
-
+                return Response('Gid is invalid.', status=status.HTTP_400_BAD_REQUEST)
 ## These are the viewsets based on FMAs
 
 class FMAListViewSet(generics.ListAPIView):
