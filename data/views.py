@@ -10,6 +10,7 @@ import django_filters
 import coreapi
 from django.contrib.gis.geos import Point
 from django.db.models import Avg, Max
+from django.db import connection
 from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
 
 from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer, IncidentIncidentTimesSerializer, IncidentResponderSerializer, FMAStatsSerializer
@@ -282,15 +283,15 @@ class FMADateFilter(DjangoFilterBackend):
             description="YYYY-MM-DD",
             type="datetime",
             )
-        totals = coreapi.Field(
-            name="totals",
-            location="query",
-            description="True to return only total number",
-            type="boolean",
-            )
+        # totals = coreapi.Field(
+        #     name="totals",
+        #     location="query",
+        #     description="True to return only total number",
+        #     type="boolean",
+        #     )
         fields.append(start_date)
         fields.append(end_date)
-        fields.append(totals)
+        # fields.append(totals)
 
         return fields
 
@@ -308,7 +309,7 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
         percent_college_grad_or_higher = percentage of population that has graduated college or higher
         percent_rec_fs = percentage of population that receives foodstamps
         percent_total_lesh = limeted english speakings households
-        percent_non_white = percentage of population identified as non-white
+        percent_non_white = models.FloatField(blank=True, null=True)
         percent_below_pov = models.FloatField(blank=True, null=True)
         percent_member_65plus = models.FloatField(blank=True, null=True)
         percent_diff_area = models.FloatField(blank=True, null=True)
@@ -330,7 +331,7 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
                     fmas = FMA.objects.filter(geom__contains=pnt)
                     if fmas:
                         fma_id = fmas[0].fma
-                        fma_stats = FMAStats.objects.get(fma_id=fma)
+                        fma_stats = FMAStats.objects.get(fma=fma_id)
                         serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
                         serialized_stats = FMAStatsSerializer(fma_stats)
                         return Response({
@@ -395,12 +396,10 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
                         incidents = Incident.objects.filter(fmarespcomp=fmaNumber)
                     serialized_incidents = IncidentSerializer(incidents, many=True)
                     total_incidents = incidents.count()
-                    if totals == "True":
-                        return Response({"total_incidents": total_incidents})
-                    else:
-                        return Response({
-                            "incidents": serialized_incidents.data,
-                            "total_incidents": total_incidents})
+
+                    return Response({
+                        "incidents": serialized_incidents.data,
+                        "total_incidents": total_incidents})
                 except ValueError:
                     return Response('Lat and Lon values must be postive or negative float values', status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -410,23 +409,19 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
                 fma_id = int(request.GET.get('fma_id', ' '))
                 fmas = [FMA.objects.get(fma=fma_id)]
                 if fmas:
-                    fmaNumber = fmas[0].fma
-                    # if totals == "true":
-                        # total_incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fmarespcomp=fmaNumber).count()
-                    with connection.cursor() as c:
-                        total_incidents = c.execute('SELECT COUNT(*) FROM incident WHERE fmarespcomp = %s', [fmaNumber])
-
-                    return Response({"total_incidents": total_incidents})
-                else:
                     if start_date != ' ' and end_date != ' ':
+                        fmaNumber = fmas[0].fma
                         incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fmarespcomp=fmaNumber)
                     else:
-                        incidents = Incident.objects.filter(fmarespcomp=fmaNumber)
+                        fmaNumber = fmas[0].fma
+                        incidents = Incident.objects.filter(incdate__range=(start_date, end_date), fmarespcomp=fmaNumber)
                     serialized_incidents = IncidentSerializer(incidents, many=True)
                     total_incidents = incidents.count()
                     return Response({
                         "incidents": serialized_incidents.data,
                         "total_incidents": total_incidents})
+                else:
+                    return Response('FMA not found', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
                 return Response('FMA_ID is invalid.', status=status.HTTP_400_BAD_REQUEST)
 class FMARetrieveViewSet(generics.RetrieveAPIView):
