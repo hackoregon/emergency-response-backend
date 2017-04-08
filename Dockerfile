@@ -1,6 +1,5 @@
 FROM brianhgrant/hacko-geodjango
 ENV PYTHONUNBUFFERED 1
-
 EXPOSE 8000
 
 RUN mkdir /code
