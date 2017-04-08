@@ -5,7 +5,6 @@ services:
     - PROJ_SETTINGS_DIR=${PROJ_SETTINGS_DIR}
     - DEPLOY_TARGET=${DEPLOY_TARGET}
     - CONFIG_BUCKET=${CONFIG_BUCKET}
-    - NEWRELIC_LICENSE_KEY=${NEWRELIC_LICENSE_KEY}
     build: .
     image: "${DOCKER_IMAGE}"
     command: ./code/bin/docker-entrypoint.sh
