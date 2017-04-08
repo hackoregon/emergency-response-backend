@@ -298,6 +298,7 @@ class FMADateFilter(DjangoFilterBackend):
 class FMAGeoFilterViewSet(generics.ListAPIView):
     """
     This endpoint finds an FMA based on a latitude and longitude. It returns an id, the geom, and demographic stats about a FMA.
+    
     Explanation of Demographic Data:
         fma = id of the FMA
         fma_population_total = total population in the FMA
