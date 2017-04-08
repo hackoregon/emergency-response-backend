@@ -1,3 +1,5 @@
+example endpoint:
+
 http://localhost:8000/emergency/fma/?fma_id=12
 
 {
