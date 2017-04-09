@@ -1,4 +1,0 @@
-172.26.0.1 - - [08/Apr/2017:23:53:18 +0000] "GET /emergency/ HTTP/1.1" 200 4551 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
-172.26.0.1 - - [08/Apr/2017:23:53:18 +0000] "GET /emergency/?format=openapi HTTP/1.1" 200 18437 "http://localhost:8000/emergency/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
-172.26.0.1 - - [08/Apr/2017:23:53:24 +0000] "GET /emergency/fma/?fma_id=34 HTTP/1.1" 500 27 "http://localhost:8000/emergency/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
-172.26.0.1 - - [08/Apr/2017:23:53:34 +0000] "GET /emergency/fma/?fma_id=10 HTTP/1.1" 200 21235 "http://localhost:8000/emergency/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36"
