@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100']
 
-AWS_LOAD_BALANCER = 'hacko-integration-658279555.us-west-2.elb.amazonaws.com'
+AWS_LOAD_BALANCER ='hacko-integration-658279555.us-west-2.elb.amazonaws.com'
 
 ALLOWED_HOSTS.append(AWS_LOAD_BALANCER)
 
@@ -65,7 +65,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -175,8 +174,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = 'staticfiles'
+
 STATIC_URL = "/emergency/static/"
+STATIC_ROOT = 'staticfiles'
 
 # testing setup
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

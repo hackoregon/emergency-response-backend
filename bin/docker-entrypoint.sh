@@ -5,5 +5,6 @@ export PATH=$PATH:~/.local/bin
 python manage.py makemigrations --noinput
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
-gunicorn emerresponseAPI.wsgi:application -b :8000 -k 'gevent' -w 5 --keep-alive 5
+gunicorn homelessAPI.wsgi:application -b :8000 --worker-class 'gevent' --workers 3
+
 # python manage.py runserver 0.0.0.0:8000
