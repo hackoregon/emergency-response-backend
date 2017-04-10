@@ -297,7 +297,7 @@ class FMADateFilter(DjangoFilterBackend):
 
 class FMAGeoFilterViewSet(generics.ListAPIView):
     """
-    This endpoint finds an FMA based on a latitude and longitude. It returns an id, the geom, and demographic stats about a FMA.
+    This endpoint finds an FMA based on either an id or a combination of latitude and longitude. It returns an id, the geom, and demographic stats about a FMA.
 
     Explanation of Demographic Data:
 
@@ -332,7 +332,7 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
         median_response_time = median response time for FMA
 
         ave_weekly_incidents = the average number of incidents per week for FMA
-        
+
     """
 
     queryset = FMA.objects.all
