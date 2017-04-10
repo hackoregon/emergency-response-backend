@@ -195,79 +195,6 @@ class FMAListViewSet(generics.ListAPIView):
     queryset = FMA.objects.all()
     serializer_class = FMASerializer
 
-## These are the viewsets based on FMAs
-
-class FMAListViewSet(generics.ListAPIView):
-    """
-    This endpoint provides the fma id and geoms for all FMAs (Fire Management Areas).
-    """
-
-    queryset = FMA.objects.all()
-    serializer_class = FMASerializer
-
-class FMALatLonGeoFilter(GeoFilterSet):
-
-    class Meta:
-        model = FMA
-        fields = []
-
-    def get_schema_fields(self, view):
-        fields = []
-        lat = coreapi.Field(
-            name="lat",
-            location="query",
-            description="Latitude of search point",
-            type="number",
-            )
-        lon = coreapi.Field(
-            name="lon",
-            location="query",
-            description="Longitude of search point",
-            type="number",
-            )
-        fma_id = coreapi.Field(
-            name="fma_id",
-            location="query",
-            description="FMA id",
-            type="number",
-            )
-        fields.append(lat)
-        fields.append(lon)
-        fields.append(fma_id)
-        return fields
-
-class FMADateFilter(DjangoFilterBackend):
-
-    class Meta:
-        model = FMA
-        fields = []
-
-    def get_schema_fields(self, view):
-        fields = []
-        start_date = coreapi.Field(
-            name="start_date",
-            location="query",
-            description="YYYY-MM-DD",
-            type="datetime",
-            )
-        end_date = coreapi.Field(
-            name="end_date",
-            location="query",
-            description="YYYY-MM-DD",
-            type="datetime",
-            )
-        # totals = coreapi.Field(
-        #     name="totals",
-        #     location="query",
-        #     description="True to return only total number",
-        #     type="boolean",
-        #     )
-        fields.append(start_date)
-        fields.append(end_date)
-        # fields.append(totals)
-
-        return fields
-
 class FMAGeoFilterViewSet(generics.ListAPIView):
     """
     This endpoint finds an FMA based on either an id or a combination of latitude and longitude. It returns an id, the geom, and demographic stats about a FMA.
@@ -310,39 +237,18 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
 
     queryset = FMA.objects.all
     serializer_class = FMASerializer
-    filter_backends = (FMALatLonGeoFilter,)
+    filter_backends = (LatLonGeoFilter,)
 
     def get(self, request, *args, **kwargs):
-        if request.GET.get('fma_id', ' ') == ' ':
-            if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
-                try:
-                    lat = float(request.GET.get('lat', ' '))
-                    lon = float(request.GET.get('lon', ' '))
-                    pnt = Point(lon, lat, srid=4326)
-                    fmas = FMA.objects.filter(geom__contains=pnt)
-                    if fmas:
-                        fma_id = fmas[0].fma
-                        fma_stats = FMAStats.objects.get(fma=fma_id)
-                        serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
-                        serialized_stats = FMAStatsSerializer(fma_stats)
-                        return Response({
-                            'id': fma_id,
-                            'geometry': serialized_fmas.data,
-                            'stats': serialized_stats.data,
-                                })
-                    else:
-                        return Response('No FMA found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
-                except ValueError:
-                    return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
-        else:
+        if request.GET.get('lat', ' ') != ' ' and request.GET.get('lon', ' ') != ' ':
             try:
-                fma_id = int(request.GET.get('fma_id', ' '))
-                fmas = [FMA.objects.get(fma=fma_id)]
+                lat = float(request.GET.get('lat', ' '))
+                lon = float(request.GET.get('lon', ' '))
+                pnt = Point(lon, lat, srid=4326)
+                fmas = FMA.objects.filter(geom__contains=pnt)
                 if fmas:
                     fma_id = fmas[0].fma
-                    fma_stats = FMAStats.objects.get(fma=fma_id)
+                    fma_stats = FMAStats.objects.get(pk=fma_id)
                     serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
                     serialized_stats = FMAStatsSerializer(fma_stats)
                     return Response({
@@ -351,10 +257,11 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
                         'stats': serialized_stats.data,
                             })
                 else:
-                    return Response('No FMA found for this FMA.', status=status.HTTP_404_NOT_FOUND)
+                    return Response('No FMA found for this latitude and longitude.', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
-                return Response('FMA is invalid.', status=status.HTTP_400_BAD_REQUEST)
-
+                return Response('Latitude or longitude is invalid.', status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response('Missing latitude or longitude paramater.', status=status.HTTP_400_BAD_REQUEST)
 
 class FMAIncidentsFilterViewSet(generics.ListAPIView):
     """
