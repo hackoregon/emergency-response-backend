@@ -1,5 +1,3 @@
-#! /bin/bash
-
 # Get Configuration
 echo "##############################"
 echo  CONFIG SETTINGS
