@@ -298,24 +298,41 @@ class FMADateFilter(DjangoFilterBackend):
 class FMAGeoFilterViewSet(generics.ListAPIView):
     """
     This endpoint finds an FMA based on a latitude and longitude. It returns an id, the geom, and demographic stats about a FMA.
-    
+
     Explanation of Demographic Data:
+
         fma = id of the FMA
+
         fma_population_total = total population in the FMA
+
         percent_owner_occ_hh = percentage of households in FMA occupied by owner
+
         percent_renter_occ_hh = percentage of households in FMA occupied by a renter
+
         median_hh_income = median household income for FMA
-        percent_w_hinsurance = percentage of population with health insurance
-        percent_wo_hinsurance = percentage of population without health insurance
-        percent_college_grad_or_higher = percentage of population that has graduated college or higher
-        percent_rec_fs = percentage of population that receives foodstamps
-        percent_total_lesh = limeted english speakings households
-        percent_non_white = models.FloatField(blank=True, null=True)
-        percent_below_pov = models.FloatField(blank=True, null=True)
-        percent_member_65plus = models.FloatField(blank=True, null=True)
-        percent_diff_area = models.FloatField(blank=True, null=True)
-        median_response_time = models.FloatField(blank=True, null=True)
-        ave_weekly_incidents = models.FloatField(blank=True, null=True)
+
+        percent_w_hinsurance = percentage of individuals with health insurance in fma
+
+        percent_wo_hinsurance = percentage of individuals without health insurance within FMA
+
+        percent_college_grad_or_higher = percentage of individuals with at least a college degree (including graduate and professional degrees)
+
+        percent_rec_fs = percentage of individuals within FMA receiving food stamps/SNAP
+
+        percent_total_lesh = percentage of households within FMA that are LIMITED ENGLISH SPEAKING HOUSEHOLDS
+
+        percent_non_white = percentage of individuals within FMA that non-white (race classification) non-white
+
+        percent_below_pov = percentage of individuals within FMA that are below poverty level
+
+        percent_member_65plus = percentage of households within FMA that have at least one member aged 65 years or older
+
+        percent_diff_area = percentage of individuals within FMA that were living outside of PDX metro area one year ago
+
+        median_response_time = median response time for FMA
+
+        ave_weekly_incidents = the average number of incidents per week for FMA
+        
     """
 
     queryset = FMA.objects.all
