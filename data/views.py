@@ -150,13 +150,13 @@ class DateFilter(DjangoFilterBackend):
             name="start_date",
             location="query",
             description="YYYY-MM-DD",
-            type="datetime",
+            type="string",
             )
         end_date = coreapi.Field(
             name="end_date",
             location="query",
             description="YYYY-MM-DD",
-            type="datetime",
+            type="string",
             )
         fields.append(start_date)
         fields.append(end_date)
