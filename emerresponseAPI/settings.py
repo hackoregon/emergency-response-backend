@@ -32,9 +32,12 @@ DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100']
 
 AWS_LOAD_BALANCER = 'hacko-integration-658279555.us-west-2.elb.amazonaws.com'
+CIVIC_PDX_ORG_HOST = 'service.civicpdx.org'
+CIVIC_PDX_COM_HOST = 'service.civicpdx.com'
 
 ALLOWED_HOSTS.append(AWS_LOAD_BALANCER)
-
+ALLOWED_HOSTS.append(CIVIC_PDX_ORG_HOST)
+ALLOWED_HOSTS.append(CIVIC_PDX_COM_HOST)
 # Get the IPV4 address we're working with on AWS
 # The Loadbalancer uses this ip address for healthchecks
 EC2_PRIVATE_IP = None
