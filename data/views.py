@@ -10,7 +10,6 @@ import django_filters
 import coreapi
 from django.contrib.gis.geos import Point
 from django.db.models import Avg, Max
-from django.db import connection
 from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
 
 from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer, IncidentIncidentTimesSerializer, IncidentResponderSerializer, FMAStatsSerializer
