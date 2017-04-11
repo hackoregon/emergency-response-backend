@@ -50,7 +50,7 @@ class FMA(models.Model):
         db_table = 'fma_shapes'
 
 class FMAStats(models.Model):
-    fma = models.CharField(max_length=2, primary_key=True)
+    fma = models.CharField(primary_key=True, max_length=2)
     fma_population_total = models.IntegerField(blank=True, null=True)
     percent_owner_occ_hh = models.FloatField(blank=True, null=True)
     percent_renter_occ_hh = models.FloatField(blank=True, null=True)
@@ -64,6 +64,8 @@ class FMAStats(models.Model):
     percent_below_pov = models.FloatField(blank=True, null=True)
     percent_member_65plus = models.FloatField(blank=True, null=True)
     percent_diff_area = models.FloatField(blank=True, null=True)
+    median_response_time = models.FloatField(blank=True, null=True)
+    ave_weekly_incidents = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
