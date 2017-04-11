@@ -10,11 +10,11 @@ import django_filters
 import coreapi
 from django.contrib.gis.geos import Point
 from django.db.models import Avg, Max
+from django.db import connection
 from data.models import Agency, AlarmLevel, FireBlock, TypeNatureCode, Station, MutualAid, ResponderUnit, IncsitFoundClass, IncsitFoundSub, IncsitFound, Incident, FireBlock, FMA, TimeDesc, Responder, IncidentTimes, SituationFound, FMAStats
 
 from data.serializers import AgencySerializer, AlarmLevelSerializer, FireBlockSerializer, TypeNatureCodeSerializer, StationSerializer, MutualAidSerializer, ResponderUnitSerializer, IncsitFoundClassSerializer, IncsitFoundSubSerializer, IncsitFoundSerializer, IncidentSerializer, FMASerializer, TimeDescSerializer, ResponderSerializer, IncidentTimesSerializer, SituationFoundSerializer, IncidentIncidentTimesSerializer, IncidentResponderSerializer, FMAStatsSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-
 
 
 # Pagination filters to be called on endpoints depending on the size of the data set.
@@ -150,13 +150,13 @@ class DateFilter(DjangoFilterBackend):
             name="start_date",
             location="query",
             description="YYYY-MM-DD",
-            type="datetime",
+            type="string",
             )
         end_date = coreapi.Field(
             name="end_date",
             location="query",
             description="YYYY-MM-DD",
-            type="datetime",
+            type="string",
             )
         fields.append(start_date)
         fields.append(end_date)
@@ -275,13 +275,13 @@ class FMADateFilter(DjangoFilterBackend):
             name="start_date",
             location="query",
             description="YYYY-MM-DD",
-            type="datetime",
+            type="string",
             )
         end_date = coreapi.Field(
             name="end_date",
             location="query",
             description="YYYY-MM-DD",
-            type="datetime",
+            type="string",
             )
         # totals = coreapi.Field(
         #     name="totals",
