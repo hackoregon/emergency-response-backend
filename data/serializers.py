@@ -20,6 +20,11 @@ class AlarmLevelSerializer(serializers.ModelSerializer):
         model = AlarmLevel
         fields = '__all__'
 
+class FMAFireBlockFireBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FireBlock
+        fields = ('gid',)
+
 class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = FireBlock
@@ -33,12 +38,14 @@ class FMAFireBlockSerializer(serializers.ModelSerializer):
         fields = ('gid',)
 
 class FMASerializer(serializers.GeoFeatureModelSerializer):
-    fireblocks = FMAFireBlockSerializer(many=True)
+    # fireblocks = FMAFireBlockSerializer(many=True)
+    fma_id = CharField(source='fma')
     class Meta:
         model = FMA
         geo_field = "geom"
         auto_bbox = True
-        fields = ('geom', 'fireblocks')
+        id_field = False
+        fields = ('geom', 'fma_id')
 
 class FMAStatsSerializer(serializers.ModelSerializer):
     class Meta:
