@@ -37,20 +37,20 @@ class FMAFireBlockSerializer(serializers.ModelSerializer):
         model = FireBlock
         fields = ('gid',)
 
+class FMAStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FMAStats
+        exclude = ('fma',)
+
 class FMASerializer(serializers.GeoFeatureModelSerializer):
-    # fireblocks = FMAFireBlockSerializer(many=True)
-    fma_id = CharField(source='fma')
+    stats = FMAStatsSerializer(many=True)
+    fma_id = CharField(source="fma")
     class Meta:
         model = FMA
         geo_field = "geom"
         auto_bbox = True
         id_field = False
-        fields = ('geom', 'fma_id')
-
-class FMAStatsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FMAStats
-        exclude = ('fma',)
+        fields = ('geom', 'fma_id', 'stats')
 
 class MutualAidSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,22 +81,22 @@ class AgencySerializer(serializers.ModelSerializer):
         model = Agency
         fields = ('agency_id', 'name', 'statecode', 'responderunits')
 
-class IncsitFoundClassSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = IncsitFoundClass
-        fields = ('incsitfoundclass_id', 'description', 'sortorder')
-
-class IncsitFoundSubSerializer(serializers.ModelSerializer):
-    incitfoundclasses = IncsitFoundClassSerializer(many=True)
-    class Meta:
-        model = IncsitFoundSub
-        fields = '__all__'
-
 class IncsitFoundSerializer(serializers.ModelSerializer):
-    # incsitfoundsubs = IncsitFoundSubSerializer(many=True)
     class Meta:
         model = IncsitFound
         fields = ('incsitfound_id', 'statecode', 'sortorder', 'inactive', 'nfirs')
+
+class IncsitFoundSubSerializer(serializers.ModelSerializer):
+    incsitfounds = IncsitFoundSerializer(many=True)
+    class Meta:
+        model = IncsitFoundSub
+        fields = ('incsitfoundsub_id', 'description', 'sortorder', 'incsitfounds')
+
+class IncsitFoundClassSerializer(serializers.ModelSerializer):
+    incsitfoundsubs = IncsitFoundSubSerializer(many=True)
+    class Meta:
+        model = IncsitFoundClass
+        fields = ('incsitfoundclass_id', 'description', 'sortorder', 'incsitfoundsubs')
 
 class IncidentSerializer(serializers.ModelSerializer):
     class Meta:
