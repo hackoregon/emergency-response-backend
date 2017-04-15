@@ -44,13 +44,9 @@ urlpatterns = [
 
     url(r'^incidents/$', views.IncidentListViewSet.as_view(), name='incidents'),
     url(r'^incidents/info/$', views.IncidentInfoViewSet.as_view(), name='incidents'),
-    url(r'^incidents/totals/$', views.IncidentCountViewSet.as_view(), name='incidents/totals'),
     url(r'^incidents/foundclass/$', views.IncsitFoundClassListViewSet.as_view(), name='incidents'),
-    url(r'^incidents/foundclass/(?P<pk>[0-9]+)/$', views.IncsitFoundClassRetrieveViewSet.as_view(), name='incidents'),
     url(r'^incidents/foundclass_sub/$', views.IncsitFoundSubListViewSet.as_view(), name='incidents'),
-    url(r'^incidents/foundclass_sub/(?P<pk>[0-9]+)/$', views.IncsitFoundSubRetrieveViewSet.as_view(), name='incidents'),
     url(r'^incidents/found/$', views.IncsitFoundListViewSet.as_view(), name='incidents'),
-    url(r'^incidents/found/(?P<pk>[0-9]+)/$', views.IncsitFoundRetrieveViewSet.as_view(), name='incidents'),
     url(r'^incidents/times/$', views.IncidentTimesListViewSet.as_view(), name='incidents'),
     url(r'^incidents/times/(?P<pk>[0-9]+)/$', views.IncidentTimesRetrieveViewSet.as_view(), name='incidents'),
 

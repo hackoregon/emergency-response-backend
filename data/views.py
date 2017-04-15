@@ -595,13 +595,6 @@ class IncidentTimesRetrieveViewSet(generics.RetrieveAPIView):
     queryset = IncidentTimes.objects.all()
     serializer_class = IncidentTimesSerializer
 
-class IncidentCountViewSet(generics.ListAPIView):
-    """
-    This viewset will provide 'list' and 'detail' actions.
-    """
-
-    queryset = Incident.objects.all()
-    serializer_class = IncidentSerializer
 
 class ResponderUnitListViewSet(generics.ListAPIView):
     """
@@ -627,14 +620,6 @@ class IncsitFoundClassListViewSet(generics.ListAPIView):
     queryset = IncsitFoundClass.objects.all()
     serializer_class = IncsitFoundClassSerializer
 
-class IncsitFoundClassRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide 'detail' action.
-    """
-
-    queryset = IncsitFoundClass.objects.all()
-    serializer_class = IncsitFoundClassSerializer
-
 class IncsitFoundSubListViewSet(generics.ListAPIView):
     """
     This viewset will provide 'list' action.
@@ -643,25 +628,9 @@ class IncsitFoundSubListViewSet(generics.ListAPIView):
     queryset = IncsitFoundSub.objects.all()
     serializer_class = IncsitFoundSubSerializer
 
-class IncsitFoundSubRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide 'detail' action.
-    """
-
-    queryset = IncsitFoundSub.objects.all()
-    serializer_class = IncsitFoundSubSerializer
-
 class IncsitFoundListViewSet(generics.ListAPIView):
     """
     This viewset will provide 'list' action.
-    """
-
-    queryset = IncsitFound.objects.all()
-    serializer_class = IncsitFoundSerializer
-
-class IncsitFoundRetrieveViewSet(generics.RetrieveAPIView):
-    """
-    This viewset will provide 'detail' action.
     """
 
     queryset = IncsitFound.objects.all()
