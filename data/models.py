@@ -42,7 +42,7 @@ class AlarmLevel(models.Model):
         db_table = 'alarmlevel'
 
 class FMA(models.Model):
-    fma = models.CharField(max_length=2, primary_key=True)
+    fma = models.CharField(max_length=2, primary_key=True, unique=True)
     geom = models.GeometryField(srid=4326, blank=True, null=True)
 
     class Meta:
@@ -50,7 +50,7 @@ class FMA(models.Model):
         db_table = 'fma_shapes'
 
 class FMAStats(models.Model):
-    fma = models.CharField(primary_key=True, max_length=2)
+    fma = models.ForeignKey('FMA', related_name='stats', to_field="fma", primary_key=True, db_column="fma")
     fma_population_total = models.IntegerField(blank=True, null=True)
     percent_owner_occ_hh = models.FloatField(blank=True, null=True)
     percent_renter_occ_hh = models.FloatField(blank=True, null=True)
@@ -136,7 +136,7 @@ class IncsitFoundClass(models.Model):
 
 class IncsitFoundSub(models.Model):
     incsitfoundsub_id = models.IntegerField(primary_key=True)
-    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, blank=True, null=True, related_name="incsitfoundsubs")
+    incsitfoundclass = models.ForeignKey(IncsitFoundClass, on_delete=models.CASCADE, related_name="incsitfoundsubs")
     description = models.CharField(max_length=50, blank=True, null=True)
     sortorder = models.IntegerField(blank=True, null=True)
 
@@ -146,7 +146,7 @@ class IncsitFoundSub(models.Model):
 
 class IncsitFound(models.Model):
     incsitfound_id = models.IntegerField(primary_key=True)
-    incsitfoundsub = models.ForeignKey(IncsitFoundSub, on_delete=models.CASCADE, blank=True, null=True, related_name="incsitfounds")
+    incsitfoundsub = models.ForeignKey(IncsitFoundSub, on_delete=models.CASCADE, related_name="incsitfounds")
     description = models.CharField(max_length=50, blank=True, null=True)
     statecode = models.CharField(max_length=3, blank=True, null=True)
     sortorder = models.IntegerField(blank=True, null=True)
