@@ -4,10 +4,18 @@ It exposes the WSGI callable as a module-level variable named ``application``.
 For more information on this file, see
 https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
 """
+try:
+    from gevent import monkey
+    monkey.patch_all()
+except RuntimeError:
+    pass
 
-from gevent import monkey; monkey.patch_all()
-from psycogreen.gevent import patch_psycopg
-patch_psycopg()
+try:
+    import psycogreen.gevent
+    psycogreen.gevent.patch_psycopg()
+except RuntimeError:
+    pass
+
 from whitenoise.django import DjangoWhiteNoise
 
 import os
