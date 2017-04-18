@@ -256,7 +256,7 @@ class FMALatLonGeoFilter(GeoFilterSet):
             name="fma_id",
             location="query",
             description="FMA id",
-            type="number",
+            type=" Integer",
             )
         fields.append(lat)
         fields.append(lon)
@@ -367,6 +367,8 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
         else:
             try:
                 fma_id = int(request.GET.get('fma_id', ' '))
+                if fma_id < 10:
+                    fma_id = str(fma_id).zfill(2) 
                 fmas = [FMA.objects.get(fma=fma_id)]
                 if fmas:
                     fma_id = fmas[0].fma

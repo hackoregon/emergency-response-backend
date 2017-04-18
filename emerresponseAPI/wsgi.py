@@ -5,13 +5,15 @@ For more information on this file, see
 https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
 """
 import sys
-from gevent import monkey;
-from psycogreen.gevent import patch_psycopg
-monkey.patch_all()
-patch_psycopg()
+import os
+if os.environ.get("ENVIRONMENT") != "development":
+    from gevent import monkey;
+    from psycogreen.gevent import patch_psycopg
+    monkey.patch_all()
+    patch_psycopg()
 from whitenoise.django import DjangoWhiteNoise
 
-import os
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "emerresponseAPI.settings")
 
 from django.core.wsgi import get_wsgi_application
