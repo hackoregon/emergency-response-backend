@@ -9,4 +9,3 @@ if [ "$DEBUG" == 'True' ]; then
 else
   gunicorn emerresponseAPI.wsgi:application -b :8000 -k 'gevent' --access-logfile - --access-logformat '%(h)s %(t)s %(m)s %(U)s %(q)s %(H)s %(s)s %(B)s %(f)s %(a)s %(L)s'
 fi
-## if you wish to use the django dev server comment out above block and comment on this
