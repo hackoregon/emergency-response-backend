@@ -256,7 +256,7 @@ class FMALatLonGeoFilter(GeoFilterSet):
             name="fma_id",
             location="query",
             description="FMA id",
-            type=" Integer",
+            type="number",
             )
         fields.append(lat)
         fields.append(lon)
