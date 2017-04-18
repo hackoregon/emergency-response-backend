@@ -6,6 +6,7 @@ services:
     - DEPLOY_TARGET=${DEPLOY_TARGET}
     - CONFIG_BUCKET=${CONFIG_BUCKET}
     - NEWRELIC_LICENSE_KEY=${NEWRELIC_LICENSE_KEY}
+    - DEBUG=${DEBUG}
     build: .
     image: "${DOCKER_IMAGE}"
     command: ./code/bin/docker-entrypoint.sh
