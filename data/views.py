@@ -350,6 +350,8 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
                     fmas = FMA.objects.filter(geom__contains=pnt)
                     if fmas:
                         fma_id = fmas[0].fma
+                        if fma_id < 10:
+                            fma_id = str(fma_id).zfill(2) 
                         fma_stats = FMAStats.objects.get(fma=fma_id)
                         serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
                         serialized_stats = FMAStatsSerializer(fma_stats)
@@ -368,7 +370,7 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
             try:
                 fma_id = int(request.GET.get('fma_id', ' '))
                 if fma_id < 10:
-                    fma_id = str(fma_id).zfill(2) 
+                    fma_id = str(fma_id).zfill(2)
                 fmas = [FMA.objects.get(fma=fma_id)]
                 if fmas:
                     fma_id = fmas[0].fma
