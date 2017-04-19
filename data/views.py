@@ -351,7 +351,7 @@ class FMAGeoFilterViewSet(generics.ListAPIView):
                     if fmas:
                         fma_id = fmas[0].fma
                         if fma_id < 10:
-                            fma_id = str(fma_id).zfill(2) 
+                            fma_id = str(fma_id).zfill(2)
                         fma_stats = FMAStats.objects.get(fma=fma_id)
                         serialized_fmas = FMASerializer(fmas, many=True) # return the serialized fma objects
                         serialized_stats = FMAStatsSerializer(fma_stats)
@@ -621,7 +621,7 @@ class IncsitFoundClassListViewSet(generics.ListAPIView):
     This viewset will provide 'list' action.
     """
 
-    queryset = IncsitFoundClass.objects.all()
+    queryset = IncsitFoundClass.objects.prefetch_related("incsitfoundsubs").all()
     serializer_class = IncsitFoundClassSerializer
 
 class IncsitFoundSubListViewSet(generics.ListAPIView):
