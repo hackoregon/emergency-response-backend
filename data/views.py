@@ -229,7 +229,7 @@ class FMAListViewSet(generics.ListAPIView):
     This endpoint provides the fma id and geoms for all FMAs (Fire Management Areas).
     """
     # queryset = FMA.objects.all()
-    queryset = FMA.objects.all().prefetch_related('stats')
+    queryset = FMA.objects.all()
     serializer_class = FMASerializer
 
 class FMALatLonGeoFilter(GeoFilterSet):
