@@ -29,4 +29,3 @@ psycogreen
 whitenoise
 mock
 drf_ujson
-newrelic

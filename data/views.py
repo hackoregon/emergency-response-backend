@@ -391,8 +391,7 @@ class FMAIncidentsFilterViewSet(generics.ListAPIView):
     """
     This view returns all incidents for a FMA based on a latitude and longitude.
     It can be further filtered by a date range.
-    If passed param totals = True will return only the total number of incidents.
-    Otherwise will return the total number and individual incidents.
+    It will return the total number and individual incidents.
     """
 
     queryset = FMA.objects.all
