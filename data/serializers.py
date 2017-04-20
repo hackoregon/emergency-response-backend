@@ -43,7 +43,6 @@ class FMAStatsSerializer(serializers.ModelSerializer):
         exclude = ('fma',)
 
 class FMASerializer(serializers.GeoFeatureModelSerializer):
-    stats = FMAStatsSerializer(many=True)
     fma_id = CharField(source="fma")
     class Meta:
         model = FMA
@@ -51,6 +50,7 @@ class FMASerializer(serializers.GeoFeatureModelSerializer):
         auto_bbox = True
         id_field = False
         fields = ('geom', 'fma_id', 'stats')
+        depth = 1
 
 class MutualAidSerializer(serializers.ModelSerializer):
     class Meta:

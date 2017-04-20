@@ -50,7 +50,7 @@ class FMA(models.Model):
         db_table = 'fma_shapes'
 
 class FMAStats(models.Model):
-    fma = models.ForeignKey('FMA', related_name='stats', to_field="fma", primary_key=True, db_column="fma")
+    fma = models.OneToOneField('FMA', related_name='stats', to_field="fma", primary_key=True, db_column="fma")
     fma_population_total = models.IntegerField(blank=True, null=True)
     percent_owner_occ_hh = models.FloatField(blank=True, null=True)
     percent_renter_occ_hh = models.FloatField(blank=True, null=True)
