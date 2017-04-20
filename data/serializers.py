@@ -98,7 +98,13 @@ class IncsitFoundClassSerializer(serializers.ModelSerializer):
         model = IncsitFoundClass
         fields = ('incsitfoundclass_id', 'description', 'sortorder', 'incsitfoundsubs')
 
+class IncidentAlarmLevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AlarmLevel
+        fields = ('description',)
+
 class IncidentSerializer(serializers.ModelSerializer):
+    alarmlevel = IncidentAlarmLevelSerializer()
     class Meta:
         model = Incident
         fields = ('incident_id', 'responderunit', 'deptrespond_id', 'runnumber', 'incdate', 'typenaturecode', 'foundsituation', 'incsitfoundprm', 'alarmlevel', 'callreceived_id', 'censustract', 'fmarespcomp', 'career', 'engresp', 'aaresp', 'medresp', 'othervehiclesresp', 'firstonscene', 'quad', 'streettype', 'streetname', 'quad2', 'streettype', 'streetname', 'quad2', 'streetname2', 'streettype2', 'city', 'state', 'zip', 'neighborassoc', 'fireblock')
