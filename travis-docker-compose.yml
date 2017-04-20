@@ -8,6 +8,7 @@ services:
     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     - CONFIG_BUCKET=${CONFIG_BUCKET}
     - DEBUG=${DEBUG}
+    - NEWRELIC_LICENSE_KEY=${NEWRELIC_LICENSE_KEY}
     build: .
     image: "${DOCKER_REPO}/${DEPLOY_TARGET}/${DOCKER_IMAGE}:latest"
     command: ./code/bin/docker-entrypoint.sh

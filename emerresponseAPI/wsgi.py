@@ -12,7 +12,6 @@ from whitenoise.django import DjangoWhiteNoise
 from django.core.wsgi import get_wsgi_application
 
 if bool(os.environ["DEBUG"]) == False:
-    sys.stdout.write("False")
     from gevent import monkey;
     from psycogreen.gevent import patch_psycopg
 
