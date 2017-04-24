@@ -2,7 +2,7 @@
 
 export PATH=$PATH:~/.local/bin
 ./bin/getconfig.sh
-
+echo $DEBUG
 python manage.py collectstatic --noinput
 if [ "$DEBUG" == 'True' ]; then
   NEW_RELIC_CONFIG_FILE=newrelic.ini newrelic-admin run-program python manage.py runserver 0.0.0.0:8000
