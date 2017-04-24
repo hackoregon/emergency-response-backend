@@ -3,7 +3,7 @@
 export PATH=$PATH:~/.local/bin
 ./bin/getconfig.sh
 echo $DEBUG
-
+newrelic-admin generate-config
 python manage.py collectstatic --noinput
 if [ "$DEBUG" == 'True' ]; then
   python manage.py runserver 0.0.0.0:8000
