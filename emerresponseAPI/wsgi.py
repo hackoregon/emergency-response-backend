@@ -11,7 +11,7 @@ import os
 from whitenoise.django import DjangoWhiteNoise
 from django.core.wsgi import get_wsgi_application
 
-if os.environ["DEBUG"] == 'False':
+if "DEBUG" in os.environ == False or os.environ["DEBUG"] == 'False':
     from gevent import monkey;
     from psycogreen.gevent import patch_psycopg
 
