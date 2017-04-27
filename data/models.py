@@ -66,6 +66,23 @@ class FMAStats(models.Model):
     percent_diff_area = models.FloatField(blank=True, null=True)
     median_response_time = models.FloatField(blank=True, null=True)
     ave_weekly_incidents = models.FloatField(blank=True, null=True)
+    fma_area_mi = models.FloatField(blank=True, null=True)
+    num_incidents_med = models.IntegerField(blank=True, null=True)
+    incidents_sqmi_med = models.IntegerField(blank=True, null=True)
+    num_incidents_fire = models.IntegerField(blank=True, null=True)
+    incidents_sqmi_fire = models.IntegerField(blank=True, null=True)
+    fma_population_density = models.FloatField(blank=True, null=True)
+    fire_incidents_2016 = models.IntegerField(blank=True, null=True)
+    medical_incidents_2016 = models.IntegerField(blank=True, null=True)
+    total_incidents_2016 = models.IntegerField(blank=True, null=True)
+    fire_incidents_per_1000 = models.FloatField(blank=True, null=True)
+    medical_incidents_per_1000 = models.FloatField(blank=True, null=True)
+    total_incidents_per_1000 = models.FloatField(blank=True, null=True)
+    weekly_total_incs = models.FloatField(blank=True, null=True)
+    weekly_med_incs = models.FloatField(blank=True, null=True)
+    weekly_fire_incs = models.FloatField(blank=True, null=True)
+    median_resp_time_med = models.FloatField(blank=True, null=True)
+    median_resp_time_fire = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
