@@ -27,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = project_config.DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG=True
-if os.environ["DEBUG"] == 'True':
-    DEBUG=True
+
+DEBUG=False
+
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100']
 
 AWS_LOAD_BALANCER = 'hacko-integration-658279555.us-west-2.elb.amazonaws.com'
