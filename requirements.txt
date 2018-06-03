@@ -30,3 +30,7 @@ whitenoise
 mock
 drf_ujson
 newrelic
+
+# Testing
+pytest-django==3.2.1
+tblib==1.3.2

@@ -124,22 +124,8 @@ DATABASES = {
     #     'PASSWORD': project_config.GEOCODE['PASSWORD'],
     #     'PORT': 5432,
     # },
-}
 
-if 'test' in sys.argv or 'test_coverage' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': project_config.AWS['ENGINE'],
-            'NAME': project_config.AWS['NAME'],
-            'HOST': project_config.AWS['HOST'],
-            'PORT': 5432,
-            'USER': project_config.AWS['USER'],
-            'PASSWORD': project_config.AWS['PASSWORD'],
-            'TEST': {
-                    'NAME': 'fire',
-                },
-        }
-    }
+
 
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
