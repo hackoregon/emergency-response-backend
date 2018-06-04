@@ -12,9 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import sys
-import requests
 ## imports sensitive settings from file. you need to create this as instructed in README
-from . import project_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,31 +22,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = project_config.DJANGO_SECRET_KEY
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG=False
+if os.environ.get('DEBUG')=='True':
+    DEBUG=True
+else:
+    DEBUG=False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.99.100']
-
-AWS_LOAD_BALANCER = 'hacko-integration-658279555.us-west-2.elb.amazonaws.com'
-CIVIC_PDX_ORG_HOST = 'service.civicpdx.org'
-CIVIC_PDX_COM_HOST = 'service.civicpdx.com'
-
-ALLOWED_HOSTS.append(AWS_LOAD_BALANCER)
-ALLOWED_HOSTS.append(CIVIC_PDX_ORG_HOST)
-ALLOWED_HOSTS.append(CIVIC_PDX_COM_HOST)
-# Get the IPV4 address we're working with on AWS
-# The Loadbalancer uses this ip address for healthchecks
-EC2_PRIVATE_IP = None
-try:
-    EC2_PRIVATE_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
-except requests.exceptions.RequestException:
-    pass
-
-if EC2_PRIVATE_IP:
-    ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 # if needing admin add: 'django.contrib.admin', to list
@@ -58,16 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'django_nose',
     'rest_framework',
     'rest_framework_gis',
     'rest_framework_swagger',
-    'data.apps.DataConfig',
+    'data',
     'corsheaders',
-    'crispy_forms',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -109,13 +89,32 @@ WSGI_APPLICATION = 'emerresponseAPI.wsgi.application'
 # uncomment geocoder if using endpoint
 DATABASES = {
     'default': {
-        'ENGINE': project_config.AWS['ENGINE'],
-        'NAME': project_config.AWS['NAME'],
-        'HOST': project_config.AWS['HOST'],
-        'PORT': 5432,
-        'USER': project_config.AWS['USER'],
-        'PASSWORD': project_config.AWS['PASSWORD'],
-    },
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    }
+}
+
+if DEBUG == False:
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+            'OPTIONS': {
+                'MAX_CONNS': 20
+            }
+        }
+    }
+
     # 'geocoder': {
     #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
     #     'NAME': project_config.GEOCODE['NAME'],
@@ -124,33 +123,19 @@ DATABASES = {
     #     'PASSWORD': project_config.GEOCODE['PASSWORD'],
     #     'PORT': 5432,
     # },
-}
 
-if 'test' in sys.argv or 'test_coverage' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': project_config.AWS['ENGINE'],
-            'NAME': project_config.AWS['NAME'],
-            'HOST': project_config.AWS['HOST'],
-            'PORT': 5432,
-            'USER': project_config.AWS['USER'],
-            'PASSWORD': project_config.AWS['PASSWORD'],
-            'TEST': {
-                    'NAME': 'fire',
-                },
-        }
-    }
+
 
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 50,
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-    'DEFAULT_RENDERER_CLASSES': (
-        'drf_ujson.renderers.UJSONRenderer',
-    ),
-    'DEFAULT_PARSER_CLASSES': (
-        'drf_ujson.parsers.UJSONParser',
-    ),
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'drf_ujson.renderers.UJSONRenderer',
+    # ),
+    # 'DEFAULT_PARSER_CLASSES': (
+    #     'drf_ujson.parsers.UJSONParser',
+    # ),
 }
 
 # Password validation
@@ -188,8 +173,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = 'staticfiles'
-STATIC_URL = "/emergency/static/"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/emergency/static/'
 
 # testing setup
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -220,5 +208,3 @@ LOGGING = {
         },
     }
 }
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
