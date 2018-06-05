@@ -5,7 +5,8 @@ sudo: required
 services:
   - docker
 install:
-  - pip install awscli
+  - pip install --upgrade awscli
+  
 script:
   - './bin/build-test-proj.sh -t'
 after_success:

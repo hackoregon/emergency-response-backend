@@ -19,6 +19,7 @@ This API is built using [Docker](https://www.docker.com/) and [Docker-Compose](h
 
 This project was setup in a single database environment. Development, testing, and production have been connecting to same database. Prior to granting any write access to API, especially for testing ensure to change:
   1. The database credentials below will need to change to no longer override the "TEST_NAME" to 'fire', change other db creds as needed. It will then create a 'test_fire' database to run tests on. One will need to create method for loading test data.
+  
    2. Ultimately to destroy the test db with each run you will remove the --keepdb argument from the test scripts.
 
 ## To Setup:
