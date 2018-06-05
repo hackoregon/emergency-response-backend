@@ -19,11 +19,6 @@ from django.conf.urls import include
 from rest_framework.routers import DefaultRouter
 
 
-from rest_framework_swagger.views import get_swagger_view
-
-schema_view = get_swagger_view(title='Hack Oregon 2017 Emergency Response APIs')
-
 urlpatterns = [
-    url(r'^emergency/$', schema_view),
-    url(r'emergency/api/', include('data.urls')),
+    url(r'emergency/', include('data.urls')),
 ]
