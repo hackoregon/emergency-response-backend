@@ -1,12 +1,18 @@
-
-# create a travis env variable to get the first 6 chars of the git commit hash. $TRAVIS_COMMIT has the full hash value.
-
 sudo: required
+
+language: python
+python:
+  - "3.6"
+
 services:
   - docker
+
 install:
-  - pip install awscli
+  - pip install --upgrade awscli
+
 script:
-  - './bin/build-test-proj.sh -t'
+  - bin/build.sh -p
+  - bin/test.sh -p
+
 after_success:
-  - ./bin/docker-push.sh
+  - bin/deploy.sh

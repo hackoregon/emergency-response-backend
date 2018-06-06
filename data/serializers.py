@@ -25,7 +25,7 @@ class FMAFireBlockFireBlockSerializer(serializers.ModelSerializer):
         model = FireBlock
         fields = ('gid',)
 
-class FireBlockSerializer(serializers.GeoFeatureModelSerializer):
+class FireBlockSerializer(serializers.GeoModelSerializer):
     class Meta:
         model = FireBlock
         geo_field = "geom"
@@ -42,7 +42,7 @@ class FMAStatsSerializer(serializers.ModelSerializer):
         model = FMAStats
         exclude = ('fma',)
 
-class FMASerializer(serializers.GeoFeatureModelSerializer):
+class FMASerializer(serializers.GeoModelSerializer):
     fma_id = CharField(source="fma")
     class Meta:
         model = FMA

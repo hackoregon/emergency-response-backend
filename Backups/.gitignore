@@ -1,0 +1,5 @@
+*.backup
+*.sql
+*.sql.gz
+*.sha*sum
+*.md5sum
