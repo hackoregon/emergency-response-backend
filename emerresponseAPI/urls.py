@@ -1,5 +1,4 @@
 """emergency_data URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
 Examples:
@@ -15,10 +14,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.conf.urls import include
-
-from rest_framework.routers import DefaultRouter
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = [
-    url(r'emergency/', include('data.urls')),
+    url(r'^emergency/', include('data.urls'))
 ]
+
+urlpatterns += staticfiles_urlpatterns()

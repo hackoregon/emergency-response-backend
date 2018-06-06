@@ -2,7 +2,6 @@ from django.test import TestCase
 from data.models import Agency
 from rest_framework.test import APIClient, RequestsClient
 
-#Create your tests here.
 class AgencyTestCase(TestCase):
     def test_agency_returns_attributes(self):
         agency = Agency.objects.get(agency_id=1)
