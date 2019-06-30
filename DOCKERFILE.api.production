@@ -3,7 +3,9 @@ MAINTAINER Brian H. Grant <brian@hackoregon.org> & "M. Edward (Ed) Borasky <znme
 ENV PYTHONUNBUFFERED 1
 
 ARG DJANGO_SECRET_KEY
+ARG PROJECT_NAME
 ENV DJANGO_SECRET_KEY="${DJANGO_SECRET_KEY}"
+ENV PROJECT_NAME="${PROJECT_NAME}"
 
 # add required Debian packages
 # https://docs.djangoproject.com/en/2.0/ref/contrib/gis/install/geolibs/
