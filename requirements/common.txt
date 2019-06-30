@@ -27,5 +27,5 @@ openapi-codec==1.3.2
 django-rest-swagger
 
 # Testing
-pytest-django==3.2.1
+pytest-django==3.5.1
 tblib==1.3.2
