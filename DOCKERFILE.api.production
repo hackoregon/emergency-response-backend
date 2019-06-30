@@ -2,6 +2,9 @@ FROM python:3.6.5-stretch
 MAINTAINER Brian H. Grant <brian@hackoregon.org> & "M. Edward (Ed) Borasky <znmeb@znmeb.net>
 ENV PYTHONUNBUFFERED 1
 
+ARG DJANGO_SECRET_KEY
+ENV DJANGO_SECRET_KEY="${DJANGO_SECRET_KEY}"
+
 # add required Debian packages
 # https://docs.djangoproject.com/en/2.0/ref/contrib/gis/install/geolibs/
 RUN apt-get update \
