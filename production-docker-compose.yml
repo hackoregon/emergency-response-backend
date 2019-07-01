@@ -15,7 +15,7 @@ services:
       - "8000:8000"
     environment:
       - PROJECT_NAME
-      - DEBUG=False
+      - DEBUG=True
       - POSTGRES_USER
       - POSTGRES_NAME
       - POSTGRES_HOST
