@@ -4,9 +4,6 @@ services:
     build:
       context: .
       dockerfile: DOCKERFILE.api.production
-      args:
-        DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY}"
-        PROJECT_NAME: "${PROJECT_NAME}"
     image: $DOCKER_IMAGE
     command: ./bin/production-docker-entrypoint.sh
     volumes:
