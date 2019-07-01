@@ -7,6 +7,8 @@ ARG PROJECT_NAME
 ENV DJANGO_SECRET_KEY="${DJANGO_SECRET_KEY}"
 ENV PROJECT_NAME="${PROJECT_NAME}"
 
+ENV DEBUG=True
+
 # add required Debian packages
 # https://docs.djangoproject.com/en/2.0/ref/contrib/gis/install/geolibs/
 RUN apt-get update \
